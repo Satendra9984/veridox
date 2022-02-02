@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "217484249170",
+    "project_id": "veridox-68b89",
+    "storage_bucket": "veridox-68b89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217484249170:android:1e355f2bef6d78c036778b",
+        "android_client_info": {
+          "package_name": "com.android.veridox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217484249170-ka65o2rtqtfu6isp9kmp3uaf142ubt8e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.veridox",
+            "certificate_hash": "ae03f06b40bf30b28fb59a393e7eaccb3a77e415"
+          }
+        },
+        {
+          "client_id": "217484249170-9sq4rmtn2mv16uffe6fhmmsd3vgtag0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdar6H02mIx1BygGdpz1VumO7gQER9HaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217484249170-9sq4rmtn2mv16uffe6fhmmsd3vgtag0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
