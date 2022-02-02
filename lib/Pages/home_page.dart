@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/Pages/login_page.dart';
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
 class HomePage extends StatelessWidget {
   const HomePage({ Key? key }) : super(key: key);
 
