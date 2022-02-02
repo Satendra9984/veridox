@@ -24,7 +24,10 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+<<<<<<< HEAD
 apply plugin: 'com.google.gms.google-services'
+=======
+>>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
 
 android {
     compileSdkVersion flutter.compileSdkVersion
@@ -35,7 +38,11 @@ android {
     }
 
     kotlinOptions {
+<<<<<<< HEAD
         jvmTarget = '11'
+=======
+        jvmTarget = '1.8'
+>>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
     }
 
     sourceSets {
@@ -49,8 +56,11 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+<<<<<<< HEAD
         multiDexEnabled true
         signingConfig signingConfigs.debug
+=======
+>>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
     }
 
     buildTypes {
@@ -67,7 +77,10 @@ flutter {
 }
 
 dependencies {
+<<<<<<< HEAD
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
+=======
+>>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
