@@ -3,6 +3,8 @@ import 'package:veridox/Pages/login_page.dart';
 
 
 class HomePage extends StatelessWidget {
+  static String homePageName = 'homePage';
+
   const HomePage({ Key? key }) : super(key: key);
 
   @override
