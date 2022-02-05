@@ -19,8 +19,4 @@ class SubmitButton extends StatelessWidget {
       child: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0XFFC925E3)),),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 7443d58826d3d21af8a791c74f458e7c3d8d217b
