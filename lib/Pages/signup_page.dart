@@ -8,7 +8,6 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         body: Container(
