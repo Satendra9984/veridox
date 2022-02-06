@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Veridox',
-        home: SignUp(),
+        home: HomePage(),
         routes: {
           HomePage.homePageName: (context) => HomePage(),
           LogInPage.logInPageName: (context) => LogInPage(),
