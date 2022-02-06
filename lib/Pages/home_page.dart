@@ -4,7 +4,7 @@ import 'package:veridox/Pages/login_page.dart';
 class HomePage extends StatelessWidget {
   static String homePageName = 'homePage';
 
-  const HomePage({ Key? key }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +15,18 @@ class HomePage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(9),
-              )
+              ),
             ),
-              onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const LogInPage()));
-          }, child: const Text('Log In')),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LogInPage(),
+                ),
+              );
+            },
+            child: const Text('Log In'),
+          ),
         ],
       ),
     );
