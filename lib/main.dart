@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:veridox/Pages/assignments_home_page.dart';
 import 'package:veridox/Pages/home_page.dart';
 import 'package:veridox/Pages/login_page.dart';
+import 'package:veridox/Pages/assignments_home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +28,21 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Veridox',
-        home: HomePage(),
+        theme: ThemeData(
+          primaryColor: const Color(0XFFC925E3),
+          primarySwatch: Colors.purple,
+        ),
+        home: AssignmentsHomePage(),
+        // home: LogInPage(),
+        // home: SignUp(),
+        // home: HomePage(),
+
         routes: {
           HomePage.homePageName: (context) => HomePage(),
           LogInPage.logInPageName: (context) => LogInPage(),
-          SignUp.signUpPageName: (context) => SignUp()
+          SignUp.signUpPageName: (context) => SignUp(),
+          AssignmentsHomePage.assignmentsHomePage: (context) =>
+              AssignmentsHomePage(),
         },
       ),
     );

@@ -1,13 +1,13 @@
 import 'package:veridox/models/constants.dart';
 
-class AssignmentDescription {
+class AssignmentModel {
   final String caseId;
   final String type;
   final String description;
   final String address;
   final Status status;
 
-  AssignmentDescription(
+  AssignmentModel(
       {required this.address,
       required this.caseId,
       required this.description,
