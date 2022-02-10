@@ -1,4 +1,4 @@
-import 'package:veridox/models/constants.dart';
+import 'package:veridox/constants.dart';
 import 'package:flutter/material.dart';
 
 class AssignmentModel with ChangeNotifier {
