@@ -1,6 +1,7 @@
 import 'package:veridox/models/constants.dart';
+import 'package:flutter/material.dart';
 
-class AssignmentModel {
+class AssignmentModel with ChangeNotifier {
   final String caseId;
   final String type;
   final String description;

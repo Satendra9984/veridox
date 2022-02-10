@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/models/assignment_model.dart';
+
+import 'assignment_list.dart';
 
 class AssignmentsHomePage extends StatelessWidget {
   static String assignmentsHomePage = 'assignmentHomePage';
@@ -63,32 +66,16 @@ class AssignmentsHomePage extends StatelessWidget {
         type: 'type'),
   ];
 
+  // final User = context.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Assignments'),
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: assignments.length,
-          padding: const EdgeInsets.all(10),
-          itemBuilder: (context, index) => Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Text(assignments[index].caseId),
-                  Text(assignments[index].description),
-                  Text(assignments[index].address),
-                  Text(assignments[index].type),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      body: AssignmentList(),
+      // bottom navigation bar
     );
   }
 }
