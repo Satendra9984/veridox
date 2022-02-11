@@ -59,9 +59,21 @@ class AssignmentProvider extends ChangeNotifier {
         caseId: 'sbi123456',
         description: 'description',
         type: 'type'),
+    AssignmentModel(
+        address: 'xyz',
+        caseId: 'sbi123456',
+        description: 'description',
+        type: 'type'),
   ];
 
   List<AssignmentModel> get tasks {
     return [..._tasks];
+  }
+
+  List<AssignmentModel> get oldFirstTasks {
+    List<AssignmentModel> oldFirstList = [..._tasks];
+    oldFirstList.sort((a, b) => b.assignedDate.compareTo(a.assignedDate));
+
+    return oldFirstList;
   }
 }

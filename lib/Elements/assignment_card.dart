@@ -13,7 +13,7 @@ class AssignmentCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (ctx) => AssignmentDetailPage()),
+          MaterialPageRoute(builder: (ctx) => AssignmentDetailPage()),
         );
       },
       child: Card(
@@ -28,6 +28,7 @@ class AssignmentCard extends StatelessWidget {
                 Text(assignment.description),
                 Text(assignment.address),
                 Text(assignment.type),
+                Text(assignment.assignedDate.toString()),
               ],
             ),
           ),
