@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/Elements/submit_button.dart';
-import 'package:veridox/Elements/text_input.dart';
+// import 'package:veridox/Elements/text_input.dart';
+// import 'package:veridox/Pages/otp_screen.dart';
 
 class SignUp extends StatelessWidget {
   static String signUpPageName = 'signUpPage';
@@ -37,31 +39,31 @@ class SignUp extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const CustomTextInput(
-                      text: "Phone Number",
-                      keyboardType: TextInputType.number,
-                      password: false),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const CustomTextInput(
-                      text: "Email",
-                      keyboardType: TextInputType.emailAddress,
-                      password: false),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const CustomTextInput(
-                      text: "Create Password",
-                      keyboardType: TextInputType.text,
-                      password: true),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const CustomTextInput(
-                      text: "Confirm Password",
-                      keyboardType: TextInputType.text,
-                      password: true),
+                  // const CustomTextInput(
+                  //     text: "Phone Number",
+                  //     keyboardType: TextInputType.number,
+                  //     password: false),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // const CustomTextInput(
+                  //     text: "Email",
+                  //     keyboardType: TextInputType.emailAddress,
+                  //     password: false),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // const CustomTextInput(
+                  //     text: "Create Password",
+                  //     keyboardType: TextInputType.text,
+                  //     password: true),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  // const CustomTextInput(
+                  //     text: "Confirm Password",
+                  //     keyboardType: TextInputType.text,
+                  //     password: true),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.max,
@@ -87,7 +89,9 @@ class SignUp extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const SubmitButton(text: 'Sign Up'),
+                  SubmitButton(text: 'Sign Up', onPress: () {
+                    // Navigator.push(context, CupertinoPageRoute(builder: (context) => OTPScreen(number: number)));
+                  },),
                 ],
               ),
             ),
