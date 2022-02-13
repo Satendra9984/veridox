@@ -6,7 +6,9 @@ import 'package:veridox/models/assignment_provider.dart';
 
 class AssignmentList extends StatelessWidget {
   final bool isOldFilterSelected;
-  AssignmentList({Key? key, required this.isOldFilterSelected})
+  late ScrollController controller;
+  AssignmentList(
+      {Key? key, required this.isOldFilterSelected, required this.controller})
       : super(key: key);
 
   @override
@@ -17,6 +19,7 @@ class AssignmentList extends StatelessWidget {
         : assignmentsProv.tasks;
 
     return ListView.builder(
+      controller: controller,
       itemCount: assignmentList.length,
       padding: const EdgeInsets.all(10),
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
