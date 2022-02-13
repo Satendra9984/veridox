@@ -4,7 +4,8 @@ import 'package:pinput/pin_put/pin_put.dart';
 import 'package:veridox/Elements/submit_button.dart';
 
 class OTPScreen extends StatefulWidget {
-  const OTPScreen({Key? key,required this.number, required this.id}) : super(key: key);
+  const OTPScreen({Key? key, required this.number, required this.id})
+      : super(key: key);
   final String id;
   final String number;
   @override
@@ -12,7 +13,6 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-
   final TextEditingController _pinputController = TextEditingController();
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -56,25 +56,31 @@ class _OTPScreenState extends State<OTPScreen> {
                     colors: [
                       Color(0XFFC925E3),
                       Color(0XFF256CBF),
-                    ]),
+                    ],),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Type the code sent to",
-                    style: TextStyle(color: Colors.white,
+                  const Text(
+                    "Type the code sent to",
+                    style: TextStyle(
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 19,
-                    ),),
+                    ),
+                  ),
                   const SizedBox(
                     height: 12,
                   ),
-                  Text("+91-${widget.number.toString()}",
-                    style: const TextStyle(color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),),
+                  Text(
+                    "+91-${widget.number.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
                   const SizedBox(
                     height: 27,
                   ),
@@ -93,10 +99,15 @@ class _OTPScreenState extends State<OTPScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30,),
-                  SubmitButton(text: "Submit", onPress: () {
-                    signInUser();
-                  })
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SubmitButton(
+                    text: "Submit",
+                    onPress: () {
+                      signInUser();
+                    },
+                  )
                 ],
               ),
             ),
@@ -104,10 +115,11 @@ class _OTPScreenState extends State<OTPScreen> {
         ),
       ),
     );
-
   }
+
   void signInUser() async {
-    PhoneAuthCredential _credential = PhoneAuthProvider.credential(verificationId: widget.id, smsCode: _pinputController.text);
+    PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+        verificationId: widget.id, smsCode: _pinputController.text);
     await FirebaseAuth.instance.signInWithCredential(_credential);
   }
 }

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 // import 'package:veridox/Pages/sign_up.dart';
 import 'package:veridox/Pages/signup_page.dart';
+import 'package:veridox/models/assignment_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider.value(
             value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+        ChangeNotifierProvider(create: (ctx) => AssignmentProvider()),
       ],
       child: MaterialApp(
         title: 'Veridox',
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: const LogInPage(),
+        home: AssignmentsHomePage(),
         // home: LogInPage(),
         // home: SignUp(),
         // home: HomePage(),

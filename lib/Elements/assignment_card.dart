@@ -116,7 +116,7 @@ class DetailTextStylesWidget extends StatelessWidget {
       children: [
         Text(
           '$value                             ',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),

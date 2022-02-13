@@ -5,65 +5,70 @@ import 'package:veridox/models/assignment_model.dart';
 class AssignmentProvider extends ChangeNotifier {
   List<AssignmentModel> _tasks = [
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Home Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Car Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Bike Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Education Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
     AssignmentModel(
-        address: 'xyz',
+        address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'type'),
+        type: 'Business Loan'),
+    AssignmentModel(
+        address: '26A Iiit kalyani, West Bengal',
+        caseId: 'sbi123456',
+        description: 'description',
+        type: 'Business Loan'),
   ];
 
   List<AssignmentModel> get tasks {
