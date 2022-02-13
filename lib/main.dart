@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Veridox',
         theme: ThemeData(
+          fontFamily: 'Roboto',
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
