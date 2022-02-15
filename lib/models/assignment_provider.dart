@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:veridox/models/assignment_model.dart';
 
 class AssignmentProvider extends ChangeNotifier {
-  List<AssignmentModel> _tasks = [
+  final List<AssignmentModel> _tasks = [
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',

@@ -13,22 +13,18 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   void initState() {
     super.initState();
-    print('save init');
   }
 
   @override
   void dispose() {
     super.dispose();
-    print('save dis');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Text('Saved Pages\n'),
-        ),
+        child: Text('Saved Pages\n'),
       ),
     );
   }

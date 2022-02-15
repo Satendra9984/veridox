@@ -6,8 +6,6 @@ import 'package:veridox/Pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:veridox/Pages/sign_up.dart';
-import 'package:veridox/Pages/signup_page.dart';
 import 'package:veridox/models/assignment_provider.dart';
 
 void main() async {
@@ -24,8 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider.value(
-            value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+        StreamProvider<User?>(
+          initialData: null,
+          create: (_) {
+            return FirebaseAuth.instance.authStateChanges();
+          },
+          child: const MyApp(),
+        ),
+
         ChangeNotifierProvider(create: (ctx) => AssignmentProvider()),
       ],
       child: MaterialApp(
@@ -36,9 +40,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
         ),
         home: const AssignmentsHomePage(),
-        // home: const LogInPage(),
-        // home: SignUp(),
-        // home: HomePage(),
 
         routes: {
           HomePage.homePageName: (context) => const HomePage(),
@@ -46,7 +47,6 @@ class MyApp extends StatelessWidget {
           SignUp.signUpPageName: (context) => const SignUp(),
           AssignmentsHomePage.assignmentsHomePage: (context) =>
               const AssignmentsHomePage(),
-          // AssignmentList.assignmentListPage: (context) => AssignmentList(controller: null,),
         },
       ),
     );
