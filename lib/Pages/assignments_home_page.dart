@@ -18,6 +18,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   // this variable will be used to control the hiding of the bottomNavigationBar
   // we will pass the reference to other screens also to control hiding/showing
   final ScrollController _controller = ScrollController();
+  final PageController _pageController = PageController();
   bool bottomNavigationBarHide = false;
   // this variable will be use for pointing to the current selected screen in the bottomNavigationBar
   int currentItemSelected = 0;
@@ -64,9 +65,18 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     // print('Assignment home screen');
     return Scaffold(
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
-      body: IndexedStack(
-        index: currentItemSelected,
+      // body: IndexedStack(
+      //   index: currentItemSelected,
+      //   children: screens,
+      // ),
+      body: PageView(
+        controller: _pageController,
         children: screens,
+        onPageChanged: (currentScreen) {
+          setState(() {
+            currentItemSelected = currentScreen;
+          });
+        },
       ),
       bottomNavigationBar: AnimatedContainer(
         decoration: const BoxDecoration(

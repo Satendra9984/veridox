@@ -6,6 +6,7 @@ import 'package:veridox/models/assignment_provider.dart';
 import 'package:veridox/constants.dart';
 
 class AssignmentList extends StatefulWidget {
+  static String assignmentListPage = 'assignmentListPage';
   // final bool isOldFilterSelected;
   ScrollController controller;
   AssignmentList({Key? key, required this.controller}) : super(key: key);

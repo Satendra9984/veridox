@@ -87,7 +87,7 @@ class AssignmentCard extends StatelessWidget {
                         ],
                       ),
                       CircleAvatar(
-                        radius: 10,
+                        radius: 8,
                         backgroundColor: Colors.green,
                       ),
                     ],
@@ -115,10 +115,10 @@ class DetailTextStylesWidget extends StatelessWidget {
     return Row(
       children: [
         Text(
-          '$value                             ',
+          '$value',
           style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            // fontWeight: FontWeight.bold,
           ),
         ),
       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veridox/Pages/assignment_list.dart';
 import 'package:veridox/Pages/assignments_home_page.dart';
 import 'package:veridox/Pages/home_page.dart';
 import 'package:veridox/Pages/login_page.dart';
@@ -34,17 +35,18 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: AssignmentsHomePage(),
-        // home: LogInPage(),
+        home: const AssignmentsHomePage(),
+        // home: const LogInPage(),
         // home: SignUp(),
         // home: HomePage(),
 
         routes: {
-          HomePage.homePageName: (context) => HomePage(),
-          LogInPage.logInPageName: (context) => LogInPage(),
-          SignUp.signUpPageName: (context) => SignUp(),
+          HomePage.homePageName: (context) => const HomePage(),
+          LogInPage.logInPageName: (context) => const LogInPage(),
+          SignUp.signUpPageName: (context) => const SignUp(),
           AssignmentsHomePage.assignmentsHomePage: (context) =>
-              AssignmentsHomePage(),
+              const AssignmentsHomePage(),
+          // AssignmentList.assignmentListPage: (context) => AssignmentList(controller: null,),
         },
       ),
     );
