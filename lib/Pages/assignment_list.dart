@@ -8,6 +8,7 @@ import 'package:veridox/constants.dart';
 class AssignmentList extends StatefulWidget {
   final ScrollController controller;
   const AssignmentList({Key? key, required this.controller}) : super(key: key);
+  static String assignmentListPage = 'assignmentListPage';
 
   @override
   State<AssignmentList> createState() => _AssignmentListState();
