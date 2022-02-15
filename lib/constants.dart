@@ -2,7 +2,7 @@ enum Status {
   active,
   completed,
 }
-enum FilterOptions { Oldest, All }
+enum FilterOptions { oldest, all }
 
 enum ScreenNumber {
   home,

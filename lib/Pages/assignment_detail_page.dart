@@ -7,7 +7,7 @@ class AssignmentDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Assignemnt details page'),
+        title: const Text('Assignemnt details page'),
       ),
       body: Container(),
     );

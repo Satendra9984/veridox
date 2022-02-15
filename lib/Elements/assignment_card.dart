@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/Pages/assignment_detail_page.dart';
@@ -13,7 +13,7 @@ class AssignmentCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (ctx) => AssignmentDetailPage()),
+          MaterialPageRoute(builder: (ctx) => const AssignmentDetailPage()),
         );
       },
       child: Card(
@@ -72,21 +72,21 @@ class AssignmentCard extends StatelessWidget {
                     children: [
                       PopupMenuButton(
                         itemBuilder: (_) => [
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             child: Text('item1'),
                             value: 0,
                           ),
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             child: Text('item2'),
                             value: 1,
                           ),
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             child: Text('item3'),
                             value: 2,
                           ),
                         ],
                       ),
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 10,
                         backgroundColor: Colors.green,
                       ),

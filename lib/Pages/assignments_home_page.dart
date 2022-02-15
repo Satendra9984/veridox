@@ -3,7 +3,14 @@ import 'package:flutter/rendering.dart';
 import 'package:veridox/Pages/completed_assignement_page.dart';
 import 'package:veridox/Pages/profile_page.dart';
 import 'package:veridox/Pages/saved_assignments_page.dart';
+// import 'package:veridox/models/assignment_model.dart';
+
 import 'assignment_list.dart';
+
+enum FilterOptions {
+  oldest,
+  all,
+}
 
 class AssignmentsHomePage extends StatefulWidget {
   static String assignmentsHomePage = 'assignmentHomePage';
@@ -34,8 +41,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     screens = [
       AssignmentList(controller: _controller),
       SavedAssignmentsPage(controller: _controller),
-      ProfilePage(),
-      CompletedAssignemtsPage(),
+      const ProfilePage(),
+      const CompletedAssignemtsPage(),
     ];
   }
 
@@ -63,6 +70,35 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   Widget build(BuildContext context) {
     // print('Assignment home screen');
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Assignments'),
+        actions: <Widget>[
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedOption) {
+              // will do sorting
+              // print(selectedOption);
+              setState(() {
+                if (selectedOption == FilterOptions.oldest) {
+                  oldestFilter = true;
+                } else {
+                  oldestFilter = false;
+                }
+              });
+            },
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                child: Text('Old to New'),
+                value: FilterOptions.oldest,
+              ),
+              const PopupMenuItem(
+                child: Text('All'),
+                value: FilterOptions.all,
+              ),
+            ],
+          ),
+          // PopupMenuButton(itemBuilder: (_) => []),
+        ],),
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
       body: IndexedStack(
         index: currentItemSelected,

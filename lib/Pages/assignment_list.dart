@@ -6,9 +6,8 @@ import 'package:veridox/models/assignment_provider.dart';
 import 'package:veridox/constants.dart';
 
 class AssignmentList extends StatefulWidget {
-  // final bool isOldFilterSelected;
-  ScrollController controller;
-  AssignmentList({Key? key, required this.controller}) : super(key: key);
+  final ScrollController controller;
+  const AssignmentList({Key? key, required this.controller}) : super(key: key);
 
   @override
   State<AssignmentList> createState() => _AssignmentListState();
@@ -18,22 +17,9 @@ class _AssignmentListState extends State<AssignmentList> {
   bool oldestFilter = false;
 
   @override
-  void initState() {
-    super.initState();
-    print('ass list init');
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print('ass list disposed');
-  }
-
-  @override
   Widget build(BuildContext context) {
     final assignmentsProv = Provider.of<AssignmentProvider>(context);
     final List<AssignmentModel> assignmentList = assignmentsProv.tasks;
-    //     : assignmentsProv.tasks;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +31,7 @@ class _AssignmentListState extends State<AssignmentList> {
               // will do sorting
               // print(selectedOption);
               setState(() {
-                if (selectedOption == FilterOptions.Oldest) {
+                if (selectedOption == FilterOptions.oldest) {
                   oldestFilter = true;
                 } else {
                   oldestFilter = false;
@@ -56,15 +42,15 @@ class _AssignmentListState extends State<AssignmentList> {
             itemBuilder: (_) => [
               const PopupMenuItem(
                 child: Text('Old to New'),
-                value: FilterOptions.Oldest,
+                value: FilterOptions.oldest,
               ),
               const PopupMenuItem(
                 child: Text('Activity wise'),
-                value: FilterOptions.Oldest,
+                value: FilterOptions.oldest,
               ),
               const PopupMenuItem(
                 child: Text('All'),
-                value: FilterOptions.All,
+                value: FilterOptions.all,
               ),
             ],
           ),
@@ -77,7 +63,7 @@ class _AssignmentListState extends State<AssignmentList> {
         padding: const EdgeInsets.all(10),
         itemBuilder: (context, index) => ChangeNotifierProvider.value(
           value: assignmentList[index],
-          child: AssignmentCard(),
+          child: const AssignmentCard(),
         ),
       ),
     );
