@@ -71,35 +71,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   Widget build(BuildContext context) {
     // print('Assignment home screen');
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Assignments'),
-        actions: <Widget>[
-          PopupMenuButton(
-            onSelected: (FilterOptions selectedOption) {
-              // will do sorting
-              // print(selectedOption);
-              setState(() {
-                if (selectedOption == FilterOptions.oldest) {
-                  oldestFilter = true;
-                } else {
-                  oldestFilter = false;
-                }
-              });
-            },
-            icon: const Icon(Icons.more_vert),
-            itemBuilder: (_) => [
-              const PopupMenuItem(
-                child: Text('Old to New'),
-                value: FilterOptions.oldest,
-              ),
-              const PopupMenuItem(
-                child: Text('All'),
-                value: FilterOptions.all,
-              ),
-            ],
-          ),
-          // PopupMenuButton(itemBuilder: (_) => []),
-        ],),
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
       // body: IndexedStack(
       //   index: currentItemSelected,
@@ -166,7 +137,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                 // print('$screen selected');
                 // here we will notify all listeners which are dependent on the current selected item eg., selectedItemColor in bnb
                 setState(() {
-                  currentItemSelected = screen;
+                  _pageController.jumpToPage(screen);
                 });
               },
             ),
