@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
-  const SavedAssignmentsPage({Key? key, required this.controller})
-      : super(key: key);
-
+  SavedAssignmentsPage({Key? key, required this.controller}) : super(key: key);
+  // SavedAssignmentsPage({key? key, this.controller}): super(key: key);
   @override
   State<SavedAssignmentsPage> createState() => _SavedAssignmentsPageState();
 }

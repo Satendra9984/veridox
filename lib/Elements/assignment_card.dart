@@ -115,10 +115,10 @@ class DetailTextStylesWidget extends StatelessWidget {
     return Row(
       children: [
         Text(
-          '$value',
+          value,
           style: const TextStyle(
             fontSize: 14,
-            // fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
           ),
         ),
       ],

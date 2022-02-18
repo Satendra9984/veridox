@@ -36,7 +36,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   void initState() {
     super.initState();
     // print('home page initialized');
-    // _controller = ScrollController();
     _controller.addListener(listen);
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
     screens = [
