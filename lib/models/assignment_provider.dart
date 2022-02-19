@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:veridox/models/assignment_model.dart';
 
+import '../constants.dart';
+
 class AssignmentProvider extends ChangeNotifier {
   final List<AssignmentModel> _tasks = [
     AssignmentModel(
@@ -13,7 +15,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Car Loan'),
+        type: 'Car Loan',
+        status: Status.saved),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
@@ -23,7 +26,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Education Loan'),
+        type: 'Education Loan',
+        status: Status.saved),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
@@ -38,7 +42,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Business Loan'),
+        type: 'Business Loan',
+        status: Status.saved),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
@@ -48,7 +53,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Business Loan'),
+        type: 'Business Loan',
+        status: Status.saved),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
@@ -75,10 +81,18 @@ class AssignmentProvider extends ChangeNotifier {
     return [..._tasks];
   }
 
+  List<AssignmentModel> get savedAssignment {
+    return _tasks.where((element) => element.status == Status.saved).toList();
+  }
+
   List<AssignmentModel> get oldFirstTasks {
     List<AssignmentModel> oldFirstList = [..._tasks];
     oldFirstList.sort((a, b) => b.assignedDate.compareTo(a.assignedDate));
 
     return oldFirstList;
+  }
+
+  void addSaveAssignment() {
+    // TODO: ADD A METHOD TO ADD IN SAVE ASSIGNMENTS
   }
 }

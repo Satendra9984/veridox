@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/Pages/profile_page.dart';
 import 'package:veridox/models/assignment_provider.dart';
+import 'package:veridox/models/saved_assignment_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           child: const MyApp(),
         ),
         ChangeNotifierProvider(create: (ctx) => AssignmentProvider()),
+        ChangeNotifierProvider(create: (ctx) => SavedAssignmentProvider()),
       ],
       child: MaterialApp(
         title: 'Veridox',

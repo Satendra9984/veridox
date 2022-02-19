@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:veridox/Elements/assignment_card.dart';
+import 'package:veridox/Pages/assignments_home_page.dart';
+import 'package:veridox/models/assignment_provider.dart';
+
+import '../models/saved_assignment_provider.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
-  SavedAssignmentsPage({Key? key, required this.controller}) : super(key: key);
+  const SavedAssignmentsPage({Key? key, required this.controller})
+      : super(key: key);
   // SavedAssignmentsPage({key? key, this.controller}): super(key: key);
   @override
   State<SavedAssignmentsPage> createState() => _SavedAssignmentsPageState();
@@ -21,9 +28,25 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
-        child: Text('Saved Pages\n'),
+    final assignmentProvider = Provider.of<AssignmentProvider>(context);
+    final savedAssignmentList = assignmentProvider.savedAssignment;
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Saved Assignment'),
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(10),
+          child: ListView.builder(
+            controller: widget.controller,
+            itemCount: savedAssignmentList.length,
+            itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+              value: savedAssignmentList[index],
+              child: AssignmentCard(),
+            ),
+          ),
+        ),
       ),
     );
   }
