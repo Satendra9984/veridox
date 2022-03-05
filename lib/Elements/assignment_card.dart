@@ -4,8 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:veridox/Pages/assignment_detail_page.dart';
 import 'package:veridox/models/assignment_model.dart';
 
+import '../constants.dart';
+
 class AssignmentCard extends StatelessWidget {
   const AssignmentCard({Key? key}) : super(key: key);
+
+  Color getStatusColour(Status status) {
+    if (status == Status.saved) {
+      return Colors.orange;
+    } else if (status == Status.completed) {
+      return Colors.green;
+    }
+    return Colors.red;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +99,7 @@ class AssignmentCard extends StatelessWidget {
                       ),
                       CircleAvatar(
                         radius: 8,
-                        backgroundColor: Colors.green,
+                        backgroundColor: getStatusColour(assignment.status),
                       ),
                     ],
                   ),

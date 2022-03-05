@@ -10,7 +10,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Home Loan'),
+        type: 'Home Loan',
+        status: Status.completed),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
@@ -32,7 +33,8 @@ class AssignmentProvider extends ChangeNotifier {
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',
         description: 'description',
-        type: 'Business Loan'),
+        type: 'Business Loan',
+        status: Status.completed),
     AssignmentModel(
         address: '26A Iiit kalyani, West Bengal',
         caseId: 'sbi123456',

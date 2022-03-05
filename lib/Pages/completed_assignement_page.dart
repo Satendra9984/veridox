@@ -5,6 +5,14 @@ class CompletedAssignemtsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Completed Assignemts');
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text('Completed Assignments'),
+      ),
+      body: const Center(
+        child: Text('Ho gaya complete le le'),
+      ),
+    );
   }
 }

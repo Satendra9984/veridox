@@ -175,7 +175,7 @@ class _ProfileOptionsState extends State<ProfileOptions> {
         children: [
           Text(
             widget.option,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
             ),
           ),
@@ -183,7 +183,7 @@ class _ProfileOptionsState extends State<ProfileOptions> {
             onPressed: widget.onPress,
             splashColor: Colors.red,
             splashRadius: 40,
-            icon: Icon(Icons.arrow_forward_ios_outlined),
+            icon: const Icon(Icons.arrow_forward_ios_outlined),
           ),
         ],
       ),

@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:veridox/Pages/completed_assignement_page.dart';
 import 'package:veridox/Pages/profile_page.dart';
 import 'package:veridox/Pages/saved_assignments_page.dart';
+import 'package:veridox/models/assignment_provider.dart';
+// import 'package:cloud_firestore/server';
 // import 'package:veridox/models/assignment_model.dart';
 
 import 'assignment_list.dart';
@@ -22,6 +27,7 @@ class AssignmentsHomePage extends StatefulWidget {
 
 class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   bool oldestFilter = false;
+  final _firestore = FirebaseFirestore.instance;
   // this variable will be used to control the hiding of the bottomNavigationBar
   // we will pass the reference to other screens also to control hiding/showing
   static final ScrollController _controller = ScrollController();
@@ -35,6 +41,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   @override
   void initState() {
     super.initState();
+
     // print('home page initialized');
     _controller.addListener(listen);
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
@@ -66,8 +73,59 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     });
   }
 
+  void printFirestore() async {
+    final proProv = Provider.of<AssignmentProvider>(context);
+    final uid = Provider.of<User?>(context);
+    // address: '26A Iiit kalyani, West Bengal',
+    // caseId: 'sbi123456',
+    // description: 'description',
+    // type: 'Home Loan',
+    // status: Status.completed),
+
+    // final snap = await _firestore
+    //     .collection('fv')
+    //     .doc('Gmq48PNnK4hNgeEAUOdt')
+    //     .collection('assignments')
+    //     .add(
+    //   {
+    //     'agency': 'veridox',
+    //     'fv': 'shubhadeep chowdhary',
+    //     'address': '26A Iiit kalyani, West Bengal',
+    //     'description': 'description',
+    //     'type': 'ass.type',
+    //     'status': 'ass.status.toString()',
+    //   },
+    // );
+
+    // .where('name', isEqualTo: 'Shubhadeep Chowdhary')
+    // .get();
+
+    for (var ass in proProv.tasks) {
+      String id;
+      var timestamp = Timestamp.now();
+      await _firestore.collection('assignments').add(
+        {
+          'agency': 'veridox',
+          'fv': 'shubhadeep chowdhary',
+          'address': '26A Iiit kalyani, West Bengal',
+          'description': ass.description,
+          'type': ass.type,
+          'status': ass.status.toString(),
+        },
+      ).then(
+        (value) => {
+          id = value.id,
+        },
+      );
+      // adding in agency using this id
+    }
+    // final da = await _firestore.collection('assignments').doc().delete();
+    // final addAssWithServerTimeStamp = await _firestore.collection('assignments').doc(FieldValue.serverTimestamp().toString())
+  }
+
   @override
   Widget build(BuildContext context) {
+    printFirestore();
     // print('Assignment home screen');
     return Scaffold(
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
@@ -147,3 +205,28 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     );
   }
 }
+// final snap = await _firestore
+//     .collection('fv')
+//     .where('name', isEqualTo: 'Shubhadeep Chowdhary')
+//     .get();
+// final nasimDoc = snap.docs
+//     .firstWhere((element) => element['name'] == 'Shubhadeep Chowdhary');
+// await _firestore.collection('fv').doc(nasimDoc.id).update(
+//   {
+//     'date_of_birth': '01/10/2001',
+//   },
+// );
+
+//     .add({
+//   'address': 'kalyani west bengal',
+//   'agency': 'veridox',
+//   'date_of_birth': 'OOOOOOO',
+//   'date_of_joinig': '01/10/2021',
+//   'name': 'Nasim Shah',
+//   'phone': '8768715527',
+//
+// final docList = _firestore.collection('assignments').get();
+// List<QueryDocumentSnapshot> document = snap.docs;
+// for (var di in document) {
+//   print(di.data());
+// }

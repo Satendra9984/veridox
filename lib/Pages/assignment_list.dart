@@ -25,7 +25,7 @@ class _AssignmentListState extends State<AssignmentList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Assignments'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.red[500]?.withOpacity(1),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedOption) {

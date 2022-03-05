@@ -31,20 +31,24 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
     final assignmentProvider = Provider.of<AssignmentProvider>(context);
     final savedAssignmentList = assignmentProvider.savedAssignment;
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Saved Assignment'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: const Text(
+          'Saved Assignment',
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
-        body: Container(
-          padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            controller: widget.controller,
-            itemCount: savedAssignmentList.length,
-            itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-              value: savedAssignmentList[index],
-              child: AssignmentCard(),
-            ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+          controller: widget.controller,
+          itemCount: savedAssignmentList.length,
+          itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+            value: savedAssignmentList[index],
+            child: AssignmentCard(),
           ),
         ),
       ),
