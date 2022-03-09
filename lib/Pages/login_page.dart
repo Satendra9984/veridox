@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:provider/provider.dart';
 import 'package:veridox/Elements/submit_button.dart';
 import 'package:veridox/Elements/text_input.dart';
 import 'assignments_home_page.dart';
@@ -26,6 +27,8 @@ class _LogInPageState extends State<LogInPage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
         if (FirebaseAuth.instance.currentUser == null) {
           FirebaseFirestore.instance.collection('users');
+          final user = Provider.of<User?>(context);
+          print('${user?.uid}');
           Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
@@ -74,6 +77,14 @@ class _LogInPageState extends State<LogInPage> {
   final PageController _pageController = PageController(
     initialPage: 0,
   );
+
+  // @override
+  // void dispose() {
+  //   _phoneController.dispose();
+  //   _pinputController.dispose();
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

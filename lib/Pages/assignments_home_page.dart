@@ -43,6 +43,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     super.initState();
 
     // print('home page initialized');
+    // printFirestore();
     _controller.addListener(listen);
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
     screens = [
@@ -56,8 +57,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   @override
   void dispose() {
     // print('home page disposed');
-    _controller.dispose();
     _controller.removeListener(listen);
+    _controller.dispose();
     super.dispose();
   }
 
@@ -75,7 +76,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
   void printFirestore() async {
     final proProv = Provider.of<AssignmentProvider>(context);
-    final uid = Provider.of<User?>(context);
+    final user = Provider.of<User?>(context);
+    print(' id in home page -->  ${user?.uid}');
     // address: '26A Iiit kalyani, West Bengal',
     // caseId: 'sbi123456',
     // description: 'description',
@@ -97,35 +99,71 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     //   },
     // );
 
-    // .where('name', isEqualTo: 'Shubhadeep Chowdhary')
-    // .get();
-
-    for (var ass in proProv.tasks) {
-      String id;
-      var timestamp = Timestamp.now();
-      await _firestore.collection('assignments').add(
-        {
-          'agency': 'veridox',
-          'fv': 'shubhadeep chowdhary',
-          'address': '26A Iiit kalyani, West Bengal',
-          'description': ass.description,
-          'type': ass.type,
-          'status': ass.status.toString(),
-        },
-      ).then(
-        (value) => {
-          id = value.id,
-        },
-      );
-      // adding in agency using this id
-    }
+    // for (var ass in proProv.tasks) {
+    //   String id;
+    //   var timestamp = Timestamp.now();
+    //   await _firestore.collection('assignments').add(
+    //     {
+    //       'agency': 'veridox',
+    //       'fv': 'shubhadeep chowdhary',
+    //       'address': '26A Iiit kalyani, West Bengal',
+    //       'description': ass.description,
+    //       'type': ass.type,
+    //       'status': ass.status.toString(),
+    //     },
+    //   ).then(
+    //     (value) => {
+    //       id = value.id,
+    //     },
+    //   );
+    //   // adding in agency using this id
+    // }
     // final da = await _firestore.collection('assignments').doc().delete();
     // final addAssWithServerTimeStamp = await _firestore.collection('assignments').doc(FieldValue.serverTimestamp().toString())
+
+    // await _firestore
+    //     .collection('fv')
+    //     .doc('nZF37kTBVTMbAP452OUQ9ZKxIk32')
+    //     .delete();
+
+    // DONE: fetch Satendra Pal fv data form firestore
+    // final list = await _firestore
+    //     .collection('assignments')
+    //     // .where('fv', isEqualTo: 'Satendra Pal')
+    //     .get()
+    //     .then(
+    //   (value) async {
+    //     final doc = value.docs;
+    //     for (var ed in doc) {
+    //       await _firestore
+    //           .collection('assignments')
+    //           .doc(ed.id)
+    //           .update({'current_location': 'current_location'});
+    //     }
+    //   },
+    // );
+    final list = await _firestore
+        .collection('assignments')
+        .where('fv', isEqualTo: 'Satendra Pal')
+        // .doc('nZF37kTBVTMbAP452OUQ9ZKxIk32')
+        .get()
+        .then(
+      (value) async {
+        final doc = value.docs;
+        for (var ev in doc) {
+          // print('${ev.data()}\n\n');
+          await _firestore
+              .collection('assignments')
+              .doc(ev.id)
+              .update({'uid': 'l2tfQZqMQ5hKpHXmoAmkYPYuj4D3'});
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    printFirestore();
+    // printFirestore();
     // print('Assignment home screen');
     return Scaffold(
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
