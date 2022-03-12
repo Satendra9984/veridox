@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/Elements/assignment_card.dart';
@@ -16,6 +18,11 @@ class AssignmentList extends StatefulWidget {
 
 class _AssignmentListState extends State<AssignmentList> {
   bool oldestFilter = false;
+
+  Future<void> _refreshAssignments(BuildContext context) async {
+    await Provider.of<AssignmentProvider>(context, listen: false)
+        .fetchAndLoadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +65,16 @@ class _AssignmentListState extends State<AssignmentList> {
           // PopupMenuButton(itemBuilder: (_) => []),
         ],
       ),
-      body: ListView.builder(
-        controller: widget.controller,
-        itemCount: assignmentList.length,
-        padding: const EdgeInsets.all(10),
-        itemBuilder: (context, index) => ChangeNotifierProvider.value(
-          value: assignmentList[index],
-          child: const AssignmentCard(),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshAssignments(context),
+        child: ListView.builder(
+          controller: widget.controller,
+          itemCount: assignmentList.length,
+          padding: const EdgeInsets.all(10),
+          itemBuilder: (context, index) => ChangeNotifierProvider.value(
+            value: assignmentList[index],
+            child: const AssignmentCard(),
+          ),
         ),
       ),
     );
