@@ -7,7 +7,7 @@ class AssignmentModel with ChangeNotifier {
   final String description;
   final String address;
   final Status status;
-  final DateTime assignedDate = DateTime.now();
+  final DateTime assignedDate;
 
   AssignmentModel({
     required this.address,
@@ -15,5 +15,6 @@ class AssignmentModel with ChangeNotifier {
     required this.description,
     required this.type,
     this.status = Status.active,
+    required this.assignedDate,
   });
 }

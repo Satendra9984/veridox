@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:veridox/models/assignment_model.dart';
@@ -103,19 +104,28 @@ class AssignmentProvider extends ChangeNotifier {
       final docSnap = await _firestore
           .collection('assignments')
           .where('fv', isEqualTo: 'Satendra Pal')
+          .orderBy('createdAt', descending: true)
           .get();
       final docs = docSnap.docs;
       List<AssignmentModel> fireTasks = [];
       for (var doc in docs) {
-        // print('${doc.data()}\n\n');
+        print('${doc.data()}\n\n');
         fireTasks.add(
           AssignmentModel(
-              address: doc['address'],
-              caseId: doc.id,
-              description: doc['description'],
-              type: doc['type']),
+            address: doc['address'],
+            caseId: doc.id,
+            description: doc['description'],
+            type: doc['type'],
+            assignedDate: DateTime.parse(
+              // converting server timeStamps in DateTime format
+              doc['createdAt'].toDate().toString(),
+            ),
+          ),
         );
+        // _firestore.collection('assignments').doc(doc.id).update({
+        //   'createdAt': FieldValue.serverTimestamp(),
       }
+
       _tasks = fireTasks;
       notifyListeners();
     } catch (error) {
