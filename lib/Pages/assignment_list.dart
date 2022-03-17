@@ -73,7 +73,32 @@ class _AssignmentListState extends State<AssignmentList> {
           padding: const EdgeInsets.all(10),
           itemBuilder: (context, index) => ChangeNotifierProvider.value(
             value: assignmentList[index],
-            child: const AssignmentCard(),
+            child: AssignmentCard(
+              popUpMenu: PopupMenuButton(
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    child: Text('Save Task'),
+                    value: 0,
+                    onTap: () {
+                      assignmentsProv
+                          .addSaveAssignment(assignmentList[index].caseId);
+                    },
+                  ),
+                  // PopupMenuItem(
+                  //   child: Text('Remove'),
+                  //   value: 1,
+                  //   onTap: () {
+                  //     assignmentProvider.removeFromSaveAssignments(
+                  //         savedAssignmentList[index].caseId);
+                  //   },
+                  // ),
+                  const PopupMenuItem(
+                    child: Text('item3'),
+                    value: 2,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -5,9 +5,11 @@ import 'package:veridox/Pages/assignment_detail_page.dart';
 import 'package:veridox/models/assignment_model.dart';
 
 import '../constants.dart';
+import '../models/assignment_provider.dart';
 
 class AssignmentCard extends StatelessWidget {
-  const AssignmentCard({Key? key}) : super(key: key);
+  final Widget popUpMenu;
+  const AssignmentCard({Key? key, required this.popUpMenu}) : super(key: key);
 
   Color getStatusColour(Status status) {
     if (status == Status.saved) {
@@ -24,7 +26,9 @@ class AssignmentCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (ctx) => const AssignmentDetailPage()),
+          MaterialPageRoute(
+            builder: (ctx) => const AssignmentDetailPage(),
+          ),
         );
       },
       child: Card(
@@ -32,6 +36,7 @@ class AssignmentCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Consumer<AssignmentModel>(
+            // consumer of AssignmentModel
             builder: (BuildContext context, assignment, Widget? child) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -81,22 +86,8 @@ class AssignmentCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      PopupMenuButton(
-                        itemBuilder: (_) => [
-                          const PopupMenuItem(
-                            child: Text('Save Task'),
-                            value: 0,
-                          ),
-                          const PopupMenuItem(
-                            child: Text('item2'),
-                            value: 1,
-                          ),
-                          const PopupMenuItem(
-                            child: Text('item3'),
-                            value: 2,
-                          ),
-                        ],
-                      ),
+                      //
+                      popUpMenu,
                       CircleAvatar(
                         radius: 8,
                         backgroundColor: getStatusColour(assignment.status),

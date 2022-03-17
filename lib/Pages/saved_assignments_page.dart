@@ -29,7 +29,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     final assignmentProvider = Provider.of<AssignmentProvider>(context);
-    final savedAssignmentList = assignmentProvider.savedAssignment;
+    final savedAssignmentList = assignmentProvider.savedTasks;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +48,31 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
           itemCount: savedAssignmentList.length,
           itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
             value: savedAssignmentList[index],
-            child: AssignmentCard(),
+            child: AssignmentCard(
+              popUpMenu: PopupMenuButton(
+                itemBuilder: (_) => [
+                  // PopupMenuItem(
+                  //   child: Text('Save Task'),
+                  //   value: 0,
+                  //   onTap: () {
+                  //     assignmentProvider.addSaveAssignment(savedAssignmentList[index].caseId);
+                  //   },
+                  // ),
+                  PopupMenuItem(
+                    child: Text('Remove'),
+                    value: 1,
+                    onTap: () {
+                      assignmentProvider.removeFromSaveAssignments(
+                          savedAssignmentList[index].caseId);
+                    },
+                  ),
+                  const PopupMenuItem(
+                    child: Text('item3'),
+                    value: 2,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

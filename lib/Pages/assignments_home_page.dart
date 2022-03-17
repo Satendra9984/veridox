@@ -12,6 +12,7 @@ import 'package:veridox/models/assignment_provider.dart';
 // import 'package:cloud_firestore/server';
 // import 'package:veridox/models/assignment_model.dart';
 
+import '../models/assignment_model.dart';
 import 'assignment_list.dart';
 
 enum FilterOptions {
@@ -68,13 +69,17 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<AssignmentProvider>(context, listen: false)
-          .fetchAndLoadData()
-          .then((value) {
-        setState(() {
-          _isLoading = false;
+      try {
+        Provider.of<AssignmentProvider>(context, listen: false)
+            .fetchAndLoadData()
+            .then((value) {
+          setState(() {
+            _isLoading = false;
+          });
         });
-      });
+      } catch (error) {
+        print(error);
+      }
     }
 
     super.didChangeDependencies();
