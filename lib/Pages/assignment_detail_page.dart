@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/models/assignment_model.dart';
+
+import '../Elements/basic_details.dart';
+import '../templates/payout_verification_form/page_1.dart';
 
 class AssignmentDetailPage extends StatelessWidget {
   const AssignmentDetailPage({Key? key}) : super(key: key);
@@ -138,21 +142,29 @@ class AssignmentDetailPage extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Flexible(
                 child: Align(
                   alignment: Alignment.center,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => Page1(),
+                        ),
+                      );
+                    },
                     style: ButtonStyle(
                       // shape: MaterialStateProperty.all(OutlinedBorder.),
                       // side: MaterialStateProperty.all(BorderSide()),
                       elevation: MaterialStateProperty.all(10),
-                      minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150, 40)),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Verify',
                       style: TextStyle(
                         fontSize: 18,
@@ -169,76 +181,4 @@ class AssignmentDetailPage extends StatelessWidget {
     // );
   }
 }
-
-class BasicDetails extends StatelessWidget {
-  final String title, value;
-  const BasicDetails({
-    Key? key,
-    required this.value,
-    required this.title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Container(
-            padding: const EdgeInsets.all(0),
-            // color: Colors.redAccent,
-            child: SelectableText(
-              title,
-              // softWrap: true,
-              // maxLines: 5,
-              // textDirection: TextDirection.rtl,
-              // overflow: TextOverflow.clip,
-              autofocus: false,
-              style: TextStyle(
-                fontSize: 16,
-                // fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        // Divider(
-        //   color: Colors.black,
-        //   thickness: 4,
-        // ),
-        SizedBox(
-          width: 5,
-        ),
-        Expanded(
-          flex: 3,
-          child: SelectableText(
-            value,
-            // softWrap: true,
-            // maxLines: 5,
-            // textDirection: TextDirection.rtl,
-            // overflow: TextOverflow.clip,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        // Container(
-        //   padding: const EdgeInsets.all(5),
-        //   height: 35,
-        //   width: MediaQuery.of(context).size.width - 100 - 60,
-        //   color: Colors.green,
-        //   child: SingleChildScrollView(
-        //     scrollDirection: Axis.horizontal,
-        //     child: Text(
-        //       'Total family members        Total family members',
-        //       style: TextStyle(
-        //         fontSize: 18,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-      ],
-    );
-  }
-}
+// ['name', 'addresss', ]
