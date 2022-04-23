@@ -5,7 +5,7 @@ import 'package:veridox/Pages/assignment_detail_page.dart';
 import 'package:veridox/models/assignment_model.dart';
 
 import '../constants.dart';
-import '../models/assignment_provider.dart';
+import '../providers/assignment_provider.dart';
 
 class AssignmentCard extends StatelessWidget {
   final Widget popUpMenu;

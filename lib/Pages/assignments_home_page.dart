@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/Pages/completed_assignement_page.dart';
 import 'package:veridox/Pages/profile_page.dart';
 import 'package:veridox/Pages/saved_assignments_page.dart';
-import 'package:veridox/models/assignment_provider.dart';
+import 'package:veridox/providers/assignment_provider.dart';
 // import 'package:cloud_firestore/server';
 // import 'package:veridox/models/assignment_model.dart';
 

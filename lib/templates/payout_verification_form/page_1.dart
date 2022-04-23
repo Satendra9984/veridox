@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../Elements/basic_details.dart';
-
 class Page1 extends StatelessWidget {
   const Page1({Key? key}) : super(key: key);
 
@@ -40,66 +38,81 @@ class Page1 extends StatelessWidget {
               RowInputFormField(
                 value: 'Customer Representative (if any)',
                 textFormField: TextFormField(
-                  initialValue: 'satendra pal',
+                  // initialValue: 'satendra pal',
                   textAlign: TextAlign.start,
-                  // decoration: InputDecoration(
-                  //   enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               RowInputFormField(
                 value: 'Relationship with LA',
                 textFormField: TextFormField(
-                  initialValue: 'satendra pal',
-                  textAlign: TextAlign.start,
-                  // decoration: InputDecoration(
-                  //   enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
+                  // initialValue: 'satendra pal',
+                  // textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               RowInputFormField(
                 value: 'Customer Representative (if any)',
                 textFormField: TextFormField(
-                  initialValue: 'satendra pal',
+                  // initialValue: 'satendra pal',
                   textAlign: TextAlign.start,
-                  // decoration: InputDecoration(
-                  //   enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               RowInputFormField(
                 value: 'Contact number of the representative*',
                 textFormField: TextFormField(
-                  initialValue: 'satendra pal',
+                  // initialValue: 'satendra pal',
                   textAlign: TextAlign.start,
-                  // decoration: InputDecoration(
-                  //   enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               RowInputFormField(
                 value: 'Representative Comments:',
                 textFormField: TextFormField(
-                  initialValue: 'satendra pal',
+                  // initialValue: 'satendra pal',
                   textAlign: TextAlign.start,
-                  // decoration: InputDecoration(
-                  //   enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(),
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -112,18 +125,213 @@ class Page1 extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // RowInputFormField(
-              //   value: 'Name of the person met',
-              //   field: 'input',
-              // ),
-              // RowInputFormField(
-              //   value: 'Address of the person met',
-              //   field: 'input',
-              // ),
-              // RowInputFormField(
-              //   value: 'Contact number of the person met*',
-              //   field: 'input',
-              // ),
+              const SizedBox(
+                height: 20,
+              ),
+              RowInputFormField(
+                value: 'Name of the person met:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Address of the person met:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Contact number of the person met*:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Residence Status',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              RowInputFormField(
+                value: 'Type of House:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Location:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Traceability:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Ownership:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Contact Ability',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              RowInputFormField(
+                value: 'Customer Contacted At Address:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              RowInputFormField(
+                value: 'Customer Contacted Over Phone:',
+                textFormField: TextFormField(
+                  // initialValue: 'satendra pal',
+                  textAlign: TextAlign.start,
+                  decoration: const InputDecoration(
+                    // enabledBorder: OutlineInputBorder(
+                    //   borderSide: BorderSide(),
+                    //   borderRadius: BorderRadius.circular(10),
+                    hintText: 'Enter here',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Final Remarks*-:',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              TextField(
+                // initialValue: 'satendra pal',
+                textAlign: TextAlign.start,
+                maxLines: 7,
+                maxLength: 300,
+                decoration: const InputDecoration(
+                  // enabledBorder: OutlineInputBorder(
+                  //   borderSide: BorderSide(),
+                  //   borderRadius: BorderRadius.circular(10),
+                  hintText: 'Enter here',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                onChanged: (val) {
+                  // FocusScopeNode currentFocus = FocusScope.of(context);
+                  // if (!currentFocus.hasPrimaryFocus) {
+                  //   currentFocus.unfocus();
+                  // }
+                },
+              ),
             ],
           ),
         ),

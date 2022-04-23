@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/Elements/assignment_card.dart';
 import 'package:veridox/models/assignment_model.dart';
-import 'package:veridox/models/assignment_provider.dart';
+import 'package:veridox/providers/assignment_provider.dart';
 import 'package:veridox/constants.dart';
 
 class AssignmentList extends StatefulWidget {

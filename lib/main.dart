@@ -6,8 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/Pages/profile_page.dart';
-import 'package:veridox/models/assignment_provider.dart';
-import 'package:veridox/models/saved_assignment_provider.dart';
+import 'package:veridox/providers/assignment_provider.dart';
+import 'package:veridox/providers/saved_assignment_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => SavedAssignmentProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Veridox',
         theme: ThemeData(
           // fontFamily: 'Roboto',

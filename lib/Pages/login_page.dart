@@ -80,9 +80,9 @@ class _LogInPageState extends State<LogInPage> {
 
   @override
   void dispose() {
-    _phoneController.dispose();
-    _pinputController.dispose();
-    _pageController.dispose();
+    // _phoneController.dispose();
+    // _pinputController.dispose();
+    // _pageController.dispose();
     super.dispose();
   }
 
