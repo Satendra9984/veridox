@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:veridox/Pages/assignments_home_page.dart';
-import 'package:veridox/Pages/home_page.dart';
-import 'package:veridox/Pages/login_page.dart';
+import 'package:veridox/app_screens/assignments_home_page.dart';
+import 'package:veridox/app_screens/home_page.dart';
+import 'package:veridox/app_screens/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/Pages/profile_page.dart';
-import 'package:veridox/providers/assignment_provider.dart';
-import 'package:veridox/providers/saved_assignment_provider.dart';
+import 'package:veridox/app_screens/profile_page.dart';
+import 'package:veridox/app_providers/assignment_provider.dart';
+import 'package:veridox/app_providers/saved_assignment_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,11 +1,11 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/Pages/assignment_detail_page.dart';
-import 'package:veridox/models/assignment_model.dart';
+import 'package:veridox/app_screens/assignment_detail_page.dart';
+import 'package:veridox/app_models/assignment_model.dart';
 
-import '../constants.dart';
-import '../providers/assignment_provider.dart';
+import '../app_utils/constants.dart';
+import '../app_providers/assignment_provider.dart';
 
 class AssignmentCard extends StatelessWidget {
   final Widget popUpMenu;
