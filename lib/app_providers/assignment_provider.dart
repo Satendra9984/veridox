@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:veridox/models/assignment_model.dart';
+import 'package:veridox/app_models/assignment_model.dart';
 
 class AssignmentProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/Elements/assignment_card.dart';
-import 'package:veridox/Pages/assignments_home_page.dart';
-import 'package:veridox/providers/assignment_provider.dart';
+import 'package:veridox/app_widgets/assignment_card.dart';
+import 'package:veridox/app_screens/assignments_home_page.dart';
+import 'package:veridox/app_providers/assignment_provider.dart';
 
-import '../providers/saved_assignment_provider.dart';
+import '../app_providers/saved_assignment_provider.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;

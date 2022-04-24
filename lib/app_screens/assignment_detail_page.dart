@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/models/assignment_model.dart';
+import 'package:veridox/app_models/assignment_model.dart';
 
-import '../Elements/basic_details.dart';
+import '../app_widgets/basic_details.dart';
 import '../templates/payout_verification_form/page_1.dart';
 
 class AssignmentDetailPage extends StatelessWidget {

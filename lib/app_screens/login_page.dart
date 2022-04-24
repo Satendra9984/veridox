@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/Elements/submit_button.dart';
-import 'package:veridox/Elements/text_input.dart';
+import 'package:veridox/app_widgets/submit_button.dart';
+import 'package:veridox/app_widgets/text_input.dart';
 import 'assignments_home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
