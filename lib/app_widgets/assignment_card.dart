@@ -9,7 +9,10 @@ import '../app_providers/assignment_provider.dart';
 
 class AssignmentCard extends StatelessWidget {
   final Widget popUpMenu;
-  const AssignmentCard({Key? key, required this.popUpMenu}) : super(key: key);
+  final Assignment assignment;
+  const AssignmentCard(
+      {Key? key, required this.popUpMenu, required this.assignment})
+      : super(key: key);
 
   Color getStatusColour(Status status) {
     if (status == Status.saved) {
@@ -35,67 +38,68 @@ class AssignmentCard extends StatelessWidget {
         elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Consumer<Assignment>(
-            builder: (BuildContext context, assignment, Widget? child) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.asset(
-                      'assets/images/doc_image.png',
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.fill,
-                    ),
+          child:
+              // Consumer<Assignment>(
+              //   builder: (BuildContext context, assignment, Widget? child) =>
+              Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/doc_image.png',
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.fill,
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  flex: 5,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DetailTextStylesWidget(
-                            heading: 'CaseId      ',
-                            value: assignment.caseId.toString()),
-                        DetailTextStylesWidget(
-                            heading: 'Description',
-                            value: assignment.description.toString()),
-                        DetailTextStylesWidget(
-                            heading: 'Address    ',
-                            value: assignment.address.toString()),
-                        DetailTextStylesWidget(
-                            heading: 'Type          ',
-                            value: assignment.type.toString()),
-                        DetailTextStylesWidget(
-                            heading: 'CreatedAt',
-                            value: assignment.assignedDate.toString()),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                flex: 5,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //
-                      popUpMenu,
-                      CircleAvatar(
-                        radius: 8,
-                        backgroundColor: getStatusColour(assignment.status),
-                      ),
+                      DetailTextStylesWidget(
+                          heading: 'CaseId      ',
+                          value: assignment.caseId.toString()),
+                      DetailTextStylesWidget(
+                          heading: 'Description',
+                          value: assignment.description.toString()),
+                      DetailTextStylesWidget(
+                          heading: 'Address    ',
+                          value: assignment.address.toString()),
+                      DetailTextStylesWidget(
+                          heading: 'Type          ',
+                          value: assignment.type.toString()),
+                      DetailTextStylesWidget(
+                          heading: 'CreatedAt',
+                          value: assignment.assignedDate.toString()),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    //
+                    popUpMenu,
+                    CircleAvatar(
+                      radius: 8,
+                      backgroundColor: getStatusColour(assignment.status),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

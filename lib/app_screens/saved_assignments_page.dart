@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import '../app_providers/saved_assignment_provider.dart';
 
-
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
   const SavedAssignmentsPage({Key? key, required this.controller})
@@ -47,6 +46,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
           itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
             value: savedAssignmentList[index],
             child: AssignmentCard(
+              assignment: savedAssignmentList[index],
               popUpMenu: PopupMenuButton(
                 itemBuilder: (_) => [
                   // PopupMenuItem(
