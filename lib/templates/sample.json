@@ -1,0 +1,27 @@
+{
+  "pages" : [
+    {
+      "page_1" : [
+        {
+          "type" : "text"
+        },
+        {}
+      ]
+    },
+    {
+      "page_2" : [
+        {
+          "type" : "input"
+        },
+        {}
+      ]
+    },
+    {
+      "page_3" : [
+        {
+          "type" : "checkbox"
+        }
+      ]
+    }
+  ]
+}
