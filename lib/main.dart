@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
         StreamProvider<User?>(
             create: (context) => FirebaseAuth.instance.authStateChanges(),
             initialData: null),
-        // StreamProvider<List<Assignment>>(
-        //   create: (context) => FirestoreCollection().getAssignmentsStream, initialData: const []),
+        StreamProvider<List<Assignment>>(
+            create: (context) => AssignmentProvider().getAssignments(),
+            initialData: const []),
         ChangeNotifierProvider(create: (context) => AssignmentProvider()),
         ChangeNotifierProvider(create: (context) => SavedAssignmentProvider()),
       ],
@@ -40,8 +41,8 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: const LogInPage(),
-        // home: AssignmentsHomePage(),
+        // home: const LogInPage(),
+        home: AssignmentsHomePage(),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),

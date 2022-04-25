@@ -28,6 +28,8 @@ class _AssignmentListState extends State<AssignmentList> {
   Widget build(BuildContext context) {
     final assignmentsProv = Provider.of<AssignmentProvider>(context);
     final List<Assignment> assignmentList = assignmentsProv.tasks;
+    // final Stream<List<Assignment>> assignmentStream =
+    //     assignmentsProv.getAssignments();
 
     return Scaffold(
       appBar: AppBar(
@@ -62,50 +64,31 @@ class _AssignmentListState extends State<AssignmentList> {
               ),
             ],
           ),
-          // PopupMenuButton(itemBuilder: (_) => []),
         ],
       ),
       body: RefreshIndicator(
         onRefresh: () => _refreshAssignments(context),
-        child:
-            // Consumer<List<Assignment>>(
-            //   builder: (context, assignments, child) {
-            //     return
-            assignmentList.isEmpty
-                ? const Center(child: Text('loading'))
-                : ListView.builder(
-                    itemCount: assignmentList.length,
+        child: assignmentList.isEmpty
+            ? const Center(
+                child: Text('loading'),
+              )
+            : Consumer<List<Assignment>>(
+                builder: (context, list, widget) {
+                  return ListView.builder(
+                    itemCount: list.length,
                     itemBuilder: (context, index) {
-                      return
-                          // Provider<Assignment>(
-                          //   create: (context) => Assignment(
-                          //       caseId: assignmentList[index].caseId,
-                          //       address: assignmentList[index].address,
-                          //       description: assignmentList[index].description,
-                          //       status: assignmentList[index].status,
-                          //       assignedDate: assignmentList[index].assignedDate,
-                          //       type: assignmentList[index].type),
-                          //   child:
-                          AssignmentCard(
-                        assignment: assignmentList[index],
+                      return AssignmentCard(
+                        assignment: list[index],
                         popUpMenu: PopupMenuButton(
                           itemBuilder: (_) => [
                             PopupMenuItem(
                               child: Text('Save Task'),
                               value: 0,
                               onTap: () {
-                                assignmentsProv.addSaveAssignment(
-                                    assignmentList[index].caseId);
+                                assignmentsProv
+                                    .addSaveAssignment(list[index].caseId);
                               },
                             ),
-                            // PopupMenuItem(
-                            //   child: Text('Remove'),
-                            //   value: 1,
-                            //   onTap: () {
-                            //     assignmentProvider.removeFromSaveAssignments(
-                            //         savedAssignmentList[index].caseId);
-                            //   },
-                            // ),
                             const PopupMenuItem(
                               child: Text('item3'),
                               value: 2,
@@ -114,8 +97,51 @@ class _AssignmentListState extends State<AssignmentList> {
                         ),
                       );
                     },
-                  ),
+                  );
+                },
+              ),
       ),
     );
   }
 }
+
+/*
+* RefreshIndicator(
+        onRefresh: () => _refreshAssignments(context),
+        child: assignmentList.isEmpty
+            ? const Center(
+                child: Text('loading'),
+              )
+            : StreamBuilder<List<Assignment>>(
+                stream: assignmentsProv.getAssignments(),
+                builder: (context, snapshot) {
+                  // print(snapshot.data);
+                  return ListView.builder(
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, index) {
+                      return AssignmentCard(
+                        assignment: snapshot.data![index],
+                        popUpMenu: PopupMenuButton(
+                          itemBuilder: (_) => [
+                            PopupMenuItem(
+                              child: Text('Save Task'),
+                              value: 0,
+                              onTap: () {
+                                assignmentsProv.addSaveAssignment(
+                                    snapshot.data![index].caseId);
+                              },
+                            ),
+                            const PopupMenuItem(
+                              child: Text('item3'),
+                              value: 2,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+      ),
+*
+* */
