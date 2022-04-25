@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
-import 'package:veridox/app_screens/assignments_home_page.dart';
-import 'package:veridox/app_providers/assignment_provider.dart';
-
 import '../app_providers/saved_assignment_provider.dart';
+
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
@@ -28,8 +26,8 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final assignmentProvider = Provider.of<AssignmentProvider>(context);
-    final savedAssignmentList = assignmentProvider.savedTasks;
+    final assignmentProvider = Provider.of<SavedAssignmentProvider>(context);
+    final savedAssignmentList = assignmentProvider.savedAssignments;
 
     return Scaffold(
       appBar: AppBar(

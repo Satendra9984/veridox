@@ -2,13 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 
 class SavedAssignmentProvider with ChangeNotifier {
-  // List<AssignmentModel> _savedTasks = [];
-  //
-  // List<AssignmentModel> get savedAssignment {
-  //   return [..._savedTasks];
-  // }
-  //
-  // void addSaveAssignment() {
-  //   // TODO: ADD A METHOD TO ADD IN SAVE ASSIGNMENTS
-  // }
+  final List<Assignment> _savedTasks = [];
+
+  
+  List<Assignment> get savedAssignments {
+    return [..._savedTasks];
+  }
+  
+  void addSaveAssignment() {
+    
+  }
+
+  void removeFromSaveAssignments(String caseId) {}
 }

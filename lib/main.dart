@@ -5,9 +5,10 @@ import 'package:veridox/app_screens/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_screens/profile_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
+import 'app_models/assignment_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,14 +25,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<User?>(
-          initialData: null,
-          create: (_) {
-            return FirebaseAuth.instance.authStateChanges();
-          },
-          child: const MyApp(),
-        ),
-        ChangeNotifierProvider(create: (ctx) => AssignmentProvider()),
-        ChangeNotifierProvider(create: (ctx) => SavedAssignmentProvider()),
+          create: (context) => FirebaseAuth.instance.authStateChanges(), initialData: null),
+        StreamProvider<List<Assignment>>(
+          create: (context) => FirestoreCollection().getAssignmentsStream, initialData: const []),
+        ChangeNotifierProvider(
+          create: (context) => AssignmentProvider()),
+        ChangeNotifierProvider(create: (context) => SavedAssignmentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,8 +40,8 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: const AssignmentsHomePage(),
-        // home: LogInPage(),
+        home: const LogInPage(),
+        // home: AssignmentsHomePage(),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),

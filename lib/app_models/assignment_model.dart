@@ -1,7 +1,7 @@
 import 'package:veridox/app_utils/constants.dart';
 import 'package:flutter/material.dart';
 
-class AssignmentModel with ChangeNotifier {
+class Assignment with ChangeNotifier {
   final String caseId;
   final String type;
   final String description;
@@ -9,7 +9,7 @@ class AssignmentModel with ChangeNotifier {
   final Status status;
   final DateTime assignedDate;
 
-  AssignmentModel({
+  Assignment({
     required this.address,
     required this.caseId,
     required this.description,
