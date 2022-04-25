@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +6,6 @@ import 'package:veridox/app_screens/completed_assignement_page.dart';
 import 'package:veridox/app_screens/profile_page.dart';
 import 'package:veridox/app_screens/saved_assignments_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-// import 'package:cloud_firestore/server';
-// import 'package:veridox/app_models/assignment_model.dart';
-
-import '../app_models/assignment_model.dart';
 import 'assignment_list.dart';
 
 enum FilterOptions {
