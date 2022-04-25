@@ -35,8 +35,7 @@ class AssignmentCard extends StatelessWidget {
         elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Consumer<AssignmentModel>(
-            // consumer of AssignmentModel
+          child: Consumer<Assignment>(
             builder: (BuildContext context, assignment, Widget? child) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
