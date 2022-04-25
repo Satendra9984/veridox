@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
-import 'package:veridox/app_services/database/firestore_services.dart';
+// import 'package:veridox/app_services/database/firestore_services.dart';
 import 'app_models/assignment_model.dart';
 
 void main() async {
@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<User?>(
-          create: (context) => FirebaseAuth.instance.authStateChanges(), initialData: null),
-        StreamProvider<List<Assignment>>(
-          create: (context) => FirestoreCollection().getAssignmentsStream, initialData: const []),
-        ChangeNotifierProvider(
-          create: (context) => AssignmentProvider()),
+            create: (context) => FirebaseAuth.instance.authStateChanges(),
+            initialData: null),
+        // StreamProvider<List<Assignment>>(
+        //   create: (context) => FirestoreCollection().getAssignmentsStream, initialData: const []),
+        ChangeNotifierProvider(create: (context) => AssignmentProvider()),
         ChangeNotifierProvider(create: (context) => SavedAssignmentProvider()),
       ],
       child: MaterialApp(
