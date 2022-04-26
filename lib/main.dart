@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
+import 'package:veridox/app_services/database/firebase_services.dart';
 // import 'package:veridox/app_services/database/firestore_services.dart';
 import 'app_models/assignment_model.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
             create: (context) => FirebaseAuth.instance.authStateChanges(),
             initialData: null),
         StreamProvider<List<Assignment>>(
-            create: (context) => AssignmentProvider().getAssignments(),
+            create: (context) => FirestoreServices().getAssignments(),
             initialData: const []),
         ChangeNotifierProvider(create: (context) => AssignmentProvider()),
         ChangeNotifierProvider(create: (context) => SavedAssignmentProvider()),
@@ -41,8 +42,8 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        // home: const LogInPage(),
-        home: AssignmentsHomePage(),
+        home: const LogInPage(),
+        // home: AssignmentsHomePage(),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),

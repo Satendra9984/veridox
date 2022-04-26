@@ -80,9 +80,9 @@ class _LogInPageState extends State<LogInPage> {
 
   @override
   void dispose() {
-    // _phoneController.dispose();
-    // _pinputController.dispose();
-    // _pageController.dispose();
+    _phoneController.dispose();
+    _pinputController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -114,12 +114,13 @@ class _LogInPageState extends State<LogInPage> {
                       ],
                       borderRadius: BorderRadius.circular(9.0),
                       gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0XFFC925E3),
-                            Color(0XFF256CBF),
-                          ]),
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0XFFC925E3),
+                          Color(0XFF256CBF),
+                        ],
+                      ),
                     ),
                     child: Column(
                       children: [

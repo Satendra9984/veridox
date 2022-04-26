@@ -18,29 +18,6 @@ class AssignmentProvider extends ChangeNotifier {
     return oldFirstList;
   }
 
-  Stream<List<Assignment>> getAssignments() {
-    return _firestore
-        .collection('assignments')
-        .where('fv', isEqualTo: 'Satendra Pal')
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => Assignment(
-                  address: doc['address'],
-                  caseId: doc.id,
-                  description: doc['description'],
-                  type: doc['type'],
-                  assignedDate: DateTime.parse(
-                    // converting server timeStamps in DateTime format
-                    doc['createdAt'].toDate().toString(),
-                  ),
-                ),
-              )
-              .toList(),
-        );
-  }
-
   Future<void> fetchAndLoadData() async {
     try {
       final docSnap = await _firestore
