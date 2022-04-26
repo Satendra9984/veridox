@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
-import 'package:veridox/app_services/database/firebase_services.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 // import 'package:veridox/app_services/database/firestore_services.dart';
 import 'app_models/assignment_model.dart';
 
