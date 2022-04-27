@@ -27,8 +27,6 @@ class _AssignmentListState extends State<AssignmentList> {
   Widget build(BuildContext context) {
     final assignmentsProv = Provider.of<AssignmentProvider>(context);
     final List<Assignment> assignmentList = assignmentsProv.tasks;
-    // final Stream<List<Assignment>> assignmentStream =
-    //     assignmentsProv.getAssignments();
 
     return Scaffold(
       appBar: AppBar(
