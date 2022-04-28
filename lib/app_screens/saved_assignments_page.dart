@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import '../app_providers/saved_assignment_provider.dart';
+import '../templates/page_0.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
@@ -26,7 +28,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     final assignmentProvider = Provider.of<SavedAssignmentProvider>(context);
-    final savedAssignmentList = assignmentProvider.savedAssignments;
+    final savedAssignmentList = assignmentProvider.savedAssignments ?? [];
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +48,20 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
           itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
             value: savedAssignmentList[index],
             child: AssignmentCard(
-              assignment: savedAssignmentList[index],
+              navigate: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const Page0(),
+                  ),
+                );
+              },
+              assignment: Assignment(
+                  address: savedAssignmentList[index].address,
+                  caseId: savedAssignmentList[index].caseId,
+                  description: savedAssignmentList[index].description,
+                  type: savedAssignmentList[index].type,
+                  assignedDate: savedAssignmentList[index].assignedDate),
               popUpMenu: PopupMenuButton(
                 itemBuilder: (_) => [
                   // PopupMenuItem(

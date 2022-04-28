@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/templates/page_0.dart';
 import '../app_widgets/basic_details.dart';
-import '../templates/page_1.dart';
 
 class AssignmentDetailPage extends StatelessWidget {
   const AssignmentDetailPage({Key? key}) : super(key: key);
@@ -148,10 +148,10 @@ class AssignmentDetailPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () {
-                      //
+                      // TODO: should be different for save_assignments and all_assignments
                       Navigator.of(context).push(
                         CupertinoPageRoute(
-                          builder: (context) => Page1(),
+                          builder: (context) => Page0(),
                         ),
                       );
                     },
@@ -176,7 +176,6 @@ class AssignmentDetailPage extends StatelessWidget {
         ),
       ),
     );
-    // );
   }
 }
 // ['name', 'addresss', ]

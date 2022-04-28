@@ -10,8 +10,12 @@ import '../app_providers/assignment_provider.dart';
 class AssignmentCard extends StatelessWidget {
   final Widget popUpMenu;
   final Assignment assignment;
+  final Function() navigate;
   const AssignmentCard(
-      {Key? key, required this.popUpMenu, required this.assignment})
+      {Key? key,
+      required this.navigate,
+      required this.popUpMenu,
+      required this.assignment})
       : super(key: key);
 
   Color getStatusColour(Status status) {
@@ -26,22 +30,21 @@ class AssignmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => const AssignmentDetailPage(),
-          ),
-        );
-      },
+      onTap:
+          // () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (ctx) => const AssignmentDetailPage(),
+          //     ),
+          //   );
+          // }
+          navigate,
       child: Card(
         elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child:
-              // Consumer<Assignment>(
-              //   builder: (BuildContext context, assignment, Widget? child) =>
-              Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(

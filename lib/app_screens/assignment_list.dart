@@ -6,6 +6,8 @@ import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_utils/constants.dart';
 
+import 'assignment_detail_page.dart';
+
 class AssignmentList extends StatefulWidget {
   final ScrollController controller;
   const AssignmentList({Key? key, required this.controller}) : super(key: key);
@@ -75,11 +77,19 @@ class _AssignmentListState extends State<AssignmentList> {
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       return AssignmentCard(
+                        navigate: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const AssignmentDetailPage(),
+                            ),
+                          );
+                        },
                         assignment: list[index],
                         popUpMenu: PopupMenuButton(
                           itemBuilder: (_) => [
                             PopupMenuItem(
-                              child: Text('Save Task'),
+                              child: const Text('Save Task'),
                               value: 0,
                               onTap: () {
                                 assignmentsProv

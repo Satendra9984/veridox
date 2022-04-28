@@ -3,15 +3,9 @@
     {
       "type" : "text",
       "label" : "jhanga manga",
-      "lines" : "single line",
       "heading_type" : 1
     },
-    {
-      "type" : "text",
-      "label" : "jhanga manga new        \n new line",
-      "lines" : "multi line",
-      "heading_type" : 1
-    },
+
     {
       "type": "single line input",
       "label" : "input le raha",
@@ -26,30 +20,29 @@
       "input_type" : "string",
       "hint" : "yahan likho"
     },
-    {
-      "type" : "row_input",
-      "label" : "row_input",
-      "value" : null,
-      "input_type" : "string/integer/email/password",
-      "hint" : "yahan likho",
-      "input_line_type" : "single_line/multi_line",
-      "input_max_length" : 300
-    },
+
     {
       "type" : "table",
       "row" : 4,
       "column" : 5,
       "row_labels" : [],
       "column_labels" : [],
-      "inputs" : [[]]
+      "value" : [[]]
     },
     {
       "type" : "dropdown_menu",
-      "values" : []
+      "value" : null,
+      "label" : "jhanga manga",
+      "heading_type" : 1,
+      "options" : [],
+      "hint" : "yahan likho"
     },
     {
       "type" : "toggle_button",
-      "value" : false
+      "value" : false,
+      "label" : "jhanga manga new        \n new line",
+      "lines" : "multi line",
+      "heading_type" : 1
     },
     {
       "type" : "date_time",
