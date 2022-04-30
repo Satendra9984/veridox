@@ -33,7 +33,11 @@ class FirestoreServices {
   }
 
   Future<Map<String, dynamic>> getFormDataById(String id) async {
-    final snapshot = await _firestore.collection('assignments').doc(id).get();
-    return snapshot as Map<String, dynamic>;
+    final snapshot = await _firestore
+        .collection('assignments')
+        .doc(id)
+        .collection('form_data')
+        .get();
+    return snapshot.docs.first as Map<String, dynamic>;
   }
 }
