@@ -1,22 +1,45 @@
 import 'package:flutter/cupertino.dart';
 
-import '../app_utils/constants.dart';
-
 class SavedAssignment with ChangeNotifier {
   final String caseId;
   final String type;
   final String description;
   final String address;
-  final Status status;
+  final String status;
   final DateTime assignedDate;
-  final Map<String, dynamic> json;
+  Map<String, dynamic> formData;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'caseId': caseId,
+      'type': type,
+      'description': description,
+      'address': address,
+      'status': status,
+      'assignedDate': assignedDate.toString()
+    };
+  }
+
+  factory SavedAssignment.fromJson(
+      Map<String, dynamic> jsonData, Map<String, dynamic> formData) {
+    return SavedAssignment(
+      address: jsonData['address'],
+      caseId: jsonData['caseId'],
+      assignedDate: DateTime.parse(
+        jsonData['assignedDate'].toDate().toString(),
+      ),
+      type: jsonData['type'],
+      description: jsonData['description'],
+      formData: formData,
+    );
+  }
 
   SavedAssignment(
       {required this.address,
       required this.caseId,
       required this.description,
       required this.type,
-      this.status = Status.active,
+      this.status = 'working',
       required this.assignedDate,
-      required this.json});
+      required this.formData});
 }

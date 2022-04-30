@@ -14,24 +14,26 @@ class FirestoreServices {
     return _firestore
         .collection('fv')
         .doc(_uid)
-        // .where('fv', isEqualTo: 'Satendra Pal')
         .collection('assignments')
         .snapshots()
         .map(
           (snapshot) => snapshot.docs
               .map(
-                (doc) => Assignment(
-                  address: doc['address'],
-                  caseId: doc.id,
-                  description: doc['description'],
-                  type: doc['type'],
-                  assignedDate: DateTime.parse(
-                    // converting server timeStamps in DateTime format
-                    doc['assignedDate'].toDate().toString(),
-                  ),
+                (doc) => Assignment.fromJson(
+                  doc.data(),
                 ),
               )
               .toList(),
         );
+  }
+
+  Future<Map<String, dynamic>> getAssignmentById(String id) async {
+    final snapshot = await _firestore.collection('assignments').doc(id).get();
+    return snapshot as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> getFormDataById(String id) async {
+    final snapshot = await _firestore.collection('assignments').doc(id).get();
+    return snapshot as Map<String, dynamic>;
   }
 }

@@ -92,7 +92,9 @@ class ProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (BuildContext context) => AssignmentDetailPage(),
+                      builder: (BuildContext context) => AssignmentDetailPage(
+                        caseId: '',
+                      ),
                     ),
                   );
                 },

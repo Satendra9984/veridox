@@ -81,7 +81,8 @@ class _AssignmentListState extends State<AssignmentList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (ctx) => const AssignmentDetailPage(),
+                              builder: (ctx) => AssignmentDetailPage(
+                                  caseId: list[index].caseId),
                             ),
                           );
                         },
@@ -92,8 +93,7 @@ class _AssignmentListState extends State<AssignmentList> {
                               child: const Text('Save Task'),
                               value: 0,
                               onTap: () {
-                                assignmentsProv
-                                    .addSaveAssignment(list[index].caseId);
+                                // TODO: SAVING ASSIGNMENTS
                               },
                             ),
                             const PopupMenuItem(

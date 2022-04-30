@@ -1,7 +1,8 @@
 enum Status {
-  active,
+  assigned,
+  working,
+  pending,
   completed,
-  saved,
 }
 enum FilterOptions { oldest, all }
 

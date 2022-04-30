@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/assignment_detail_page.dart';
@@ -18,11 +19,13 @@ class AssignmentCard extends StatelessWidget {
       required this.assignment})
       : super(key: key);
 
-  Color getStatusColour(Status status) {
-    if (status == Status.saved) {
-      return Colors.orange;
-    } else if (status == Status.completed) {
-      return Colors.green;
+  Color getStatusColour(String status) {
+    if (status == 'completed') {
+      return CupertinoColors.activeGreen;
+    } else if (status == 'working') {
+      return Colors.deepOrange;
+    } else if (status == 'pending') {
+      return Colors.blue;
     }
     return Colors.red;
   }

@@ -49,10 +49,11 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
             value: savedAssignmentList[index],
             child: AssignmentCard(
               navigate: () {
+                // TODO: PASS THE JSON DATA TO THE Page0()
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (ctx) => const Page0(),
+                    builder: (ctx) => Page0(),
                   ),
                 );
               },
@@ -61,6 +62,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
                   caseId: savedAssignmentList[index].caseId,
                   description: savedAssignmentList[index].description,
                   type: savedAssignmentList[index].type,
+                  status: savedAssignmentList[index].status,
                   assignedDate: savedAssignmentList[index].assignedDate),
               popUpMenu: PopupMenuButton(
                 itemBuilder: (_) => [
@@ -72,7 +74,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
                   //   },
                   // ),
                   PopupMenuItem(
-                    child: Text('Remove'),
+                    child: const Text('Remove'),
                     value: 1,
                     onTap: () {
                       assignmentProvider.removeFromSaveAssignments(
