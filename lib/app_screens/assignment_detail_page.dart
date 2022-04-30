@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/templates/page_0.dart';
 import '../app_widgets/basic_details.dart';
 
@@ -18,8 +20,8 @@ class AssignmentDetailPage extends StatefulWidget {
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   Future<SavedAssignment?>? getAssignment() async {
     final prov = Provider.of<SavedAssignmentProvider>(context, listen: false);
-    // final data = await FirestoreServices().getAssignmentById(widget.caseId);
-    // final formData = await FirestoreServices().getFormDataById(widget.caseId);
+    final data = await FirestoreServices().getAssignmentById(widget.caseId);
+    final formData = await FirestoreServices().getFormDataById(widget.caseId);
     await prov.addSaveAssignments(widget.caseId);
     try {
       SavedAssignment saveAsgn = prov.findById(widget.caseId);
@@ -28,6 +30,10 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       //assignment not found
       return null;
     }
+  }
+
+  Future<bool> checkSaved() async {
+    return await SPServices().checkIfExists(widget.caseId);
   }
 
   @override
@@ -62,64 +68,64 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       // TODO: MAKING A LIST OF WIDGETS IN COLUMN
                       Column(
                         children: data.entries.map((e) {
-                          return Text('e');
+                          return const Text('e');
                         }).toList(),
                       ),
 
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Policy Number',
                         value: '7583046',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Customer Name',
                         value: 'Singh Kumar Rahul',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Applied for Policy',
                         value: 'YES',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Application Date',
                         value: 'August 11, 2021',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Date and time of field visit',
                         value: 'September 06,2021 & 5:00 PM',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Age',
                         value: 'NA',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'Received The policy',
                         value: 'YES',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      BasicDetails(
+                      const BasicDetails(
                         title: 'APP NO',
                         value: 'A60729340',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
 
@@ -199,7 +205,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                               Navigator.of(context).push(
                                 CupertinoPageRoute(
                                   // TODO: PASS THE JSON DATA TO Page0()
-                                  builder: (context) => Page0(),
+                                  builder: (context) => const Page0(),
                                 ),
                               );
                             },
