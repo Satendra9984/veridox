@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import 'package:veridox/templates/form.dart';
 import '../app_widgets/basic_details.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
@@ -32,9 +31,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
     }
   }
 
-  // Future<bool> checkSaved() async {
-  // return await SPServices().checkIfExists(widget.caseId);
-  // }
+  Future<bool> checkSaved() async {
+  return await SPServices().checkIfExists(widget.caseId);
+  }
 
   @override
   Widget build(BuildContext context) {
