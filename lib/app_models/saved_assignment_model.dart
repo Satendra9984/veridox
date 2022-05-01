@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class SavedAssignment with ChangeNotifier {
+class SavedAssignment {
   final String caseId;
   final String type;
   final String description;

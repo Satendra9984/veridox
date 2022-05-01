@@ -28,7 +28,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     final assignmentProvider = Provider.of<SavedAssignmentProvider>(context);
-    final savedAssignmentList = assignmentProvider.savedAssignments ?? [];
+    final savedAssignmentList = assignmentProvider.savedAssignments;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,48 +45,45 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
         child: ListView.builder(
           controller: widget.controller,
           itemCount: savedAssignmentList.length,
-          itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-            value: savedAssignmentList[index],
-            child: AssignmentCard(
-              navigate: () {
-                // TODO: PASS THE JSON DATA TO THE Page0()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => Page0(),
-                  ),
-                );
-              },
-              assignment: Assignment(
-                  address: savedAssignmentList[index].address,
-                  caseId: savedAssignmentList[index].caseId,
-                  description: savedAssignmentList[index].description,
-                  type: savedAssignmentList[index].type,
-                  status: savedAssignmentList[index].status,
-                  assignedDate: savedAssignmentList[index].assignedDate),
-              popUpMenu: PopupMenuButton(
-                itemBuilder: (_) => [
-                  // PopupMenuItem(
-                  //   child: Text('Save Task'),
-                  //   value: 0,
-                  //   onTap: () {
-                  //     assignmentProvider.addSaveAssignment(savedAssignmentList[index].caseId);
-                  //   },
-                  // ),
-                  PopupMenuItem(
-                    child: const Text('Remove'),
-                    value: 1,
-                    onTap: () {
-                      assignmentProvider.removeFromSaveAssignments(
-                          savedAssignmentList[index].caseId);
-                    },
-                  ),
-                  const PopupMenuItem(
-                    child: Text('item3'),
-                    value: 2,
-                  ),
-                ],
-              ),
+          itemBuilder: (ctx, index) => AssignmentCard(
+            navigate: () {
+              // TODO: PASS THE JSON DATA TO THE Page0()
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => Page0(),
+                ),
+              );
+            },
+            assignment: Assignment(
+                address: savedAssignmentList[index].address,
+                caseId: savedAssignmentList[index].caseId,
+                description: savedAssignmentList[index].description,
+                type: savedAssignmentList[index].type,
+                status: savedAssignmentList[index].status,
+                assignedDate: savedAssignmentList[index].assignedDate),
+            popUpMenu: PopupMenuButton(
+              itemBuilder: (_) => [
+                // PopupMenuItem(
+                //   child: Text('Save Task'),
+                //   value: 0,
+                //   onTap: () {
+                //     assignmentProvider.addSaveAssignment(savedAssignmentList[index].caseId);
+                //   },
+                // ),
+                PopupMenuItem(
+                  child: const Text('Remove'),
+                  value: 1,
+                  onTap: () {
+                    assignmentProvider.removeFromSaveAssignments(
+                        savedAssignmentList[index].caseId);
+                  },
+                ),
+                const PopupMenuItem(
+                  child: Text('item3'),
+                  value: 2,
+                ),
+              ],
             ),
           ),
         ),

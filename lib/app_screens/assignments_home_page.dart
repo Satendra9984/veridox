@@ -65,11 +65,15 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
       try {
         Provider.of<AssignmentProvider>(context, listen: false)
             .fetchAndLoadData()
-            .then((value) {
-          setState(() {
-            _isLoading = false;
-          });
-        });
+            .then(
+          (value) {
+            setState(
+              () {
+                _isLoading = false;
+              },
+            );
+          },
+        );
       } catch (error) {
         print(error);
       }

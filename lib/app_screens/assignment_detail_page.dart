@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import 'package:veridox/app_services/database/shared_pref_services.dart';
+// import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/templates/page_0.dart';
 import '../app_widgets/basic_details.dart';
 
@@ -32,9 +32,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
     }
   }
 
-  Future<bool> checkSaved() async {
-    return await SPServices().checkIfExists(widget.caseId);
-  }
+  // Future<bool> checkSaved() async {
+  // return await SPServices().checkIfExists(widget.caseId);
+  // }
 
   @override
   Widget build(BuildContext context) {

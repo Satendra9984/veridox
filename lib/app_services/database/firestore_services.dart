@@ -13,8 +13,7 @@ class FirestoreServices {
 
     return _firestore
         .collection('fv')
-        .doc(_uid)
-        .collection('assignments')
+        .where('name', isEqualTo: 'Shubhadepp chowdhary')
         .snapshots()
         .map(
           (snapshot) => snapshot.docs

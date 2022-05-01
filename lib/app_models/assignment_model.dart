@@ -23,9 +23,9 @@ class Assignment {
   factory Assignment.fromJson(Map<String, dynamic> jsonData) {
     return Assignment(
       address: jsonData['address'],
-      caseId: jsonData['caseId'],
+      caseId: jsonData['caseId'] ?? ' ',
       assignedDate: DateTime.parse(
-        jsonData['assignedDate'].toDate().toString(),
+        jsonData['assignedDate'].toDate(),
       ),
       type: jsonData['type'],
       description: jsonData['description'],

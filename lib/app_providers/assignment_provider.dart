@@ -23,7 +23,7 @@ class AssignmentProvider extends ChangeNotifier {
       final docSnap = await _firestore
           .collection('assignments')
           .where('fv', isEqualTo: 'Satendra Pal')
-          .orderBy('createdAt')
+          // .orderBy('createdAt')
           .get();
       final docs = docSnap.docs;
       List<Assignment> fireTasks = [];

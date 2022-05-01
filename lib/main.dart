@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/templates/form.dart';
 // import 'package:veridox/app_services/database/firestore_services.dart';
 import 'app_models/assignment_model.dart';
 
@@ -42,8 +43,9 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: const LogInPage(),
+        // home: const LogInPage(),
         // home: AssignmentsHomePage(),
+        home: FormPage(caseId: '1234', pageNo: 1),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),
