@@ -26,11 +26,13 @@ class FirestoreServices {
         );
   }
 
+  // Below two functions are used for getting complete assignment from firebase
   Future<Map<String, dynamic>> getAssignmentById(String id) async {
     final snapshot = await _firestore.collection('assignments').doc(id).get();
     return snapshot as Map<String, dynamic>;
   }
 
+  // for getting the form data as json
   Future<Map<String, dynamic>> getFormDataById(String id) async {
     final snapshot = await _firestore
         .collection('assignments')
