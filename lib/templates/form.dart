@@ -1,20 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/templates/form_page.dart';
+
+import '../app_models/saved_assignment_model.dart';
 
 class Form extends StatefulWidget {
-  final String caseId;
+  final SavedAssignment saveAssignment;
 
   final int pageNo;
 
-  const Form({Key? key, required this.caseId, required this.pageNo})
+  const Form({Key? key, required this.saveAssignment, required this.pageNo})
       : super(key: key);
 
   @override
-  State<FormPage> createState() => _FormPageState();
+  State<Form> createState() => _FormState();
 }
 
-class _FormPageState extends State<Form> {
-  List<Widget> _getScreens() {}
+class _FormState extends State<Form> {
+  List<Widget> _getScreens() {
+    List<Widget> screen = [];
+    final List<Map<String, dynamic>> jsonPageData =
+        widget.saveAssignment.formData['pages'] as List<Map<String, dynamic>>;
+
+    int num = 0;
+    for (int i = 0; i < jsonPageData.length; i++) {
+      screen.add(
+        FormPage(
+          num: i,
+        ),
+      );
+    }
+    return screen;
+  }
 
   int currentItemSelected = 0;
   final PageController _pageController = PageController();
@@ -32,27 +49,8 @@ class _FormPageState extends State<Form> {
             currentItemSelected = num;
           });
         },
-        children: [],
+        children: _getScreens(),
       ),
     );
-  }
-}
-
-class FormPage extends StatefulWidget {
-  final int num;
-  const FormPage({Key? key, required this.num}) : super(key: key);
-
-  @override
-  _FormState createState() => _FormState();
-}
-
-class _FormState extends State<FormPage> {
-  // late List<Widget> pages = [
-  //   FormPage(caseId: 'caseId', pageNo: 1),
-  //   FormPage(caseId: 'caseId', pageNo: 2),
-  // ];
-  @override
-  Widget build(BuildContext context) {
-    return Text('page ${widget.num}');
   }
 }
