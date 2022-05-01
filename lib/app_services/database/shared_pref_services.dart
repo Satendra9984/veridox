@@ -39,4 +39,13 @@ class SPServices {
     Map<String, dynamic> _data = json.decode(_prefs.getString('caseId')!);
     return _data;
   }
+
+  Stream<Map<String, dynamic>> getSaveAssignmentStream(String caseId) async* {
+    final _prefs = await SharedPreferences.getInstance();
+    Map<String, dynamic> data;
+    while (true) {
+        data = jsonDecode(_prefs.getString(caseId)!);
+        yield data;
+    }
+  }
 }
