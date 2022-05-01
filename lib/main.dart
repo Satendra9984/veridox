@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide Form;
@@ -21,12 +22,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-  Map<String, dynamic> _getForm(){
-    final file = File('lib/templates/sample.json');
-    return file as Map<String, dynamic>;
+  Map<String, dynamic> _getForm() {
+    final file = File('C:\androidProjects\veridox\lib\templates\sample.json');
+    return jsonDecode(jsonEncode(file));
   }
-
 
   const MyApp({Key? key}) : super(key: key);
 
@@ -55,14 +54,15 @@ class MyApp extends StatelessWidget {
         // home: const LogInPage(),
         // home: AssignmentsHomePage(),
         home: Form(
-            saveAssignment: SavedAssignment(
-                address: 'address',
-                caseId: 'caseId',
-                description: 'description',
-                type: 'type',
-                assignedDate: 'assignedDate',
-                formData: ,
-            pageNo: 1),
+          saveAssignment: SavedAssignment(
+            address: 'address',
+            caseId: 'caseId',
+            description: 'description',
+            type: 'type',
+            assignedDate: DateTime.now(),
+            formData: _getForm(),
+          ),
+        ),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),
