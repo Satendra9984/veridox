@@ -11,6 +11,7 @@ class SavedAssignmentProvider with ChangeNotifier {
   }
 
   void addSaveAssignment(SavedAssignment saveAsgn) {
+
     if (_savedTasks.contains(saveAsgn) == false) {
       _savedTasks.insert(_savedTasks.length, saveAsgn);
     }
@@ -24,7 +25,6 @@ class SavedAssignmentProvider with ChangeNotifier {
       final SavedAssignment saveAsgn = SavedAssignment.fromJson(data, formData);
       _savedTasks.insert(_savedTasks.length, saveAsgn);
     } catch (e) {
-      // rethrow;
       return;
     }
   }

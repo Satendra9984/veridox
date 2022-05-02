@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import 'package:veridox/app_services/database/shared_pref_services.dart';
-import 'package:veridox/templates/form.dart';
 import '../app_widgets/basic_details.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
@@ -20,8 +18,21 @@ class AssignmentDetailPage extends StatefulWidget {
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   Future<SavedAssignment?> getAssignment() async {
-    return null;
-    // TODO: COMPLETE THE METHOD
+    final prov = Provider.of<SavedAssignmentProvider>(context, listen: false);
+    final data = await FirestoreServices().getAssignmentById(widget.caseId);
+    final formData = await FirestoreServices().getFormDataById(widget.caseId);
+    await prov.addSaveAssignments(widget.caseId);
+    try {
+      SavedAssignment saveAsgn = prov.findById(widget.caseId);
+      return saveAsgn;
+    } catch (e) {
+      //assignment not found
+      return null;
+    }
+  }
+
+  Future<bool> checkSaved() async {
+  return await SPServices().checkIfExists(widget.caseId);
   }
 
   @override
@@ -133,6 +144,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                               autofocus: false,
                               style: TextStyle(
                                 fontSize: 16,
+                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
