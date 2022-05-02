@@ -19,7 +19,10 @@ class SPServices {
     Map<String, String> _data = json.decode(_prefs.getString('credentials')!);
     late AuthCredential _cred;
     if (_data.isNotEmpty) {
-      _cred = AuthCredential(providerId: _data['providerId'] ?? '', token: int.parse(_data['token'] ?? '100'), signInMethod: _data['signInMethod'] ?? '');
+      _cred = AuthCredential(
+          providerId: _data['providerId'] ?? '',
+          token: int.parse(_data['token'] ?? '100'),
+          signInMethod: _data['signInMethod'] ?? '');
     }
     return _cred;
   }

@@ -2,14 +2,16 @@
   "id": "12345ab893adfjADF9aksl",
   "pages" : [
     {
-      "page_0" : {
+      "page" : []
 
-      },
-      "page_1" : [
+    },
+    {
+      "page" : [
         {
           "type" : "text",
           "title": "customer details"
         },
+
         {
            "type" : "text_input",
            "title" : ""
@@ -17,7 +19,7 @@
       ]
     },
     {
-      "page_2" : [
+      "page" : [
         {
           "type" : "input"
         },

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:veridox/app_services/database/shared_pref_services.dart';
 import '../app_models/saved_assignment_model.dart';
 import '../app_services/database/firestore_services.dart';
 
@@ -39,7 +40,17 @@ class SavedAssignmentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  SavedAssignment findById(String id) {
-    return _savedTasks.firstWhere((element) => element.caseId == id);
+  Future<Map<String, dynamic>?> findById(String id) async {
+    try {
+      final sp = SPServices();
+
+      _savedTasks.firstWhere((element) => element.caseId == id);
+      if (await sp.checkIfExists(id)) {
+        return await sp.getSavedAssignment(id);
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
 }

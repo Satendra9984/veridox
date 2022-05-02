@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-class RowInputFormField extends StatelessWidget {
-  final String value;
-  final Widget textFormField;
-  const RowInputFormField({
+class SingleLineInput extends StatelessWidget {
+  // final String value;
+  const SingleLineInput({
     Key? key,
-    required this.textFormField,
-    required this.value,
+    // required this.value,
   }) : super(key: key);
 
   @override
@@ -17,7 +15,7 @@ class RowInputFormField extends StatelessWidget {
         Expanded(
           flex: 4,
           child: Text(
-            value,
+            ' ',
             style: const TextStyle(
               fontSize: 15,
             ),
@@ -29,7 +27,7 @@ class RowInputFormField extends StatelessWidget {
         ),
         Expanded(
           flex: 5,
-          child: textFormField,
+          child: Text(''),
         ),
       ],
     );
