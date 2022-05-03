@@ -22,7 +22,7 @@ class _MultiLineInputState extends State<MultiLineInput> {
         Text(
           '${widget.widgetJson['label']}',
           softWrap: true,
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(
           height: 5,

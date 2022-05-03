@@ -18,30 +18,29 @@ class FormPage extends StatefulWidget {
     "page": [
       {
         "type": "text",
-        "label": "jhanga manga",
+        "label": "Heading 1",
         "heading_type": 1,
       },
       {
         "type": "text",
-        "label": "jhanga manga",
+        "label": "Heading 2",
         "heading_type": 2,
       },
       {
         "type": "text",
-        "label": "jhanga manga",
+        "label": "Heading 3",
         "heading_type": 3,
       },
       {
         "type": "single_line_input",
-        "label":
-            "input le rahainput le rahainput le rahainput le rahainput le rahainput le rahainput le raha",
-        "value": true,
-        "input_type": "string/integer/email/password",
+        "label": "Other life/health insurance*",
+        "value": "",
+        "input_type": "string/integer/email",
         "hint": "yahan likho"
       },
       {
         "type": "multi_line_input",
-        "label": "input le raha",
+        "label": "Final Remarks*-:",
         "value": null,
         "input_type": "string",
         "hint": "yahan likho"

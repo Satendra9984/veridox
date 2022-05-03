@@ -31,12 +31,12 @@ class _SingleLineInputState extends State<SingleLineInput> {
                 '${widget.widgetJson['label']}',
                 style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  // fontWeight: FontWeight.bold,
                 ),
+                softWrap: true,
               ),
             ),
             const SizedBox(
-              // height: 10,
               width: 5,
             ),
             Expanded(
@@ -47,6 +47,10 @@ class _SingleLineInputState extends State<SingleLineInput> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                 ),
+                // keyboardType: TextInputType.multiline,
+                // textInputAction: TextInputAction.newline,
+                // minLines: 1,
+                // maxLines: null,
               ),
             ),
           ],
