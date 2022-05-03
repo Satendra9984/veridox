@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
@@ -35,8 +33,9 @@ class FormPage extends StatefulWidget {
       },
       {
         "type": "single_line_input",
-        "label": "input le raha",
-        "value": null,
+        "label":
+            "input le rahainput le rahainput le rahainput le rahainput le rahainput le rahainput le raha",
+        "value": true,
         "input_type": "string/integer/email/password",
         "hint": "yahan likho"
       },
@@ -101,7 +100,7 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
   }
 
   void _onUpdate(int ind, var value) {
-    // Todo : Now updata data on the _values
+    // Todo : Now update data on the _values
 
     setState(() {
       if (_values[ind].containsKey('value')) {
@@ -113,7 +112,7 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
   }
 
   String _prettyPrint(json) {
-    var encoder = JsonEncoder.withIndent(' ');
+    var encoder = const JsonEncoder.withIndent(' ');
     return encoder.convert(json);
   }
 
@@ -135,12 +134,10 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
             //   color: Colors.red,
             // ),
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
             child: Column(
               children: [
                 Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: _widgetList.map(
                     (widgetData) {
                       final String type = widgetData['type'];
@@ -153,14 +150,17 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                         return TextDisplay(widgetJson: widgetData);
                       } else if (type == 'single_line_input') {
                         return SingleLineInput(
+                            onChange: (val) {
+                              _onUpdate(i, val);
+                            },
+                            widgetJson: widgetData);
+                      } else if (type == 'multi_line_input') {
+                        return MultiLineInput(
                           onChange: (val) {
-                            // Todo: now value to be added in the _values
                             _onUpdate(i, val);
                           },
                           widgetJson: widgetData,
                         );
-                      } else if (type == 'multi_line_input') {
-                        return MultiLineInput();
                       } else if (type == 'table') {
                         return Table();
                       } else if (type == 'dropdown_menu') {
@@ -178,7 +178,7 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                     },
                   ).toList(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text('index-->  $currentInd \n $_result'),

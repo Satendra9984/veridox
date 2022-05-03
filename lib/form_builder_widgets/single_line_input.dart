@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 class SingleLineInput extends StatefulWidget {
   // final String value;
   final Map<String, dynamic> widgetJson;
-  final Function(String val) onChange;
+  final Function(dynamic value) onChange;
   const SingleLineInput({
     Key? key,
     required this.onChange,
@@ -19,27 +19,40 @@ class SingleLineInput extends StatefulWidget {
 class _SingleLineInputState extends State<SingleLineInput> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      // crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       children: [
-        Expanded(
-          flex: 4,
-          child: Text(
-            '${widget.widgetJson['label']}',
-            style: const TextStyle(
-              fontSize: 18,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Expanded(
+              flex: 4,
+              child: Text(
+                '${widget.widgetJson['label']}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+            const SizedBox(
+              // height: 10,
+              width: 5,
+            ),
+            Expanded(
+              flex: 5,
+              child: TextFormField(
+                onChanged: (val) => widget.onChange(val),
+                style: TextStyle(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(
-          height: 10,
-          width: 10,
-        ),
-        Expanded(
-          flex: 5,
-          child: TextFormField(
-            onChanged: (val) => widget.onChange(val),
-          ),
+          height: 20,
         ),
       ],
     );
