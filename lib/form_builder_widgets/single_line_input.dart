@@ -1,12 +1,22 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class SingleLineInput extends StatelessWidget {
+class SingleLineInput extends StatefulWidget {
   // final String value;
+  final Map<String, dynamic> widgetJson;
+  final Function(String val) onChange;
   const SingleLineInput({
     Key? key,
-    // required this.value,
+    required this.onChange,
+    required this.widgetJson,
   }) : super(key: key);
 
+  @override
+  State<SingleLineInput> createState() => _SingleLineInputState();
+}
+
+class _SingleLineInputState extends State<SingleLineInput> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -15,9 +25,9 @@ class SingleLineInput extends StatelessWidget {
         Expanded(
           flex: 4,
           child: Text(
-            ' ',
+            '${widget.widgetJson['label']}',
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 18,
             ),
           ),
         ),
@@ -27,7 +37,9 @@ class SingleLineInput extends StatelessWidget {
         ),
         Expanded(
           flex: 5,
-          child: Text(''),
+          child: TextFormField(
+            onChanged: (val) => widget.onChange(val),
+          ),
         ),
       ],
     );

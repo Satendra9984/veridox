@@ -13,7 +13,9 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/templates/form.dart';
+import 'package:veridox/templates/form_page.dart';
 import 'package:veridox/templates/page_0.dart';
 import 'app_models/assignment_model.dart';
 
@@ -56,7 +58,9 @@ class MyApp extends StatelessWidget {
         ),
         // home: const LogInPage(),
         // home: AssignmentsHomePage(),
-        home: Page0(),
+        // home: Page0(),
+        home: FormPage(formIdInSp: '123', num: 0),
+        // home: TextDisplay(),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),
