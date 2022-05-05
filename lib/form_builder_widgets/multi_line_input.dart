@@ -22,19 +22,24 @@ class _MultiLineInputState extends State<MultiLineInput> {
         Text(
           '${widget.widgetJson['label']}',
           softWrap: true,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(
           height: 5,
         ),
         TextFormField(
+          initialValue: widget.widgetJson['value'],
           onChanged: (val) => widget.onChange(val),
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           minLines: 3,
           maxLines: null,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            isDense: true, // Added this
+            contentPadding: EdgeInsets.all(10),
           ),
         ),
         const SizedBox(

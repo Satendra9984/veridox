@@ -21,37 +21,42 @@ class _SingleLineInputState extends State<SingleLineInput> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            Expanded(
-              flex: 4,
-              child: Text(
-                '${widget.widgetJson['label']}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  // fontWeight: FontWeight.bold,
-                ),
-                softWrap: true,
+            Text(
+              '${widget.widgetJson['label']}',
+              style: const TextStyle(
+                fontSize: 15,
+
+                // fontWeight: FontWeight.bold,
               ),
+              softWrap: true,
             ),
             const SizedBox(
               width: 5,
+              height: 5,
             ),
-            Expanded(
-              flex: 5,
-              child: TextFormField(
-                onChanged: (val) => widget.onChange(val),
-                style: TextStyle(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+            TextFormField(
+              initialValue: widget.widgetJson['value'],
+              onChanged: (val) => widget.onChange(val),
+              // style: TextStyle(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                // keyboardType: TextInputType.multiline,
-                // textInputAction: TextInputAction.newline,
-                // minLines: 1,
-                // maxLines: null,
+                isDense: true, // Added this
+                contentPadding: EdgeInsets.all(10),
               ),
+              // keyboardType: TextInputType.multiline,
+              // textInputAction: TextInputAction.newline,
+              // minLines: 1,
+              // maxLines: null,
+              // TODO: VALIDATION
+              validator: (val) {
+                return 'error';
+              },
             ),
           ],
         ),

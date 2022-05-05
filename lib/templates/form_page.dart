@@ -9,6 +9,8 @@ import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/form_builder_widgets/multi_line_input.dart';
 import 'package:veridox/form_builder_widgets/toggle_button.dart';
 
+import '../form_builder_widgets/single_line_row_input.dart';
+
 class FormPage extends StatefulWidget {
   // getting id to save data in the database
   final String formIdInSp;
@@ -18,7 +20,7 @@ class FormPage extends StatefulWidget {
     "page": [
       {
         "type": "text",
-        "label": "Heading 1",
+        "label": "Death Claim Investigation Report",
         "heading_type": 1,
       },
       {
@@ -51,32 +53,41 @@ class FormPage extends StatefulWidget {
         "column": 5,
         "row_labels": [],
         "column_labels": [],
-        "value": [[]]
+        "value": [[], [], []]
       },
       {
         "type": "dropdown_menu",
-        "label": "jhanga manga",
+        "label": "Select Options",
         "value": null,
-        "options": [],
+        "options": ['1', '2', '3', '4', '5'],
         "hint": "yahan likho"
       },
       {
         "type": "toggle_button",
-        "label": "jhanga manga new        \n new line",
+        "label":
+            "Collect Ration Card / Parivar Card/Voter ID or other possible age proofs of all family members*",
         "value": false,
         "lines": "multi line",
         "heading_type": 1
       },
-      {"type": "date_time_picker", "value": "28/04/2022"},
-      {"type": "location_image", "value": "firebase_storage_id"},
-      {"type": "image", "value": "firebase_storage_id"}
+      {
+        "type": "date_time_picker",
+        "value": "28/04/2022",
+      },
+      {
+        "type": "location_image",
+        "value": "firebase_storage_id",
+      },
+      {
+        "type": "image",
+        "value": "firebase_storage_id",
+      }
     ]
   };
   FormPage({
     Key? key,
     required this.formIdInSp,
     required this.num,
-    // required this.pageData
   }) : super(key: key);
 
   @override
@@ -88,6 +99,7 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
   late final List<Map<String, dynamic>> _values;
   String _result = '';
   int currentInd = -1;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -132,8 +144,8 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
             // decoration: BoxDecoration(
             //   color: Colors.red,
             // ),
-            height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+            // height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Column(
               children: [
                 Column(
@@ -163,9 +175,17 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                       } else if (type == 'table') {
                         return Table();
                       } else if (type == 'dropdown_menu') {
-                        return DropdownMenu();
+                        return DropdownMenu(
+                          widgetJson: widgetData,
+                          onChange: (val) {
+                            _onUpdate(i, val);
+                          },
+                        );
                       } else if (type == 'toggle_button') {
-                        return ToggleButton();
+                        return ToggleButton(
+                          widgetJson: widgetData,
+                          onChange: (value) => _onUpdate(i, value),
+                        );
                       } else if (type == 'date_time_picker') {
                         return DateTimePicker();
                       } else if (type == 'image') {
