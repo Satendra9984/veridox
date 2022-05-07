@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
@@ -8,7 +9,7 @@ import 'package:veridox/form_builder_widgets/single_line_input.dart';
 import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/form_builder_widgets/multi_line_input.dart';
 import 'package:veridox/form_builder_widgets/toggle_button.dart';
-
+import 'package:veridox/form_builder_widgets/table_input.dart';
 import '../form_builder_widgets/single_line_row_input.dart';
 
 class FormPage extends StatefulWidget {
@@ -41,19 +42,91 @@ class FormPage extends StatefulWidget {
         "hint": "yahan likho"
       },
       {
+        "type": "single_line_row_input",
+        "label": "Other life/health insurance*",
+        "value": "",
+        "input_type": "string/integer/email",
+        "hint": "yahan likho"
+      },
+      {
+        "type": "table_input",
+        "label": "Profile of the life assured*",
+        "row_labels": [
+          "Name",
+          "Date of Birth",
+          "Age",
+          "Marital Status",
+          "Occupation",
+          "Annual Income",
+          "Education",
+          "Other life/health insurance",
+          "Address",
+          "Nominee Relationship"
+        ],
+        "column_labels": [
+          "As per investigation",
+          "Mismatch noted (Yes/No)",
+          "Evidence procured (Yes/No)"
+        ],
+        "value": [
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+          {
+            "As per investigation": '',
+            "Mismatch noted (Yes/No)": '',
+            "Evidence procured (Yes/No)": ''
+          },
+        ]
+      },
+      {
         "type": "multi_line_input",
         "label": "Final Remarks*-:",
         "value": null,
         "input_type": "string",
         "hint": "yahan likho"
-      },
-      {
-        "type": "table",
-        "row": 4,
-        "column": 5,
-        "row_labels": [],
-        "column_labels": [],
-        "value": [[], [], []]
       },
       {
         "type": "dropdown_menu",
@@ -139,6 +212,7 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
     int index = 0;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Container(
             // decoration: BoxDecoration(
@@ -165,6 +239,12 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                               _onUpdate(i, val);
                             },
                             widgetJson: widgetData);
+                      } else if (type == 'single_line_row_input') {
+                        return SingleLineRowInput(
+                            onChange: (val) {
+                              _onUpdate(i, val);
+                            },
+                            widgetJson: widgetData);
                       } else if (type == 'multi_line_input') {
                         return MultiLineInput(
                           onChange: (val) {
@@ -172,8 +252,13 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                           },
                           widgetJson: widgetData,
                         );
-                      } else if (type == 'table') {
-                        return Table();
+                      } else if (type == 'table_input') {
+                        return TableInput(
+                          widgetJson: widgetData,
+                          onChange: (val) {
+                            _onUpdate(i, val);
+                          },
+                        );
                       } else if (type == 'dropdown_menu') {
                         return DropdownMenu(
                           widgetJson: widgetData,

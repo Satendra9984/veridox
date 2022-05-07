@@ -20,15 +20,6 @@
       "input_type" : "string",
       "hint" : "yahan likho"
     },
-
-    {
-      "type" : "table",
-      "row" : 4,
-      "column" : 5,
-      "row_labels" : [],
-      "column_labels" : [],
-      "value" : [[]]
-    },
     {
       "type" : "dropdown_menu",
       "label" : "jhanga manga",
@@ -54,6 +45,24 @@
     {
       "type" : "image",
       "value" : "firebase_storage_id"
+    },
+    {
+      "type" : "table_input",
+      "row_labels": ["Name","Date of Birth","Age","Marital Status","Occupation","Annual Income","Education","Other life/health insurance","Address","Nominee Relationship"],
+      "column_labels" : ["As per investigation","Mismatch noted (Yes/No)","Evidence procured (Yes/No)"],
+      "value": [
+        {
+          "As per investigation": null,
+          "Mismatch noted (Yes/No)": null,
+          "Evidence procured (Yes/No)": null
+        },
+        {
+
+        },
+        {
+
+        }
+      ]
     }
   ]
 }

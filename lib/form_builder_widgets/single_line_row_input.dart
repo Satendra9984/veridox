@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SingleLineRowInput extends StatefulWidget {
   // final String value;
@@ -27,14 +25,22 @@ class _SingleLineRowInputState extends State<SingleLineRowInput> {
             border: Border.all(
               color: Colors.grey.shade400,
             ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade400,
+                offset: const Offset(0.0, 2.5), //(x,y)
+                blurRadius: 3.5,
+              ),
+            ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             textBaseline: TextBaseline.alphabetic,
             children: [
               Expanded(
-                flex: 4,
+                flex: 5,
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Text(
@@ -48,8 +54,14 @@ class _SingleLineRowInputState extends State<SingleLineRowInput> {
                 ),
               ),
               const SizedBox(
-                width: 5,
-                height: 5,
+                height: 40,
+                child: VerticalDivider(
+                  color: Colors.red,
+                  thickness: 2,
+                  indent: 5,
+                  endIndent: 0,
+                  width: 20,
+                ),
               ),
               Expanded(
                 flex: 5,
@@ -57,10 +69,20 @@ class _SingleLineRowInputState extends State<SingleLineRowInput> {
                   initialValue: widget.widgetJson['value'],
                   onChanged: (val) => widget.onChange(val),
                   // style: TextStyle(),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  decoration: const InputDecoration(
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.only(
+                    //     topRight: Radius.circular(7),
+                    //     bottomRight: Radius.circular(7),
+                    //   ),
+                    // ),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    isDense: true, // Added this
+                    contentPadding: EdgeInsets.all(13),
                   ),
                   // keyboardType: TextInputType.multiline,
                   // textInputAction: TextInputAction.newline,
@@ -72,7 +94,7 @@ class _SingleLineRowInputState extends State<SingleLineRowInput> {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 30,
         ),
       ],
     );

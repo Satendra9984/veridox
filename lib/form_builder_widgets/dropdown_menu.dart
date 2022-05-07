@@ -31,10 +31,10 @@ class _DropdownMenuState extends State<DropdownMenu> {
         Text(
           '${widget.widgetJson['label']}',
           softWrap: true,
-          style: const TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(
-          height: 5,
+          height: 2.5,
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -82,7 +82,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 30,
         ),
       ],
     );

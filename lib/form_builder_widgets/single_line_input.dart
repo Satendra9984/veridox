@@ -28,40 +28,60 @@ class _SingleLineInputState extends State<SingleLineInput> {
             Text(
               '${widget.widgetJson['label']}',
               style: const TextStyle(
-                fontSize: 15,
-
+                fontSize: 16,
                 // fontWeight: FontWeight.bold,
               ),
               softWrap: true,
             ),
             const SizedBox(
               width: 5,
-              height: 5,
+              height: 2.5,
             ),
-            TextFormField(
-              initialValue: widget.widgetJson['value'],
-              onChanged: (val) => widget.onChange(val),
-              // style: TextStyle(),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey.shade400,
                 ),
-                isDense: true, // Added this
-                contentPadding: EdgeInsets.all(10),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade400,
+                    offset: const Offset(0.0, 2.5), //(x,y)
+                    blurRadius: 3.5,
+                  ),
+                ],
               ),
-              // keyboardType: TextInputType.multiline,
-              // textInputAction: TextInputAction.newline,
-              // minLines: 1,
-              // maxLines: null,
-              // TODO: VALIDATION
-              validator: (val) {
-                return 'error';
-              },
+              child: TextFormField(
+                initialValue: widget.widgetJson['value'],
+                onChanged: (val) => widget.onChange(val),
+                // style: TextStyle(),
+                decoration: const InputDecoration(
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(10),
+                  // ),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  isDense: true, // Added this
+                  contentPadding: EdgeInsets.all(12),
+                ),
+                // keyboardType: TextInputType.multiline,
+                // textInputAction: TextInputAction.newline,
+                // minLines: 1,
+                // maxLines: null,
+                // TODO: VALIDATION
+                validator: (val) {
+                  return 'error';
+                },
+              ),
             ),
           ],
         ),
         const SizedBox(
-          height: 20,
+          height: 30,
         ),
       ],
     );
