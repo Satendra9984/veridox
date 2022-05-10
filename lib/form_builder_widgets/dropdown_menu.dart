@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/constants.dart';
 
 class DropdownMenu extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -38,13 +39,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Colors.grey.shade400,
-              width: 1.3,
-            ),
-          ),
+          decoration: containerElevationDecoration,
           child: DropdownButtonHideUnderline(
             child: DropdownButton<dynamic>(
               hint: const Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:veridox/constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -29,13 +30,7 @@ class _ToggleButtonState extends State<ToggleButton> {
       children: [
         Container(
           padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey.shade400,
-              width: 1.3,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
+          decoration: containerElevationDecoration,
           child: Row(
             children: [
               Expanded(

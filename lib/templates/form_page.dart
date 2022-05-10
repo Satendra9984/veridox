@@ -145,14 +145,15 @@ class FormPage extends StatefulWidget {
       },
       {
         "type": "date_time_picker",
-        "value": "28/04/2022",
+        "label": "Visited On",
+        "value": "",
       },
       {
         "type": "location_image",
         "value": "firebase_storage_id",
       },
       {
-        "type": "image",
+        "type": "image_input",
         "value": "firebase_storage_id",
       }
     ]
@@ -272,11 +273,14 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                           onChange: (value) => _onUpdate(i, value),
                         );
                       } else if (type == 'date_time_picker') {
-                        return DateTimePicker();
-                      } else if (type == 'image') {
-                        return ImagePicker();
+                        return DateTimePicker(
+                          onChange: (value) => _onUpdate(i, value),
+                          widgetjson: widgetData,
+                        );
+                      } else if (type == 'image_input') {
+                        return ImageInput();
                       } else if (type == 'location_image') {
-                        return LocationImage();
+                        return Text('data');
                       }
                       return Text('Something went wrong');
                     },

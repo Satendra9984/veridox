@@ -36,7 +36,7 @@
     },
     {
       "type" : "date_time_picker",
-      "value" : "28/04/2022"
+      "value" : ""
     },
     {
       "type" : "location_image",
@@ -47,21 +47,76 @@
       "value" : "firebase_storage_id"
     },
     {
-      "type" : "table_input",
-      "row_labels": ["Name","Date of Birth","Age","Marital Status","Occupation","Annual Income","Education","Other life/health insurance","Address","Nominee Relationship"],
-      "column_labels" : ["As per investigation","Mismatch noted (Yes/No)","Evidence procured (Yes/No)"],
+      "type": "table_input",
+      "label": "Profile of the life assured*",
+      "row_labels": [
+        "Name",
+        "Date of Birth",
+        "Age",
+        "Marital Status",
+        "Occupation",
+        "Annual Income",
+        "Education",
+        "Other life/health insurance",
+        "Address",
+        "Nominee Relationship"
+      ],
+      "column_labels": [
+        "As per investigation",
+        "Mismatch noted (Yes/No)",
+        "Evidence procured (Yes/No)"
+      ],
       "value": [
         {
-          "As per investigation": null,
-          "Mismatch noted (Yes/No)": null,
-          "Evidence procured (Yes/No)": null
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
         },
         {
-
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
         },
         {
-
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },{
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
         }
+
       ]
     }
   ]
