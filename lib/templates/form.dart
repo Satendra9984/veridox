@@ -13,11 +13,13 @@ class Form extends StatefulWidget {
 }
 
 class _FormState extends State<Form> {
-  late final Map<String, dynamic> _formData = widget.saveAssignment.formData;
+  // for start making forms
+  late final Map<String, dynamic> _formData;
 
   @override
   void initState() {
     super.initState();
+    _formData = _formData = widget.saveAssignment.formData;
   }
 
   List<Widget> _getScreens() {
@@ -28,6 +30,8 @@ class _FormState extends State<Form> {
     for (int i = 0; i < jsonPageData.length; i++) {
       screen.add(
         FormPage(
+          formIdInSp: _formData['id'].toString(),
+          // pageData: jsonPageData[i],
           num: i,
         ),
       );
@@ -48,7 +52,6 @@ class _FormState extends State<Form> {
         onPageChanged: (currentScreen) {
           setState(
             () {
-              // _pageController.jumpToPage(num);
               currentItemSelected = currentScreen;
             },
           );

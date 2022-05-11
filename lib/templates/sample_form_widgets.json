@@ -7,50 +7,117 @@
     },
 
     {
-      "type": "single line input",
+      "type": "single_line_input",
       "label" : "input le raha",
       "value" : null,
       "input_type" : "string/integer/email/password",
       "hint" : "yahan likho"
     },
     {
-      "type": "multi line input",
+      "type": "multi_line_input",
       "label" : "input le raha",
       "value" : null,
       "input_type" : "string",
       "hint" : "yahan likho"
     },
-
-    {
-      "type" : "table",
-      "row" : 4,
-      "column" : 5,
-      "row_labels" : [],
-      "column_labels" : [],
-      "value" : [[]]
-    },
     {
       "type" : "dropdown_menu",
-      "value" : null,
       "label" : "jhanga manga",
-      "heading_type" : 1,
+      "value" : null,
       "options" : [],
       "hint" : "yahan likho"
     },
     {
       "type" : "toggle_button",
-      "value" : false,
       "label" : "jhanga manga new        \n new line",
+      "value" : false,
       "lines" : "multi line",
       "heading_type" : 1
     },
     {
-      "type" : "date_time",
-      "value" : "28/04/2022"
+      "type" : "date_time_picker",
+      "value" : ""
     },
     {
       "type" : "location_image",
       "value" : "firebase_storage_id"
+    },
+    {
+      "type" : "image",
+      "value" : "firebase_storage_id"
+    },
+    {
+      "type": "table_input",
+      "label": "Profile of the life assured*",
+      "row_labels": [
+        "Name",
+        "Date of Birth",
+        "Age",
+        "Marital Status",
+        "Occupation",
+        "Annual Income",
+        "Education",
+        "Other life/health insurance",
+        "Address",
+        "Nominee Relationship"
+      ],
+      "column_labels": [
+        "As per investigation",
+        "Mismatch noted (Yes/No)",
+        "Evidence procured (Yes/No)"
+      ],
+      "value": [
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },{
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        },
+        {
+          "As per investigation": "",
+          "Mismatch noted (Yes/No)": "",
+          "Evidence procured (Yes/No)": ""
+        }
+
+      ]
     }
   ]
 }

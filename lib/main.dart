@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide Form;
+import 'package:flutter/services.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_screens/home_page.dart';
@@ -12,7 +13,10 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/templates/form.dart';
+import 'package:veridox/templates/form_page.dart';
+import 'package:veridox/templates/page_0.dart';
 import 'app_models/assignment_model.dart';
 
 void main() async {
@@ -22,9 +26,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  Map<String, dynamic> _getForm() {
-    final file = File('C:\androidProjects\veridox\lib\templates\sample.json');
-    return jsonDecode(jsonEncode(file));
+  Future<Map<String, dynamic>> _getForm() async {
+    final String res = await rootBundle.loadString('lib/templates/sample.json');
+    final data = await json.decode(res);
+    return data;
   }
 
   const MyApp({Key? key}) : super(key: key);
@@ -53,16 +58,9 @@ class MyApp extends StatelessWidget {
         ),
         // home: const LogInPage(),
         // home: AssignmentsHomePage(),
-        home: Form(
-          saveAssignment: SavedAssignment(
-            address: 'address',
-            caseId: 'caseId',
-            description: 'description',
-            type: 'type',
-            assignedDate: DateTime.now(),
-            formData: _getForm(),
-          ),
-        ),
+        // home: Page0(),
+        // home: FormPage(formIdInSp: '123', num: 0),
+        // home: TextDisplay(),
         // home: SignUp(),
         // home: HomePage(),
         // home: ProfilePage(),
