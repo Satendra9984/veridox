@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
 import 'package:veridox/form_builder_widgets/image_input.dart';
@@ -175,13 +177,15 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
   int currentInd = -1;
 
   @override
-  void initState() {
+  void initState() async {
     // TODO: implement initState
     super.initState();
     // index = 0;
     _widgetList = widget.pageData['page'];
     print(' length---->  ${_widgetList.length}');
     _values = _widgetList;
+    await Provider.of<AssignmentProvider>(context, listen: false)
+        .fetchAndLoadData();
   }
 
   void _onUpdate(int ind, var value) {
@@ -232,52 +236,54 @@ class _FormState extends State<FormPage> with AutomaticKeepAliveClientMixin {
                         index++;
                       }
                       print(i);
-                      if (type == 'text') {
-                        return TextDisplay(widgetJson: widgetData);
-                      } else if (type == 'single_line_input') {
-                        return SingleLineInput(
-                            onChange: (val) {
-                              _onUpdate(i, val);
-                            },
-                            widgetJson: widgetData);
-                      } else if (type == 'single_line_row_input') {
-                        return SingleLineRowInput(
-                            onChange: (val) {
-                              _onUpdate(i, val);
-                            },
-                            widgetJson: widgetData);
-                      } else if (type == 'multi_line_input') {
-                        return MultiLineInput(
-                          onChange: (val) {
-                            _onUpdate(i, val);
-                          },
-                          widgetJson: widgetData,
-                        );
-                      } else if (type == 'table_input') {
-                        return TableInput(
-                          widgetJson: widgetData,
-                          onChange: (val) {
-                            _onUpdate(i, val);
-                          },
-                        );
-                      } else if (type == 'dropdown_menu') {
-                        return DropdownMenu(
-                          widgetJson: widgetData,
-                          onChange: (val) {
-                            _onUpdate(i, val);
-                          },
-                        );
-                      } else if (type == 'toggle_button') {
-                        return ToggleButton(
-                          widgetJson: widgetData,
-                          onChange: (value) => _onUpdate(i, value),
-                        );
-                      } else if (type == 'date_time_picker') {
-                        return DateTimePicker(
-                          onChange: (value) => _onUpdate(i, value),
-                          widgetjson: widgetData,
-                        );
-                      } else if (type == 'image_input') {
+                      // if (type == 'text') {
+                      //   return TextDisplay(widgetJson: widgetData);
+                      // } else if (type == 'single_line_input') {
+                      //   return SingleLineInput(
+                      //       onChange: (val) {
+                      //         _onUpdate(i, val);
+                      //       },
+                      //       widgetJson: widgetData);
+                      // } else if (type == 'single_line_row_input') {
+                      //   return SingleLineRowInput(
+                      //       onChange: (val) {
+                      //         _onUpdate(i, val);
+                      //       },
+                      //       widgetJson: widgetData);
+                      // } else if (type == 'multi_line_input') {
+                      //   return MultiLineInput(
+                      //     onChange: (val) {
+                      //       _onUpdate(i, val);
+                      //     },
+                      //     widgetJson: widgetData,
+                      //   );
+                      // } else if (type == 'table_input') {
+                      //   return TableInput(
+                      //     widgetJson: widgetData,
+                      //     onChange: (val) {
+                      //       _onUpdate(i, val);
+                      //     },
+                      //   );
+                      // } else if (type == 'dropdown_menu') {
+                      //   return DropdownMenu(
+                      //     widgetJson: widgetData,
+                      //     onChange: (val) {
+                      //       _onUpdate(i, val);
+                      //     },
+                      //   );
+                      // } else if (type == 'toggle_button') {
+                      //   return ToggleButton(
+                      //     widgetJson: widgetData,
+                      //     onChange: (value) => _onUpdate(i, value),
+                      //   );
+                      // } else if (type == 'date_time_picker') {
+                      //   return DateTimePicker(
+                      //     onChange: (value) => _onUpdate(i, value),
+                      //     widgetjson: widgetData,
+                      //   );
+                      // } else
+                      //
+                      if (type == 'image_input') {
                         return ImageInput();
                       } else if (type == 'location_image') {
                         return Text('data');

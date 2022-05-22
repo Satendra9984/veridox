@@ -12,20 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Image Picker Demo',
-      home: MyHomePage(title: 'Image Picker Example'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, this.title}) : super(key: key);
 

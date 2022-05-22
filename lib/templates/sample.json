@@ -2,8 +2,16 @@
   "id": "12345ab893adfjADF9aksl",
   "pages" : [
     {
-      "page" : []
-
+      "page" :
+        {
+          "Policy Number" : "7583046",
+          "Customer Name" : "Subhadeep Chowdhary",
+          "Applied for policy" : "Yes",
+          "Application Date" : "01/03/22",
+          "Date and time of field visit" : "03/01/22 12:00pm",
+          "Age" : "NA",
+          "Application No." : "1234567"
+        }
     },
     {
       "page" : [
@@ -11,7 +19,6 @@
           "type" : "text",
           "title": "customer details"
         },
-
         {
            "type" : "text_input",
            "title" : ""
@@ -27,7 +34,7 @@
       ]
     },
     {
-      "page_3" : [
+      "page" : [
         {
           "type" : "checkbox"
         }
@@ -35,5 +42,3 @@
     }
   ]
 }
-
-

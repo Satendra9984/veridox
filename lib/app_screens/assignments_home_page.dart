@@ -55,7 +55,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
   @override
   void didChangeDependencies() {
-    // agency: eklavya, sataksh
     // TODO: first fetch the data from the firebase didChangeDependencies
 
     if (_isInit) {
@@ -63,9 +62,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
         _isLoading = true;
       });
       try {
-        Provider.of<AssignmentProvider>(context, listen: false)
-            .fetchAndLoadData()
-            .then(
+        Provider.of<AssignmentProvider>(context).fetchAndLoadData().then(
           (value) {
             setState(
               () {
@@ -76,6 +73,9 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
         );
       } catch (error) {
         print(error);
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
 
@@ -106,8 +106,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // printFirestore();
-    // print('Assignment home screen');
     return Scaffold(
       // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
       // body: IndexedStack(

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart' hide Form;
 import 'package:flutter/material.dart' hide Form;
 import 'package:provider/provider.dart';
@@ -19,23 +22,121 @@ class AssignmentDetailPage extends StatefulWidget {
 }
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
-  Future<SavedAssignment?> getAssignment() async {
-    final prov = Provider.of<SavedAssignmentProvider>(context, listen: false);
-    final data = await FirestoreServices().getAssignmentById(widget.caseId);
-    final formData = await FirestoreServices().getFormDataById(widget.caseId);
-    await prov.addSaveAssignments(widget.caseId);
-    try {
-      final js = await prov.findById(widget.caseId);
-      SavedAssignment saveAsgn = SavedAssignment.fromJson(js!, js);
-      return saveAsgn;
-    } catch (e) {
-      //assignment not found
-      return null;
-    }
-  }
+  bool _isAssignmentSaved = true;
 
+  /// Function for checking if the given assignment with the caseId
+  /// already exist in the local_database
   Future<bool> checkSaved() async {
     return await SPServices().checkIfExists(widget.caseId);
+  }
+
+  void _showPopUp() async {
+    /// TODO : IN CASE IF _getAssignment() did not worked
+    /// show a popUpMenu and return to the previous screen
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Container(
+            color: CupertinoColors.white,
+            child: Column(
+              children: [
+                Text('Return to preivous screen'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    // await FirebaseFirestore.instance
+    //     .collection('assignments')
+    //     .doc('ISFbwFZ4tQybjvbQw6pV')
+    //     .update({
+    //       "report_data": {
+    //         "pages": [
+    //           {
+    //             "page": [
+    //               {
+    //                 "Policy Number": "7583046",
+    //                 "Customer Name": "Subhadeep Chowdhary",
+    //                 "Applied for policy": "Yes",
+    //                 "Application Date": "01/03/22",
+    //                 "Date and time of field visit": "03/01/22 12:00pm",
+    //                 "Age": "NA",
+    //                 "Application No.": "1234567"
+    //               }
+    //             ]
+    //           },
+    //           {
+    //             "page": [
+    //               {"type": "text", "title": "customer details"},
+    //               {"type": "text_input", "title": ""}
+    //             ]
+    //           },
+    //           {
+    //             "page": [
+    //               {"type": "input"},
+    //               {}
+    //             ]
+    //           },
+    //           {
+    //             "page": [
+    //               {"type": "checkbox"}
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     })
+    //     .then((value) => print('successfule'))
+    //     .catchError((error) => print('unsuccessful -->  $error'));
+  }
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  /// Getting the basic details of the assignment from the available sources
+  /// firebase or local_storage and saving the assignment with form_data(!)
+  Future<SavedAssignment?> _getAssignment() async {
+    if (await checkSaved()) {
+      /// FETCHING DATA FROM THE LOCAL_STORAGE
+      try {
+        final mappedData = await SPServices().getSavedAssignment(widget.caseId);
+        final SavedAssignment savedAssignment =
+            SavedAssignment.fromJson(mappedData, widget.caseId);
+        return savedAssignment;
+      } catch (e) {
+        print('hive error--> $e');
+        _showPopUp();
+      }
+    } else {
+      try {
+        /// FETCH DATA FROM THE FIRESTORE
+        print('fetching data from firestore\n\n\n');
+        final mappedData =
+            await FirestoreServices().getAssignmentById(widget.caseId);
+        // print(mappedData!['report_data']);
+
+        if (mappedData != null) {
+          print('mappedData is not null\n\n\n');
+          final SavedAssignment savedAssignment =
+              SavedAssignment.fromJson(mappedData, widget.caseId);
+          print('got saved assignment\n\n\n');
+
+          /// assignment is not saved in local database
+          _isAssignmentSaved = false;
+          return savedAssignment;
+        } else {
+          print('mappedData is not null\n\n\n');
+          return null;
+        }
+      } catch (e) {
+        print('firebase error--> $e');
+        _showPopUp();
+      }
+    }
+    return null;
   }
 
   @override
@@ -48,155 +149,112 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: FutureBuilder(
-            future: getAssignment(),
+            future: _getAssignment(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else {
+              } else if (snapshot.data != null) {
                 final details = snapshot.data as SavedAssignment;
                 final data = details.formData;
-
-                // return data.map((key, value) {
-                //  TODO : NOW MAP EACH FORM DATA FIELD INTO A WIDGET
-                // });
-
+                final basicData =
+                    Map<String, dynamic>.from(data['pages'][0]['page']);
+                print('basicData-->  ' + jsonEncode(basicData));
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // TODO: MAKING A LIST OF WIDGETS IN COLUMN
                     Column(
-                      children: data.entries.map(
-                        (e) {
-                          return const Text('e');
-                        },
-                      ).toList(),
-                    ),
-
-                    const BasicDetails(
-                      title: 'Policy Number',
-                      value: '7583046',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Customer Name',
-                      value: 'Singh Kumar Rahul',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Applied for Policy',
-                      value: 'YES',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Application Date',
-                      value: 'August 11, 2021',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Date and time of field visit',
-                      value: 'September 06,2021 & 5:00 PM',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Age',
-                      value: 'NA',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'Received The policy',
-                      value: 'YES',
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const BasicDetails(
-                      title: 'APP NO',
-                      value: 'A60729340',
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    //TODO: ADD A PDF BOX
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            padding: const EdgeInsets.all(0),
-                            // color: Colors.redAccent,
-                            child: const SelectableText(
-                              'Customer Pdf ',
-                              autofocus: false,
-                              style: TextStyle(
-                                fontSize: 16,
-                                // fontWeight: FontWeight.bold,
-                              ),
+                      children: basicData.forEach((key, value) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(key),
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Row(
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                constraints: const BoxConstraints.tightFor(),
-                                padding: const EdgeInsets.all(3),
-                                height: 120,
-                                width: 120,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Colors.grey,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0)),
-                                  // shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                            Expanded(
+                              flex: 1,
+                              child: Text(value.toString()),
+                            ),
+                          ],
+                        );
+                      }),
                     ),
 
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    // const BasicDetails(
+                    //   title: 'Policy Number',
+                    //   value: '7583046',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Customer Name',
+                    //   value: 'Singh Kumar Rahul',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Applied for Policy',
+                    //   value: 'YES',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Application Date',
+                    //   value: 'August 11, 2021',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Date and time of field visit',
+                    //   value: 'September 06,2021 & 5:00 PM',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Age',
+                    //   value: 'NA',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'Received The policy',
+                    //   value: 'YES',
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const BasicDetails(
+                    //   title: 'APP NO',
+                    //   value: 'A60729340',
+                    // ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
                     // For the Verify button
                     Flexible(
                       child: Align(
                         alignment: Alignment.center,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: FETCH THE DATA FROM FIREBASE --> No Needed anymore
-                            // TODO: SAVE THE ASSIGNMENT AND THEN FETCH THE SAME ASSIGNMENT FROM THE SAVED_ASSIGNMENTS --> also not needed anymore
-
+                          onPressed: () async {
+                            if (_isAssignmentSaved == false) {
+                              /// TODO: SHOW A SAVING INDICATOR
+                              /// Saving the data in the local database
+                              await SPServices().setSavedAssignment(
+                                details.toJson(),
+                              );
+                            }
                             Navigator.of(context).push(
                               CupertinoPageRoute(
                                 // TODO: PASS THE JSON DATA TO Form() got from _getAssignment()
@@ -220,6 +278,23 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       ),
                     ),
                   ],
+                );
+              } else {
+                return Center(
+                  child: Column(
+                    children: [
+                      const Text('Something Went Wrong'),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextButton(
+                        child: const Text('Click To previous screen'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  ),
                 );
               }
             },

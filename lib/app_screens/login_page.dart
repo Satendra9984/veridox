@@ -28,7 +28,7 @@ class _LogInPageState extends State<LogInPage> {
         if (FirebaseAuth.instance.currentUser == null) {
           FirebaseFirestore.instance.collection('users');
           final user = Provider.of<User?>(context);
-          print('${user?.uid}');
+          // print('${user?.uid}');
           Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
@@ -124,25 +124,13 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     child: Column(
                       children: [
-                        // const CustomTextInput(
-                        //     text: "Email",
-                        //     keyboardType: TextInputType.text,
-                        //     password: false),
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
+
                         CustomTextInput(
                             controller: _phoneController,
                             text: "Phone Number",
                             keyboardType: TextInputType.number,
                             password: false),
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
-                        // const CustomTextInput(
-                        //     text: "Password",
-                        //     keyboardType: TextInputType.text,
-                        //     password: true),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.max,
