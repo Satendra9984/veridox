@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
@@ -27,9 +28,10 @@ class _AssignmentListState extends State<AssignmentList> {
 
   @override
   Widget build(BuildContext context) {
-    final assignmentsProv = Provider.of<AssignmentProvider>(context);
-    final List<Assignment> assignmentList = assignmentsProv.tasks;
-
+    // final assignmentsProv =
+    //     Provider.of<AssignmentProvider>(context, listen: false);
+    // final List<Assignment> assignmentList = assignmentsProv.tasks;
+    // print(assignmentList[0].type);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Assignments'),
@@ -65,90 +67,52 @@ class _AssignmentListState extends State<AssignmentList> {
           ),
         ],
       ),
+      // for the refreshing the assignments list
       body: RefreshIndicator(
         onRefresh: () => _refreshAssignments(context),
-        child: assignmentList.isEmpty
-            ? const Center(
-                child: Text('loading'),
-              )
-            : Consumer<List<Assignment>>(
-                builder: (context, list, widget) {
-                  return ListView.builder(
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      return AssignmentCard(
-                        navigate: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => AssignmentDetailPage(
-                                  caseId: list[index].caseId),
-                            ),
+        child: Consumer<List<Assignment>>(
+          builder: (context, list, widget) {
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                // print(list[index]);
+                return AssignmentCard(
+                  navigate: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) =>
+                            AssignmentDetailPage(caseId: list[index].caseId),
+                      ),
+                    );
+                  },
+                  assignment: list[index],
+                  popUpMenu: PopupMenuButton(
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        child: const Text('Save Task'),
+                        value: 0,
+                        onTap: () {
+                          // TODO: SAVING ASSIGNMENTS
+                          Provider.of<SavedAssignmentProvider>(context,
+                                  listen: false)
+                              .addSaveAssignments(
+                            list[index].caseId,
                           );
                         },
-                        assignment: list[index],
-                        popUpMenu: PopupMenuButton(
-                          itemBuilder: (_) => [
-                            PopupMenuItem(
-                              child: const Text('Save Task'),
-                              value: 0,
-                              onTap: () {
-                                // TODO: SAVING ASSIGNMENTS
-                              },
-                            ),
-                            const PopupMenuItem(
-                              child: Text('item3'),
-                              value: 2,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                      ),
+                      const PopupMenuItem(
+                        child: Text('item3'),
+                        value: 2,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
 }
-
-/*
-* RefreshIndicator(
-        onRefresh: () => _refreshAssignments(context),
-        child: assignmentList.isEmpty
-            ? const Center(
-                child: Text('loading'),
-              )
-            : StreamBuilder<List<Assignment>>(
-                stream: assignmentsProv.getAssignments(),
-                builder: (context, snapshot) {
-                  // print(snapshot.data);
-                  return ListView.builder(
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (context, index) {
-                      return AssignmentCard(
-                        assignment: snapshot.data![index],
-                        popUpMenu: PopupMenuButton(
-                          itemBuilder: (_) => [
-                            PopupMenuItem(
-                              child: Text('Save Task'),
-                              value: 0,
-                              onTap: () {
-                                assignmentsProv.addSaveAssignment(
-                                    snapshot.data![index].caseId);
-                              },
-                            ),
-                            const PopupMenuItem(
-                              child: Text('item3'),
-                              value: 2,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-      ),
-*
-* */

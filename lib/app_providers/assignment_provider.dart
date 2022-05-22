@@ -11,33 +11,20 @@ class AssignmentProvider extends ChangeNotifier {
     return [..._tasks];
   }
 
+  /// fetching the assignments with the report_data(form_data) to the field_verifier
+  Future<void> fetchAndLoadData() async {
+    // try {
+    //   notifyListeners();
+    // } catch (error) {
+    //   _tasks = [];
+    //   notifyListeners();
+    // }
+  }
+
   List<Assignment> get oldFirstTasks {
     List<Assignment> oldFirstList = [..._tasks];
     oldFirstList.sort((a, b) => b.assignedDate.compareTo(a.assignedDate));
 
     return oldFirstList;
-  }
-
-  Future<void> fetchAndLoadData() async {
-    try {
-      final docSnap = await _firestore
-          .collection('assignments')
-          .where('fv', isEqualTo: 'Satendra Pal')
-          // .orderBy('createdAt')
-          .get();
-      final docs = docSnap.docs;
-      List<Assignment> fireTasks = [];
-      for (var doc in docs) {
-        fireTasks.add(
-          Assignment.fromJson(
-            doc.data(),
-          ),
-        );
-      }
-      _tasks = fireTasks;
-      notifyListeners();
-    } catch (error) {
-      rethrow;
-    }
   }
 }

@@ -56,21 +56,16 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
               );
             },
             assignment: Assignment(
-                address: savedAssignmentList[index].address,
-                caseId: savedAssignmentList[index].caseId,
-                description: savedAssignmentList[index].description,
-                type: savedAssignmentList[index].type,
-                status: savedAssignmentList[index].status,
-                assignedDate: savedAssignmentList[index].assignedDate),
+              address: savedAssignmentList[index].address,
+              caseId: savedAssignmentList[index].caseId,
+              // description: savedAssignmentList[index].description,
+              type: savedAssignmentList[index].type,
+              status: savedAssignmentList[index].status,
+              assignedDate: savedAssignmentList[index].assignedDate.toString(),
+              phone: '', name: '',
+            ),
             popUpMenu: PopupMenuButton(
               itemBuilder: (_) => [
-                // PopupMenuItem(
-                //   child: Text('Save Task'),
-                //   value: 0,
-                //   onTap: () {
-                //     assignmentProvider.addSaveAssignment(savedAssignmentList[index].caseId);
-                //   },
-                // ),
                 PopupMenuItem(
                   child: const Text('Remove'),
                   value: 1,

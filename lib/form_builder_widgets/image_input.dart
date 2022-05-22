@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({Key? key}) : super(key: key);
@@ -10,35 +12,34 @@ class ImageInput extends StatefulWidget {
   State<ImageInput> createState() => _ImageInputState();
 }
 
-class _ImageInputState extends State<ImageInput> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('init--> state called');
+class _ImageInputState extends State<ImageInput>
+    with AutomaticKeepAliveClientMixin {
+  final List<File> _imageFileList = [];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource imageSource) async {
+    final _pickedIm = await _picker.pickImage(source: imageSource);
+
+    if (_pickedIm != null) {
+      final File newIm = File(_pickedIm.path);
+      GallerySaver.saveImage(newIm.path).then((value) {
+        _pickImageGall(ImageSource.gallery);
+      });
+    }
   }
 
-  final ImagePicker _picker = ImagePicker();
-  final List<XFile> _imageFileList = [];
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? pickedImage =
-          await _picker.pickImage(source: source, imageQuality: 1);
-      if (pickedImage == null) return;
-      // File tmpFile = File(pickedImage.path);
-      // tmpFile = await tmpFile.copy(tmpFile.path);
-      //
-      // setState(() {
-      //   _image = tmpFile;
-      // });
+  Future<void> _pickImageGall(ImageSource imageSource) async {
+    final _pickedImage = await _picker.pickImage(source: imageSource);
+    if (_pickedImage != null) {
       setState(() {
-        _imageFileList.add(pickedImage);
+        _imageFileList.add(File(_pickedImage.path));
       });
-    } on PlatformException catch (e) {}
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -69,7 +70,7 @@ class _ImageInputState extends State<ImageInput> {
           ),
           GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: _imageFileList.length + 1,
             gridDelegate:
                 // crossAxisCount stands for number of columns you want for displaying
@@ -106,24 +107,27 @@ class _ImageInputState extends State<ImageInput> {
                       Expanded(
                         flex: 1,
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.add_a_photo,
-                            size: 40,
-                          ),
-                          onPressed: () => _pickImage(ImageSource.camera),
-                          // size: 50,
-                        ),
+                            icon: const Icon(
+                              Icons.add_a_photo,
+                              size: 40,
+                            ),
+                            onPressed: () async {
+                              await _pickImage(ImageSource.camera);
+                            } // size: 50,
+                            ),
                       ),
                       Expanded(
                         flex: 1,
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.image,
-                            size: 40,
-                          ),
-                          onPressed: () => _pickImage(ImageSource.gallery),
-                          // size: 50,
-                        ),
+                            icon: const Icon(
+                              Icons.image,
+                              size: 40,
+                            ),
+                            onPressed: () async {
+                              await _pickImageGall(ImageSource.gallery);
+                            }
+                            // size: 50,
+                            ),
                       ),
                     ],
                   ),
@@ -147,7 +151,7 @@ class _ImageInputState extends State<ImageInput> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                    File(_imageFileList[index].path),
+                    _imageFileList[index],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -158,17 +162,8 @@ class _ImageInputState extends State<ImageInput> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
-/*
-*
-  final List<String> images = [
-    "https://uae.microless.com/cdn/no_image.jpg",
-    "https://images-na.ssl-images-amazon.com/images/I/81aF3Ob-2KL._UX679_.jpg",
-    "https://www.boostmobile.com/content/dam/boostmobile/en/products/phones/apple/iphone-7/silver/device-front.png.transform/pdpCarousel/image.jpg",
-    "https://media.ed.edmunds-media.com/gmc/sierra-3500hd/2018/td/2018_gmc_sierra-3500hd_f34_td_411183_1600.jpg",
-    "https://hips.hearstapps.com/amv-prod-cad-assets.s3.amazonaws.com/images/16q1/665019/2016-chevrolet-silverado-2500hd-high-country-diesel-test-review-car-and-driver-photo-665520-s-original.jpg",
-    "https://media.onthemarket.com/properties/6191869/797156548/composite.jpg",
-    "https://media.onthemarket.com/properties/6191840/797152761/composite.jpg",
-  ];
-  fi
-* */

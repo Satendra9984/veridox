@@ -19,33 +19,40 @@ class SPServices {
     Map<String, String> _data = json.decode(_prefs.getString('credentials')!);
     late AuthCredential _cred;
     if (_data.isNotEmpty) {
-      _cred = AuthCredential(providerId: _data['providerId'] ?? '', token: int.parse(_data['token'] ?? '100'), signInMethod: _data['signInMethod'] ?? '');
+      _cred = AuthCredential(
+          providerId: _data['providerId'] ?? '',
+          token: int.parse(_data['token'] ?? '100'),
+          signInMethod: _data['signInMethod'] ?? '');
     }
     return _cred;
   }
 
+  /// Saving SavedAssignment in local database
   Future setSavedAssignment(Map<String, dynamic> data) async {
     final _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(data['caseId'], jsonEncode(data));
   }
 
+  /// Checking if already exist in the local database
   Future<bool> checkIfExists(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
     return (_prefs.getString(caseId) != null);
   }
 
+  /// Getting the store SavedAssignment with the given CaseId
   Future<Map<String, dynamic>> getSavedAssignment(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> _data = json.decode(_prefs.getString('caseId')!);
     return _data;
   }
 
+  /// Getting the list of SavedAssignment to display
   Stream<Map<String, dynamic>> getSaveAssignmentStream(String caseId) async* {
     final _prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> data;
     while (true) {
-        data = jsonDecode(_prefs.getString(caseId)!);
-        yield data;
+      data = jsonDecode(_prefs.getString(caseId)!);
+      yield data;
     }
   }
 }

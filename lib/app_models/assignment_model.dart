@@ -1,43 +1,44 @@
-import 'package:veridox/app_utils/constants.dart';
-import 'package:flutter/material.dart';
-
+/// Assignment Model for the basic details of the assignment
 class Assignment {
   final String caseId;
   final String type;
-  final String description;
   final String address;
   final String status;
-  final DateTime assignedDate;
+  final String assignedDate;
+  final String phone;
+  final String name;
 
   Map<String, dynamic> toJson() {
     return {
       'caseId': caseId,
-      'type': type,
-      'description': description,
+      'document_type': type,
       'address': address,
       'status': status,
-      'assignedDate': assignedDate.toString()
+      'assigned_to': assignedDate,
+      'name': name
     };
   }
 
-  factory Assignment.fromJson(Map<String, dynamic> jsonData) {
+  factory Assignment.fromJson(Map<String, dynamic> jsonData, String caseId) {
     return Assignment(
+      caseId: caseId,
+      phone: jsonData['phone'],
+      name: jsonData['name'],
       address: jsonData['address'],
-      caseId: jsonData['caseId'] ?? ' ',
-      assignedDate: DateTime.parse(
-        jsonData['assignedDate'].toDate(),
-      ),
-      type: jsonData['type'],
-      description: jsonData['description'],
+      assignedDate: jsonData['assigned_at'],
+      type: jsonData['document_type'],
+      status: jsonData['status'],
     );
   }
 
   Assignment({
     required this.address,
     required this.caseId,
-    required this.description,
+    // required this.description,
     required this.type,
-    this.status = 'active',
+    required this.status,
     required this.assignedDate,
+    required this.phone,
+    required this.name,
   });
 }
