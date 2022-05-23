@@ -13,7 +13,7 @@ class Form extends StatefulWidget {
 }
 
 class _FormState extends State<Form> {
-  // for start making forms
+  /// for start making forms
   late final Map<String, dynamic> _formData;
 
   @override
@@ -25,13 +25,13 @@ class _FormState extends State<Form> {
   List<Widget> _getScreens() {
     List<Widget> screen = [];
     final List<Map<String, dynamic>> jsonPageData =
-        _formData['pages'] as List<Map<String, dynamic>>;
+        List<Map<String, dynamic>>.from(_formData["pages"]);
 
-    for (int i = 0; i < jsonPageData.length; i++) {
+    for (int i = 1; i < jsonPageData.length; i++) {
       screen.add(
         FormPage(
-          formIdInSp: _formData['id'].toString(),
-          // pageData: jsonPageData[i],
+          formIdInSp: widget.saveAssignment.caseId,
+          pageData: jsonPageData[i],
           num: i,
         ),
       );

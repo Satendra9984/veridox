@@ -42,7 +42,8 @@ class SPServices {
   /// Getting the store SavedAssignment with the given CaseId
   Future<Map<String, dynamic>> getSavedAssignment(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> _data = json.decode(_prefs.getString('caseId')!);
+    String? jsonData = _prefs.getString(caseId);
+    Map<String, dynamic> _data = json.decode(jsonData ?? '');
     return _data;
   }
 

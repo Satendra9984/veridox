@@ -10,37 +10,40 @@ class BasicDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Container(
-            padding: const EdgeInsets.all(0),
-            child: SelectableText(
-              title,
-              autofocus: false,
-              style: const TextStyle(
-                fontSize: 16,
-                // fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.all(0),
+              child: SelectableText(
+                title,
+                autofocus: false,
+                style: const TextStyle(
+                  fontSize: 16,
+                  // fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        Expanded(
-          flex: 3,
-          child: SelectableText(
-            value,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          const SizedBox(
+            width: 5,
+          ),
+          Expanded(
+            flex: 3,
+            child: SelectableText(
+              value,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

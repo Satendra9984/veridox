@@ -29,8 +29,8 @@ class SavedAssignment {
     Map<String, dynamic> jsonData,
     String caseId,
   ) {
-    print(
-        'report_Data in saveAss-->  ${jsonEncode(jsonData['report_data'])}\n\n');
+    // print(
+    //     'report_Data in saveAss-->  ${jsonEncode(jsonData['report_data'])}\n\n');
     return SavedAssignment(
       caseId: caseId,
       phone: jsonData['phone'],
