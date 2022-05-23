@@ -24,13 +24,13 @@ class _TableInputState extends State<TableInput> {
     super.initState();
     _columnLabels = widget.widgetJson['column_labels'];
     _rowLabels = widget.widgetJson['row_labels'];
-    dataInput = widget.widgetJson['value'];
-    print(dataInput);
+    dataInput = List<Map<String, dynamic>>.from(widget.widgetJson['value']);
+    // print(dataInput);
   }
 
   void _onUpdate() {
     widget.onChange(dataInput);
-    print(dataInput);
+    // print(dataInput);
   }
 
   @override
