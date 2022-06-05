@@ -1,12 +1,7 @@
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:veridox/app_screens/asignments/assignment_detail_page.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 
-import '../app_utils/app_constants.dart';
-import '../app_providers/assignment_provider.dart';
 import 'detail_text.dart';
 
 class AssignmentCard extends StatelessWidget {

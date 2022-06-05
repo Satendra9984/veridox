@@ -10,7 +10,7 @@ class SavedAssignment {
   final String assignedDate;
   final String phone;
   final String name;
-  Map<String, dynamic> formData = {};
+  final Map<String, dynamic>? formData;
 
   Map<String, dynamic> toJson() {
     return {
@@ -27,17 +27,18 @@ class SavedAssignment {
 
   factory SavedAssignment.fromJson(
     Map<String, dynamic> jsonData,
-    Map<String, dynamic> formData
+    Map<String, dynamic>? formData,
+      String caseId
   ) {
     return SavedAssignment(
-      caseId: jsonData['caseId'],
-      phone: jsonData['phone'],
-      name: jsonData['name'],
-      address: jsonData['address'],
-      assignedDate: jsonData['assigned_at'],
-      type: jsonData['document_type'],
-      status: jsonData['status'],
-      formData: formData,
+      caseId: caseId,
+      phone: jsonData['phone'] ?? '',
+      name: jsonData['name'] ?? '',
+      address: jsonData['address'] ?? '',
+      assignedDate: jsonData['assigned_at'] ?? '',
+      type: jsonData['document_type'] ?? '',
+      status: jsonData['status'] ?? '',
+      formData: formData ?? {},
     );
   }
 

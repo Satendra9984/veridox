@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import '../../app_models/assignment_model.dart';
 
 class FirestoreServices {
@@ -8,8 +9,6 @@ class FirestoreServices {
 
   Stream<List<Assignment>> getAssignments() {
     final _uid = _auth.currentUser!.uid;
-    // print(_uid);
-
     return _firestore
         .collection('field_verifier')
         .doc(_uid)
@@ -27,17 +26,17 @@ class FirestoreServices {
   /// Below two functions are used for getting complete assignment from firebase
   Future<Map<String, dynamic>?> getAssignmentById(String id) async {
     final snapshot = await _firestore.collection('assignments').doc(id).get();
-    print('Assignment-$id: ${snapshot.data()}');
+    debugPrint('Assignment-$id: ${snapshot.data()}');
     return snapshot.data();
   }
 
-  Future<Map<String, dynamic>> getFormDataById(String id) async {
+  Future<Map<String, dynamic>?> getFormDataById(String id) async {
     final snapshot = await _firestore
         .collection('assignments')
         .doc(id)
-        .collection('form_data')
+        .collection('form_data').doc('data')
         .get();
-    return snapshot.docs.first as Map<String, dynamic>;
+    return snapshot.data();
   }
   /// for getting the form data as json
 

@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
@@ -11,8 +9,6 @@ import '../assignments_home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogInPage extends StatefulWidget {
-  static String logInPageName = 'loginInPage';
-
   const LogInPage({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +27,6 @@ class _LogInPageState extends State<LogInPage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
         if (FirebaseAuth.instance.currentUser == null) {
           FirebaseFirestore.instance.collection('users');
-          final user = Provider.of<User?>(context);
           // print('${user?.uid}');
           Navigator.pushReplacement(
             context,
@@ -75,10 +70,6 @@ class _LogInPageState extends State<LogInPage> {
     }
     Navigator.pushReplacement(context,
         CupertinoPageRoute(builder: (context) => const AssignmentsHomePage()));
-  }
-
-  void saveLogInData() async {
-
   }
 
   final TextEditingController _pinputController = TextEditingController();
@@ -164,6 +155,7 @@ class _LogInPageState extends State<LogInPage> {
                         SubmitButton(
                           text: 'Log In',
                           onPress: () {
+                            setState(() {});
                             signInWithPhone();
                           },
                         ),
