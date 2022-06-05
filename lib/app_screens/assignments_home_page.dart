@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/completed_assignement_page.dart';
-import 'package:veridox/app_screens/profile_page.dart';
-import 'package:veridox/app_screens/saved_assignments_page.dart';
+import 'package:veridox/app_screens/profile/profile_page.dart';
+import 'package:veridox/app_screens/asignments/saved_assignments_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-import 'assignment_list.dart';
+import 'asignments/assignment_list.dart';
 
 enum FilterOptions {
   oldest,

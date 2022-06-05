@@ -27,13 +27,11 @@ class SPServices {
     return _cred;
   }
 
-  /// Saving SavedAssignment in local database
   Future setSavedAssignment(Map<String, dynamic> data) async {
     final _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(data['caseId'], jsonEncode(data));
   }
 
-  /// Checking if already exist in the local database
   Future<bool> checkIfExists(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
     return (_prefs.getString(caseId) != null);
@@ -54,5 +52,20 @@ class SPServices {
       data = jsonDecode(_prefs.getString(caseId)!);
       yield data;
     }
+  }
+
+  Future<void> setSavedAssignmentForm(Map<String, dynamic> formData) async {
+    final _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('form${formData['caseId']}', jsonEncode(formData));
+  }
+
+  Future<void> setSavedAssignmentList(List<String> list) async {
+    final _prefs = await SharedPreferences.getInstance();
+    await _prefs.setStringList('savedAssignments', list);
+  }
+
+  Future<List<String>?> getSavedAssignmentList() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.getStringList('savedAssignments');
   }
 }

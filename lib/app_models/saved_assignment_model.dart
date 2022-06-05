@@ -27,19 +27,17 @@ class SavedAssignment {
 
   factory SavedAssignment.fromJson(
     Map<String, dynamic> jsonData,
-    String caseId,
+    Map<String, dynamic> formData
   ) {
-    print(
-        'report_Data in saveAss-->  ${jsonEncode(jsonData['report_data'])}\n\n');
     return SavedAssignment(
-      caseId: caseId,
+      caseId: jsonData['caseId'],
       phone: jsonData['phone'],
       name: jsonData['name'],
       address: jsonData['address'],
       assignedDate: jsonData['assigned_at'],
       type: jsonData['document_type'],
       status: jsonData['status'],
-      formData: jsonData['report_data'],
+      formData: formData,
     );
   }
 

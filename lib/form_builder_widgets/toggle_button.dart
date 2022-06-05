@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:veridox/constants.dart';
+
+import '../app_utils/app_constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

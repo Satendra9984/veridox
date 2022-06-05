@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
-import 'assignments_home_page.dart';
+import '../assignments_home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogInPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   late String id;
+  final SPServices prefs = SPServices();
+
   void signInWithPhone() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: "+91${_phoneController.text}",
@@ -67,9 +71,14 @@ class _LogInPageState extends State<LogInPage> {
       PhoneAuthCredential _credential = PhoneAuthProvider.credential(
           verificationId: id, smsCode: _pinputController.text);
       await FirebaseAuth.instance.signInWithCredential(_credential);
+      await prefs.setLogInCredentials(_credential);
     }
     Navigator.pushReplacement(context,
         CupertinoPageRoute(builder: (context) => const AssignmentsHomePage()));
+  }
+
+  void saveLogInData() async {
+
   }
 
   final TextEditingController _pinputController = TextEditingController();

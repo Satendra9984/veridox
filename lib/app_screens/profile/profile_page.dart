@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/completed_assignement_page.dart';
-import 'package:veridox/app_screens/saved_assignments_page.dart';
+import 'package:veridox/app_screens/asignments/saved_assignments_page.dart';
 
-import 'assignment_detail_page.dart';
+import '../asignments/assignment_detail_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);

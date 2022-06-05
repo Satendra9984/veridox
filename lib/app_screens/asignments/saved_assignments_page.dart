@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
-import '../app_providers/saved_assignment_provider.dart';
-import '../templates/page_0.dart';
+import '../../app_providers/saved_assignment_provider.dart';
+import '../../templates/page_0.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   final ScrollController controller;
   const SavedAssignmentsPage({Key? key, required this.controller})
       : super(key: key);
-  // SavedAssignmentsPage({key? key, this.controller}): super(key: key);
   @override
   State<SavedAssignmentsPage> createState() => _SavedAssignmentsPageState();
 }
@@ -51,7 +50,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => Page0(),
+                  builder: (ctx) => const Page0(),
                 ),
               );
             },

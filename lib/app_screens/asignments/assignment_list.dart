@@ -5,7 +5,7 @@ import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-import 'package:veridox/app_utils/constants.dart';
+import 'package:veridox/app_utils/app_constants.dart';
 
 import 'assignment_detail_page.dart';
 
@@ -96,7 +96,7 @@ class _AssignmentListState extends State<AssignmentList> {
                           // TODO: SAVING ASSIGNMENTS
                           Provider.of<SavedAssignmentProvider>(context,
                                   listen: false)
-                              .addSaveAssignments(
+                              .addSavedAssignment(
                             list[index].caseId,
                           );
                         },
