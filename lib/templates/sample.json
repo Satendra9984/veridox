@@ -16,28 +16,158 @@
     {
       "page" : [
         {
-          "type" : "text",
-          "title": "customer details"
-        },
-        {
-           "type" : "text_input",
-           "title" : ""
+
+          "page": [
+            {
+              "type": "text",
+              "label": "Death Claim Investigation Report",
+              "heading_type": 1
+            },
+            {
+              "type": "text",
+              "label": "Heading 2",
+              "heading_type": 2
+            },
+            {
+              "type": "text",
+              "label": "Heading 3",
+              "heading_type": 3
+            },
+            {
+              "type": "single_line_input",
+              "label": "Other life/health insurance*",
+              "value": "",
+              "input_type": "string/integer/email",
+              "hint": "yahan likho"
+            },
+            {
+              "type": "single_line_row_input",
+              "label": "Other life/health insurance*",
+              "value": "",
+              "input_type": "string/integer/email",
+              "hint": "yahan likho"
+            },
+            {
+              "type": "table_input",
+              "label": "Profile of the life assured*",
+              "row_labels": [
+                "Name",
+                "Date of Birth",
+                "Age",
+                "Marital Status",
+                "Occupation",
+                "Annual Income",
+                "Education",
+                "Other life/health insurance",
+                "Address",
+                "Nominee Relationship"
+              ],
+              "column_labels": [
+                "As per investigation",
+                "Mismatch noted (Yes/No)",
+                "Evidence procured (Yes/No)"
+              ],
+              "value": [
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                },
+                {
+                  "As per investigation": "",
+                  "Mismatch noted (Yes/No)": "",
+                  "Evidence procured (Yes/No)": ""
+                }
+              ]
+            },
+            {
+              "type": "multi_line_input",
+              "label": "Final Remarks*-:",
+              "value": null,
+              "input_type": "string",
+              "hint": "yahan likho"
+            },
+            {
+              "type": "dropdown_menu",
+              "label": "Select Options",
+              "value": null,
+              "options": [
+                "1", "2", "3", "4", "5"
+              ],
+              "hint": "yahan likho"
+            },
+            {
+              "type": "toggle_button",
+              "label":
+              "Collect Ration Card / Parivar Card/Voter ID or other possible age proofs of all family members*",
+              "value": false,
+              "lines": "multi line",
+              "heading_type": 1
+            },
+            {
+              "type": "date_time_picker",
+              "label": "Visited On",
+              "value": ""
+            },
+            {
+              "type": "location_image",
+              "value": "firebase_storage_id"
+            },
+            {
+              "type": "image_input",
+              "value": "firebase_storage_id"
+            }
+          ]
         }
       ]
     },
     {
       "page" : [
-        {
-          "type" : "input"
-        },
-        {}
+
       ]
     },
     {
       "page" : [
-        {
-          "type" : "checkbox"
-        }
       ]
     }
   ]
