@@ -7,7 +7,6 @@ import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
 import 'package:veridox/form_builder_widgets/image_input.dart';
-import 'package:veridox/form_builder_widgets/location_input.dart';
 import 'package:veridox/form_builder_widgets/single_line_input.dart';
 import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/form_builder_widgets/multi_line_input.dart';

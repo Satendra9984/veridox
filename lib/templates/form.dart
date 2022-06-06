@@ -19,7 +19,7 @@ class _FormState extends State<Form> {
   @override
   void initState() {
     super.initState();
-    _formData = widget.saveAssignment.formData;
+    _formData = widget.saveAssignment.formData!;
   }
 
   List<Widget> _getScreens() {

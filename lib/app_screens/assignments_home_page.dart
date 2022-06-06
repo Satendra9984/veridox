@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/completed_assignement_page.dart';
-import 'package:veridox/app_screens/profile_page.dart';
-import 'package:veridox/app_screens/saved_assignments_page.dart';
+import 'package:veridox/app_screens/profile/profile_page.dart';
+import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-import 'assignment_list.dart';
+import 'assignments/assignment_list.dart';
 
 enum FilterOptions {
   oldest,
@@ -42,8 +42,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     _controller.addListener(listen);
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
     screens = [
-      AssignmentList(controller: _controller),
-      SavedAssignmentsPage(controller: _controller),
+      const AssignmentList(),
+      const SavedAssignmentsPage(),
       const ProfilePage(),
       const CompletedAssignemtsPage(),
     ];

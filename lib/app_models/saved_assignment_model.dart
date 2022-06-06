@@ -10,7 +10,7 @@ class SavedAssignment {
   final String assignedDate;
   final String phone;
   final String name;
-  Map<String, dynamic> formData = {};
+  final Map<String, dynamic>? formData;
 
   Map<String, dynamic> toJson() {
     return {
@@ -27,19 +27,18 @@ class SavedAssignment {
 
   factory SavedAssignment.fromJson(
     Map<String, dynamic> jsonData,
-    String caseId,
+    Map<String, dynamic>? formData,
+      String caseId
   ) {
-    // print(
-    //     'report_Data in saveAss-->  ${jsonEncode(jsonData['report_data'])}\n\n');
     return SavedAssignment(
       caseId: caseId,
-      phone: jsonData['phone'],
-      name: jsonData['name'],
-      address: jsonData['address'],
-      assignedDate: jsonData['assigned_at'],
-      type: jsonData['document_type'],
-      status: jsonData['status'],
-      formData: jsonData['report_data'],
+      phone: jsonData['phone'] ?? '',
+      name: jsonData['name'] ?? '',
+      address: jsonData['address'] ?? '',
+      assignedDate: jsonData['assigned_at'] ?? '',
+      type: jsonData['document_type'] ?? '',
+      status: jsonData['status'] ?? '',
+      formData: formData ?? {},
     );
   }
 
