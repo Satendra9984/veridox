@@ -19,9 +19,9 @@ class _DropdownMenuState extends State<DropdownMenu> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     items = widget.widgetJson['options'].toList();
+    currentValue = widget.widgetJson['value'];
   }
 
   @override

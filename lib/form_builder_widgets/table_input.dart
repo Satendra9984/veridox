@@ -18,7 +18,7 @@ class TableInput extends StatefulWidget {
 class _TableInputState extends State<TableInput> {
   late List<dynamic> _columnLabels;
   late List<dynamic> _rowLabels;
-  List<Map<String, dynamic>> dataInput = [];
+  late List<Map<String, dynamic>> dataInput;
   @override
   void initState() {
     super.initState();
@@ -40,6 +40,7 @@ class _TableInputState extends State<TableInput> {
       // alignment: Alignment.centerRight,
       child: Column(
         children: [
+          /// For the main heading/title
           Text(
             widget.widgetJson['label'],
             style: const TextStyle(
@@ -52,6 +53,8 @@ class _TableInputState extends State<TableInput> {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
+            /// For each row_label
             children: _rowLabels.map(
               (row) {
                 int i = index;
@@ -140,7 +143,8 @@ class _TableInputState extends State<TableInput> {
                                     Expanded(
                                       flex: 5,
                                       child: TextFormField(
-                                        initialValue: dataInput[i][row],
+                                        initialValue:
+                                            dataInput[i][col].toString(),
                                         // initialValue: widget.widgetJson['value'],
                                         onChanged: (val) {
                                           setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetjson;
@@ -16,6 +17,20 @@ class DateTimePicker extends StatefulWidget {
 class _DateTimePickerState extends State<DateTimePicker> {
   // Text
   DateTime _date = DateTime.now();
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    try {
+      setState(() {
+        _date = DateFormat('dd/mm/yyyy').parse(widget.widgetjson['value']);
+      });
+    } catch (e) {
+      _date = DateTime.now();
+    }
+  }
+
   void _showDateTimePicker() {
     showDatePicker(
       context: context,

@@ -106,7 +106,7 @@ class ProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (BuildContext context) => SavedAssignmentsPage(
+                      builder: (BuildContext context) => SavedAssignmentPage(
                         controller: ScrollController(),
                       ),
                     ),

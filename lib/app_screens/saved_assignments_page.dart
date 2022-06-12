@@ -1,87 +1,115 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_models/assignment_model.dart';
+import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
-import '../app_providers/saved_assignment_provider.dart';
-import '../templates/page_0.dart';
+import 'package:veridox/app_models/assignment_model.dart';
+import 'package:veridox/app_providers/assignment_provider.dart';
+import 'package:veridox/app_utils/constants.dart';
 
-class SavedAssignmentsPage extends StatefulWidget {
+import 'assignment_detail_page.dart';
+
+class SavedAssignmentPage extends StatefulWidget {
   final ScrollController controller;
-  const SavedAssignmentsPage({Key? key, required this.controller})
+  const SavedAssignmentPage({Key? key, required this.controller})
       : super(key: key);
-  // SavedAssignmentsPage({key? key, this.controller}): super(key: key);
+  static String assignmentListPage = 'assignmentListPage';
+
   @override
-  State<SavedAssignmentsPage> createState() => _SavedAssignmentsPageState();
+  State<SavedAssignmentPage> createState() => _SavedAssignmentPageState();
 }
 
-class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class _SavedAssignmentPageState extends State<SavedAssignmentPage> {
+  bool oldestFilter = false;
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> _refreshAssignments(BuildContext context) async {
+    await Provider.of<AssignmentProvider>(context, listen: false)
+        .fetchAndLoadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final assignmentProvider = Provider.of<SavedAssignmentProvider>(context);
-    final savedAssignmentList = assignmentProvider.savedAssignments;
-
+    // final assignmentsProv =
+    //     Provider.of<AssignmentProvider>(context, listen: false);
+    // final List<Assignment> assignmentList = assignmentsProv.tasks;
+    // print(assignmentList[0].type);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: const Text(
-          'Saved Assignment',
-          style: TextStyle(
-            color: Colors.white,
+        title: const Text('Assignments'),
+        backgroundColor: Colors.red[500]?.withOpacity(1),
+        actions: <Widget>[
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedOption) {
+              // will do sorting
+              // print(selectedOption);
+              setState(() {
+                if (selectedOption == FilterOptions.oldest) {
+                  oldestFilter = true;
+                } else {
+                  oldestFilter = false;
+                }
+              });
+            },
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                child: Text('Old to New'),
+                value: FilterOptions.oldest,
+              ),
+              const PopupMenuItem(
+                child: Text('Activity wise'),
+                value: FilterOptions.oldest,
+              ),
+              const PopupMenuItem(
+                child: Text('All'),
+                value: FilterOptions.all,
+              ),
+            ],
           ),
-        ),
+        ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        child: ListView.builder(
-          controller: widget.controller,
-          itemCount: savedAssignmentList.length,
-          itemBuilder: (ctx, index) => AssignmentCard(
-            navigate: () {
-              // TODO: PASS THE JSON DATA TO THE Page0()
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => Page0(),
+      // for the refreshing the assignments list
+      body: Consumer<List<Assignment>>(
+        builder: (context, list, widget) {
+          return ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              // print(list[index]);
+              return AssignmentCard(
+                navigate: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) =>
+                          AssignmentDetailPage(caseId: list[index].caseId),
+                    ),
+                  );
+                },
+                assignment: list[index],
+                popUpMenu: PopupMenuButton(
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      child: const Text('Save Task'),
+                      value: 0,
+                      onTap: () {
+                        // TODO: SAVING ASSIGNMENTS
+                        Provider.of<SavedAssignmentProvider>(context,
+                                listen: false)
+                            .addSavedAssignmentByID(
+                          list[index].caseId,
+                        );
+                      },
+                    ),
+                    const PopupMenuItem(
+                      child: Text('item3'),
+                      value: 2,
+                    ),
+                  ],
                 ),
               );
             },
-            assignment: Assignment(
-              address: savedAssignmentList[index].address,
-              caseId: savedAssignmentList[index].caseId,
-              // description: savedAssignmentList[index].description,
-              type: savedAssignmentList[index].type,
-              status: savedAssignmentList[index].status,
-              assignedDate: savedAssignmentList[index].assignedDate.toString(),
-              phone: '', name: '',
-            ),
-            popUpMenu: PopupMenuButton(
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  child: const Text('Remove'),
-                  value: 1,
-                  onTap: () {
-                    assignmentProvider.removeFromSaveAssignments(
-                        savedAssignmentList[index].caseId);
-                  },
-                ),
-                const PopupMenuItem(
-                  child: Text('item3'),
-                  value: 2,
-                ),
-              ],
-            ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

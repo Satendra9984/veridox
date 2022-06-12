@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({Key? key}) : super(key: key);
@@ -18,13 +19,30 @@ class _ImageInputState extends State<ImageInput>
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage(ImageSource imageSource) async {
-    final _pickedIm = await _picker.pickImage(source: imageSource);
+    if (await Permission.storage.request().isGranted) {
+      final XFile? image =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      PickedFile recordedImage = PickedFile(image!.path);
 
-    if (_pickedIm != null) {
-      final File newIm = File(_pickedIm.path);
-      GallerySaver.saveImage(newIm.path).then((value) {
-        _pickImageGall(ImageSource.gallery);
-      });
+      if (recordedImage != null) {
+        // setState(() {
+        //   firstButtonText = 'saving in progress...';
+        // });
+
+        GallerySaver.saveImage(recordedImage.path).then((path) async {
+          // setState(() {
+          //   firstButtonText = 'image saved!';
+          // });
+          final dir = await getTemporaryDirectory();
+          await _pickImageGall(ImageSource.gallery);
+        });
+      }
+    } else if (await Permission.storage.request().isPermanentlyDenied) {
+      await openAppSettings();
+    } else if (await Permission.storage.request().isDenied) {
+      // setState(() {
+      //   permissionGranted = false;
+      // });
     }
   }
 

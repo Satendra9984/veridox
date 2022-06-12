@@ -92,11 +92,11 @@ class _AssignmentListState extends State<AssignmentList> {
                       PopupMenuItem(
                         child: const Text('Save Task'),
                         value: 0,
-                        onTap: () {
+                        onTap: () async {
                           // TODO: SAVING ASSIGNMENTS
-                          Provider.of<SavedAssignmentProvider>(context,
+                          await Provider.of<SavedAssignmentProvider>(context,
                                   listen: false)
-                              .addSaveAssignments(
+                              .addSavedAssignmentByID(
                             list[index].caseId,
                           );
                         },

@@ -1,13 +1,11 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_providers/assignment_provider.dart';
+import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
 import 'package:veridox/form_builder_widgets/image_input.dart';
-import 'package:veridox/form_builder_widgets/location_input.dart';
 import 'package:veridox/form_builder_widgets/single_line_input.dart';
 import 'package:veridox/form_builder_widgets/text_display.dart';
 import 'package:veridox/form_builder_widgets/multi_line_input.dart';
@@ -16,9 +14,13 @@ import 'package:veridox/form_builder_widgets/table_input.dart';
 import '../form_builder_widgets/single_line_row_input.dart';
 
 class FormPage extends StatefulWidget {
-  // getting id to save data in the database
+  /// getting id to save data in the database
   final String formIdInSp;
+
+  /// page number of the form_page
   final int num;
+
+  /// json pageData for list getting the list of form element
   final Map<String, dynamic> pageData;
   // {
   //
@@ -175,65 +177,118 @@ class FormPage extends StatefulWidget {
 
 class _FormState extends State<FormPage>
     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+  /// List of formDataElements for building the form
   late final List<Map<String, dynamic>> _widgetList;
+
+  /// List of values for form_elements
   late final List<Map<String, dynamic>> _values;
+
+  /// just for printing the json_result
   String _result = '';
   int currentInd = -1;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // index = 0;
+
+    /// adding AppStateObserver
     WidgetsBinding.instance!.addObserver(this);
+
+    /// initializing the @_widgetList and @_values
     _widgetList = List<Map<String, dynamic>>.from(widget.pageData["page"]);
-    // print(' length---->  ${_widgetList.length}');
     _values = _widgetList;
-    // print('_widgetList in formpage--> ${_widgetList}');
   }
 
-  /// Function to update the databases with the updated values
+  /// Function to update the databases with the updated _values
   Future<void> _updateDatabases() async {
-    // final fire = await FirebaseFirestore.instance
-    //     .collection('assignments')
-    //     .doc(widget.formIdInSp)
-    //     .get();
-    // print('testing onDispose --->  $fire');
+    /// Updating the local-database from the given updated_values
+    // final _sharedPref = SPServices();
+    // final localData = await _sharedPref.getSavedAssignment(widget.formIdInSp);
+    //
+    // Map<String, dynamic> updatedData = Map<String, dynamic>.from(localData);
+    // updatedData["report_data"]["pages"][widget.num]["page"] = _values;
+    // final pretty = _prettyPrint(updatedData);
+    // // print(pretty);
+    // // print(pretty);
+    // // currentInd = index;
+    // setState(() {
+    //   _result = _prettyPrint(updatedData);
+    // });
+    // await _sharedPref.setSavedAssignment(updatedData);
+    // print('update called in form_page-->>>');
+    final _savedAssignmentProvider =
+        Provider.of<SavedAssignmentProvider>(context, listen: false);
 
-    /// TODO: SAVE DATA TO LOCAL_DATABASE
+    /// getting current_form from local_database
+    final localData =
+        await _savedAssignmentProvider.getFormById(widget.formIdInSp);
+    Map<String, dynamic> updatedData = Map<String, dynamic>.from(localData);
+
+    /// creating new updated values to add in local_database
+    updatedData["pages"][widget.num]["page"] = _values;
+
+    /// updating the local_database
+    await _savedAssignmentProvider.updateForm(widget.formIdInSp, updatedData);
+    setState(() {
+      _result = _prettyPrint(updatedData);
+    });
   }
 
   @override
   void dispose() {
-    // Future.delayed(const Duration(seconds: 1), () => _updateDatabases());
-
+    /// Saving the form_data in local_database and firebase if app is closed
+    Future.delayed(
+      const Duration(seconds: 1),
+      () async => await _updateDatabases().catchError(
+        (error) {
+          return;
+        },
+      ),
+    );
     WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
+  /// function to keep track of the AppState
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      print('AppLifecycleState.detached');
-      // TODO: SAVE THE DATA
+
+    /// when the current screen get_off the focus on phone
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      //print('AppLifecycleState.paused')
+      Future.delayed(
+        const Duration(seconds: 1),
+        () async => await _updateDatabases().catchError(
+          (error) {
+            print('local dba --> $error');
+            return;
+          },
+        ),
+      );
+
+      /// TODO: SAVE THE DATA
     } else if (state == AppLifecycleState.resumed) {
-      print('AppLifecycleState.resumed');
+      /// when the current screen get_off the focus on phone
+      //print('AppLifecycleState.resumed');
     }
   }
 
-  void _onUpdate(int ind, var value) {
-    // Todo : Now update data on the _values
+  /// Function to update @_values for each element(index) in @_widgetList
+  void _onUpdate(int index, var value) {
+    /// Todo : Now update data on the _values
 
     setState(() {
-      if (_values[ind].containsKey('value')) {
-        _values[ind]['value'] = value;
+      if (_values[index].containsKey('value')) {
+        _values[index]['value'] = value;
       }
       _result = _prettyPrint(_values);
-      currentInd = ind;
+      currentInd = index;
     });
   }
 
+  /// For printing the result in json_format
   String _prettyPrint(json) {
     var encoder = const JsonEncoder.withIndent(' ');
     return encoder.convert(json);
@@ -241,7 +296,6 @@ class _FormState extends State<FormPage>
 
   @override
   Widget build(BuildContext context) {
-    // print('formpage rebuildeded\n\nn\n');
     super.build(context);
     int index = 0;
     return SafeArea(
@@ -249,10 +303,6 @@ class _FormState extends State<FormPage>
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Container(
-            // decoration: BoxDecoration(
-            //   color: Colors.red,
-            // ),
-            // height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Column(
               children: [
@@ -322,6 +372,15 @@ class _FormState extends State<FormPage>
                 const SizedBox(
                   height: 20,
                 ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      /// SAVE THE PAGE_DATA
+                      await _updateDatabases();
+                    },
+                    child: const Text('Save'),
+                  ),
+                ),
                 Text('index-->  $currentInd \n $_result'),
               ],
             ),
@@ -332,6 +391,6 @@ class _FormState extends State<FormPage>
   }
 
   @override
-  // TODO: implement wantKeepAlive
+  /// implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
