@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/constants.dart';
+import '../app_utils/app_constants.dart';
 
 class DropdownMenu extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

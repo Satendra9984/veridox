@@ -1,16 +1,19 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SPServices {
   Future<void> setLogInCredentials(AuthCredential credential) async {
     final _prefs = await SharedPreferences.getInstance();
-    _prefs.setString('credentials', credential.toString());
-    _prefs.setString('token', credential.token.toString());
+    debugPrint(credential.toString());
+    await _prefs.setString('credentials', credential.toString());
+    await _prefs.setString('token', 'loggedIn');
   }
 
   Future<String?> getToken() async {
     final _prefs = await SharedPreferences.getInstance();
+    print(_prefs.getString('token'));
     return _prefs.getString('token');
   }
 
@@ -27,38 +30,27 @@ class SPServices {
     return _cred;
   }
 
-  /// Checking if already exist in the local database
   Future<bool> checkIfExists(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
     return (_prefs.getString(caseId) != null);
   }
 
-  /// Saving SavedAssignment in local database
-  Future setSavedAssignment(Map<String, dynamic> data) async {
-    final _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString(data['caseId'], jsonEncode(data));
-  }
-
-  /// Getting the stored SavedAssignment with the given CaseId
+  /// Getting the store SavedAssignment with the given CaseId
   Future<Map<String, dynamic>> getSavedAssignment(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
-    String? jsonData = _prefs.getString(caseId);
-    Map<String, dynamic> _data = json.decode(jsonData ?? '');
+    Map<String, dynamic> _data = json.decode(_prefs.getString(caseId)!);
     return _data;
   }
 
-  /// Saving form in local database
-  Future setFormDataById(Map<String, dynamic> form, String caseId) async {
+  Future<Map<String, dynamic>> getSavedAssignmentForm(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('$caseId/form', jsonEncode(form));
+    Map<String, dynamic> _data = json.decode(_prefs.getString('form$caseId')!);
+    return _data;
   }
 
-  /// Getting the stored form with the given CaseId
-  Future<Map<String, dynamic>> getFormById(String caseId) async {
+  Future<List<String>?> getSavedAssignmentList() async {
     final _prefs = await SharedPreferences.getInstance();
-    String? jsonForm = _prefs.getString('$caseId/form');
-    Map<String, dynamic> _form = jsonDecode(jsonForm ?? '');
-    return _form;
+    return _prefs.getStringList('savedAssignments');
   }
 
   /// Getting the list of SavedAssignment to display
@@ -71,16 +63,18 @@ class SPServices {
     }
   }
 
-  /// Updating SavedAssignment in local database
-  Future updateSavedAssignment(Map<String, dynamic> data) async {
+  Future setSavedAssignment(Map<String, dynamic> data, String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString(data['caseId'], jsonEncode(data));
+    await _prefs.setString(caseId, jsonEncode(data));
   }
 
-  /// Updating form_data by caseId
-  Future<void> updateForm(
-      String caseId, Map<String, dynamic> newFormData) async {
+  Future<void> setSavedAssignmentForm(Map<String, dynamic> formData, String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('$caseId/form', jsonEncode(newFormData));
+    await _prefs.setString('form$caseId', jsonEncode(formData));
+  }
+
+  Future<void> setSavedAssignmentList(List<String> list) async {
+    final _prefs = await SharedPreferences.getInstance();
+    await _prefs.setStringList('savedAssignments', list);
   }
 }

@@ -1,13 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/completed_assignement_page.dart';
-import 'package:veridox/app_screens/saved_assignments_page.dart';
+import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
+import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_utils/app_functions.dart';
+import '../assignments/assignment_detail_page.dart';
 
-import 'assignment_detail_page.dart';
-
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  late FirebaseAuth _auth;
+
+  @override
+  void initState() {
+    _auth = FirebaseAuth.instance;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,22 +62,22 @@ class ProfilePage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Satendra Pal',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'satyendrapal123@gmail.com',
                           style: TextStyle(
                             fontSize: 13,
                           ),
                         ),
-                        Text(
+                        const Text(
                           '1234567890',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -72,9 +87,9 @@ class ProfilePage extends StatelessWidget {
                       onPressed: () {
                         // TODO: navigate to the edit profile screen
                       },
-                      child: Text(
+                      child: const Text(
                         'Edit',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.blue,
                         ),
                       ),
@@ -92,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (BuildContext context) => AssignmentDetailPage(
+                      builder: (BuildContext context) => const AssignmentDetailPage(
                         caseId: '',
                       ),
                     ),
@@ -106,9 +121,7 @@ class ProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (BuildContext context) => SavedAssignmentPage(
-                        controller: ScrollController(),
-                      ),
+                      builder: (BuildContext context) => const SavedAssignmentsPage(),
                     ),
                   );
                 },
@@ -121,7 +134,7 @@ class ProfilePage extends StatelessWidget {
                     context,
                     CupertinoPageRoute(
                       builder: (BuildContext context) =>
-                          CompletedAssignemtsPage(),
+                          const CompletedAssignemtsPage(),
                     ),
                   );
                 },
@@ -133,12 +146,14 @@ class ProfilePage extends StatelessWidget {
               OutlinedButton(
                 onPressed: () {
                   // TODO: NAVIGATE TO DETAILS PAGE FOR PROFILE DETAILS
+                  _auth.signOut();
+                  navigatePush(context, const LogInPage());
                 },
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Colors.black),
-                  minimumSize: Size(300, 40),
+                  side: const BorderSide(color: Colors.black),
+                  minimumSize: const Size(300, 40),
                 ),
-                child: Text(
+                child: const Text(
                   'Logout',
                   style: TextStyle(
                     fontSize: 18,

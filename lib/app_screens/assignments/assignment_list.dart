@@ -5,15 +5,12 @@ import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-import 'package:veridox/app_utils/constants.dart';
+import 'package:veridox/app_utils/app_constants.dart';
 
 import 'assignment_detail_page.dart';
 
 class AssignmentList extends StatefulWidget {
-  final ScrollController controller;
-  const AssignmentList({Key? key, required this.controller}) : super(key: key);
-  static String assignmentListPage = 'assignmentListPage';
-
+  const AssignmentList({Key? key}) : super(key: key);
   @override
   State<AssignmentList> createState() => _AssignmentListState();
 }
@@ -28,10 +25,6 @@ class _AssignmentListState extends State<AssignmentList> {
 
   @override
   Widget build(BuildContext context) {
-    // final assignmentsProv =
-    //     Provider.of<AssignmentProvider>(context, listen: false);
-    // final List<Assignment> assignmentList = assignmentsProv.tasks;
-    // print(assignmentList[0].type);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Assignments'),
@@ -92,11 +85,11 @@ class _AssignmentListState extends State<AssignmentList> {
                       PopupMenuItem(
                         child: const Text('Save Task'),
                         value: 0,
-                        onTap: () async {
+                        onTap: () {
                           // TODO: SAVING ASSIGNMENTS
-                          await Provider.of<SavedAssignmentProvider>(context,
+                          Provider.of<SavedAssignmentProvider>(context,
                                   listen: false)
-                              .addSavedAssignmentByID(
+                              .addSavedAssignment(
                             list[index].caseId,
                           );
                         },

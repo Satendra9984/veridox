@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter/cupertino.dart';
+
+enum Status {
+  assigned,
+  working,
+  pending,
+  completed,
+}
+enum FilterOptions { oldest, all }
+
+enum ScreenNumber {
+  home,
+  saved,
+  profile,
+  completed,
+}
+
+
 
 BoxDecoration containerElevationDecoration = BoxDecoration(
   border: Border.all(
