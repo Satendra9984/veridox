@@ -23,6 +23,41 @@ class _AssignmentListState extends State<AssignmentList> {
         .fetchAndLoadData();
   }
 
+  /*
+  * AppBar(
+        title: const Text('Assignments'),
+        backgroundColor: Colors.red[500]?.withOpacity(1),
+        actions: <Widget>[
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedOption) {
+              setState(() {
+                if (selectedOption == FilterOptions.oldest) {
+                  oldestFilter = true;
+                } else {
+                  oldestFilter = false;
+                }
+              });
+            },
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                child: Text('Old to New'),
+                value: FilterOptions.oldest,
+              ),
+              const PopupMenuItem(
+                child: Text('Activity wise'),
+                value: FilterOptions.oldest,
+              ),
+              const PopupMenuItem(
+                child: Text('All'),
+                value: FilterOptions.all,
+              ),
+            ],
+          ),
+        ],
+      ),
+  * */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,20 +118,16 @@ class _AssignmentListState extends State<AssignmentList> {
                   popUpMenu: PopupMenuButton(
                     itemBuilder: (_) => [
                       PopupMenuItem(
-                        child: const Text('Save Task'),
                         value: 0,
-                        onTap: () {
+                        onTap: () async {
                           // TODO: SAVING ASSIGNMENTS
-                          Provider.of<SavedAssignmentProvider>(context,
-                                  listen: false)
-                              .addSavedAssignment(
-                            list[index].caseId,
-                          );
+                          // await Provider.of<SavedAssignmentProvider>(context,
+                          //         listen: false)
+                          //     .addSavedAssignment(
+                          //   list[index].caseId,
+                          // );
                         },
-                      ),
-                      const PopupMenuItem(
-                        child: Text('item3'),
-                        value: 2,
+                        child: const Text('Reject Task'),
                       ),
                     ],
                   ),

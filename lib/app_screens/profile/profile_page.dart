@@ -15,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   late FirebaseAuth _auth;
 
   @override
@@ -23,147 +22,134 @@ class _ProfilePageState extends State<ProfilePage> {
     _auth = FirebaseAuth.instance;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: const Text(
-            'My Account',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          backgroundColor: Colors.white,
-        ),
-        body: Container(
-          color: Colors.white,
-          // height: 300,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+    return Container(
+      color: Colors.white,
+      // height: 300,
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
 
-          child: Column(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-                color: Colors.blueGrey[50],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+            color: Colors.blueGrey[50],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/doc_image.png',
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/images/doc_image.png',
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.cover,
+                    const Text(
+                      'Satendra Pal',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Satendra Pal',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Text(
-                          'satyendrapal123@gmail.com',
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                        const Text(
-                          '1234567890',
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+                    const Text(
+                      'satyendrapal123@gmail.com',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        // TODO: navigate to the edit profile screen
-                      },
-                      child: const Text(
-                        'Edit',
-                        style: const TextStyle(
-                          color: Colors.blue,
-                        ),
+                    const Text(
+                      '1234567890',
+                      style: const TextStyle(
+                        fontSize: 14,
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ProfileOptions(
-                option: 'Assignment History',
-                onPress: () {
-                  // print('pushed');
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (BuildContext context) => const AssignmentDetailPage(
-                        caseId: '',
-                      ),
+                TextButton(
+                  onPressed: () {
+                    // TODO: navigate to the edit profile screen
+                  },
+                  child: const Text(
+                    'Edit',
+                    style: const TextStyle(
+                      color: Colors.blue,
                     ),
-                  );
-                },
-              ),
-              ProfileOptions(
-                option: 'Saved Assignment',
-                onPress: () {
-                  // print('pushed');
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (BuildContext context) => const SavedAssignmentsPage(),
-                    ),
-                  );
-                },
-              ),
-              ProfileOptions(
-                option: 'Assignment Completed',
-                onPress: () {
-                  // print('pushed');
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (BuildContext context) =>
-                          const CompletedAssignemtsPage(),
-                    ),
-                  );
-                },
-              ),
-              Divider(
-                thickness: 5,
-                color: Colors.blueGrey[50],
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  // TODO: NAVIGATE TO DETAILS PAGE FOR PROFILE DETAILS
-                  _auth.signOut();
-                  navigatePush(context, const LogInPage());
-                },
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.black),
-                  minimumSize: const Size(300, 40),
-                ),
-                child: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          const SizedBox(
+            height: 10,
+          ),
+          ProfileOptions(
+            option: 'Assignment History',
+            onPress: () {
+              // print('pushed');
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (BuildContext context) => const AssignmentDetailPage(
+                    caseId: '',
+                  ),
+                ),
+              );
+            },
+          ),
+          ProfileOptions(
+            option: 'Saved Assignment',
+            onPress: () {
+              // print('pushed');
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (BuildContext context) =>
+                      const SavedAssignmentsPage(),
+                ),
+              );
+            },
+          ),
+          ProfileOptions(
+            option: 'Assignment Completed',
+            onPress: () {
+              // print('pushed');
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (BuildContext context) =>
+                      const CompletedAssignemtsPage(),
+                ),
+              );
+            },
+          ),
+          Divider(
+            thickness: 5,
+            color: Colors.blueGrey[50],
+          ),
+          OutlinedButton(
+            onPressed: () {
+              // TODO: NAVIGATE TO DETAILS PAGE FOR PROFILE DETAILS
+              _auth.signOut();
+              navigatePush(context, const LogInPage());
+            },
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.black),
+              minimumSize: const Size(300, 40),
+            ),
+            child: const Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

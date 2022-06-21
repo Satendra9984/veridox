@@ -192,7 +192,7 @@ class _FormState extends State<FormPage>
     super.initState();
 
     /// adding AppStateObserver
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     /// initializing the @_widgetList and @_values
     _widgetList = List<Map<String, dynamic>>.from(widget.pageData["page"]);
@@ -200,39 +200,7 @@ class _FormState extends State<FormPage>
   }
 
   /// Function to update the databases with the updated _values
-  Future<void> _updateDatabases() async {
-    /// Updating the local-database from the given updated_values
-    // final _sharedPref = SPServices();
-    // final localData = await _sharedPref.getSavedAssignment(widget.formIdInSp);
-    //
-    // Map<String, dynamic> updatedData = Map<String, dynamic>.from(localData);
-    // updatedData["report_data"]["pages"][widget.num]["page"] = _values;
-    // final pretty = _prettyPrint(updatedData);
-    // // print(pretty);
-    // // print(pretty);
-    // // currentInd = index;
-    // setState(() {
-    //   _result = _prettyPrint(updatedData);
-    // });
-    // await _sharedPref.setSavedAssignment(updatedData);
-    // print('update called in form_page-->>>');
-    final _savedAssignmentProvider =
-        Provider.of<SavedAssignmentProvider>(context, listen: false);
-
-    /// getting current_form from local_database
-    final localData =
-        await _savedAssignmentProvider.getFormById(widget.formIdInSp);
-    Map<String, dynamic> updatedData = Map<String, dynamic>.from(localData);
-
-    /// creating new updated values to add in local_database
-    updatedData["pages"][widget.num]["page"] = _values;
-
-    /// updating the local_database
-    await _savedAssignmentProvider.updateForm(widget.formIdInSp, updatedData);
-    setState(() {
-      _result = _prettyPrint(updatedData);
-    });
-  }
+  Future<void> _updateDatabases() async {}
 
   @override
   void dispose() {
@@ -245,7 +213,7 @@ class _FormState extends State<FormPage>
         },
       ),
     );
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -391,6 +359,7 @@ class _FormState extends State<FormPage>
   }
 
   @override
+
   /// implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

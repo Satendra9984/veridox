@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-
 class SavedAssignment {
   final String caseId;
   final String type;
   final String address;
-  final String status;
+  String status;
   final String assignedDate;
   final String phone;
   final String name;
@@ -25,11 +21,8 @@ class SavedAssignment {
     };
   }
 
-  factory SavedAssignment.fromJson(
-    Map<String, dynamic> jsonData,
-    Map<String, dynamic>? formData,
-      String caseId
-  ) {
+  factory SavedAssignment.fromJson(Map<String, dynamic> jsonData,
+      Map<String, dynamic>? formData, String caseId) {
     return SavedAssignment(
       caseId: caseId,
       phone: jsonData['phone'] ?? '',
@@ -37,7 +30,7 @@ class SavedAssignment {
       address: jsonData['address'] ?? '',
       assignedDate: jsonData['assigned_at'] ?? '',
       type: jsonData['document_type'] ?? '',
-      status: jsonData['status'] ?? '',
+      status: jsonData['status'] ?? 'working',
       formData: formData ?? {},
     );
   }

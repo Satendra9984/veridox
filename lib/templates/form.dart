@@ -3,16 +3,17 @@ import 'package:veridox/templates/form_page.dart';
 
 import '../app_models/saved_assignment_model.dart';
 
-class Form extends StatefulWidget {
+class FormTemplate extends StatefulWidget {
   final SavedAssignment saveAssignment;
 
-  const Form({Key? key, required this.saveAssignment}) : super(key: key);
+  const FormTemplate({Key? key, required this.saveAssignment})
+      : super(key: key);
 
   @override
-  State<Form> createState() => _FormState();
+  State<FormTemplate> createState() => _FormTemplateState();
 }
 
-class _FormState extends State<Form> {
+class _FormTemplateState extends State<FormTemplate> {
   /// for start making forms
   late final Map<String, dynamic> _formData;
 

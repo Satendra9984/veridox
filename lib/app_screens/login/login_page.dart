@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
+import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
@@ -45,20 +46,23 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  BoxDecoration get _pinPutDecoration {
-    return BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          spreadRadius: 1,
-          color: Colors.black.withOpacity(0.4),
-          blurRadius: 10,
-          offset: const Offset(1, 7),
-        ),
-      ],
-      color: Colors.white,
-      border: Border.all(color: Colors.deepPurpleAccent),
-      borderRadius: BorderRadius.circular(15.0),
-    );
+  PinTheme get _pinPutDecoration {
+    return PinTheme(
+        height: 35,
+        width: 35,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 1,
+              color: Colors.black.withOpacity(0.4),
+              blurRadius: 10,
+              offset: const Offset(1, 7),
+            ),
+          ],
+          color: Colors.white,
+          border: Border.all(color: Colors.deepPurpleAccent),
+          borderRadius: BorderRadius.circular(15.0),
+        ));
   }
 
   void changeScreen() async {
@@ -68,8 +72,15 @@ class _LogInPageState extends State<LogInPage> {
       await FirebaseAuth.instance.signInWithCredential(_credential);
       await prefs.setLogInCredentials(_credential);
     }
-    Navigator.pushReplacement(context,
-        CupertinoPageRoute(builder: (context) => const AssignmentsHomePage()));
+    // Navigator.pushReplacement(context,
+    //     CupertinoPageRoute(builder: (context) => const AssignmentsHomePage()));
+
+    Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const SendRequestScreen(),
+      ),
+    );
   }
 
   final TextEditingController _pinputController = TextEditingController();
@@ -124,13 +135,11 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     child: Column(
                       children: [
-
                         CustomTextInput(
                             controller: _phoneController,
                             text: "Phone Number",
                             keyboardType: TextInputType.number,
                             password: false),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.max,
@@ -214,24 +223,27 @@ class _LogInPageState extends State<LogInPage> {
                         const SizedBox(
                           height: 27,
                         ),
-                        PinPut(
-                          fieldsCount: 6,
+                        Pinput(
+                          length: 6,
                           controller: _pinputController,
-                          submittedFieldDecoration: _pinPutDecoration.copyWith(
-                            color: Colors.white.withOpacity(0.9),
+                          submittedPinTheme: _pinPutDecoration.copyWith(
+                            // color: Colors.white.withOpacity(0.9),
+                            decoration: _pinPutDecoration.decoration?.copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                            ),
                           ),
-                          selectedFieldDecoration: _pinPutDecoration,
-                          followingFieldDecoration: _pinPutDecoration.copyWith(
-                            borderRadius: BorderRadius.circular(15.0),
-                            border: Border.all(
-                              width: 2.3,
-                              color: Colors.blueAccent,
+                          focusedPinTheme: _pinPutDecoration,
+                          followingPinTheme: _pinPutDecoration.copyWith(
+                            decoration: _pinPutDecoration.decoration?.copyWith(
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(
+                                width: 2.3,
+                                color: Colors.blueAccent,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        const SizedBox(height: 30, width: 742),
                         SubmitButton(
                           text: "Submit",
                           onPress: () {

@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/app_models/assignment_model.dart';
-
+import 'package:provider/provider.dart';
+import '../app_models/saved_assignment_model.dart';
+import '../app_providers/saved_assignment_provider.dart';
+import '../app_screens/assignments/saved_assignments_page.dart';
 import '../app_utils/app_functions.dart';
 import 'detail_text.dart';
 
-class AssignmentCard extends StatelessWidget {
+class SavedAssignmentCard extends StatelessWidget {
   final Offset distance = const Offset(3.5, 3.5);
   final double blur = 5.0;
 
-  final Widget popUpMenu;
-  final Assignment assignment;
+  // final Widget popUpMenu;
+  final SavedAssignment assignment;
   final Function() navigate;
-  const AssignmentCard(
-      {Key? key,
-      required this.navigate,
-      required this.popUpMenu,
-      required this.assignment})
-      : super(key: key);
+  const SavedAssignmentCard({
+    Key? key,
+    required this.navigate,
+    // required this.popUpMenu,
+    required this.assignment,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class AssignmentCard extends StatelessWidget {
                   DetailTextStylesWidget(
                       heading: 'Type', value: assignment.type.toString()),
                   DetailTextStylesWidget(
-                      heading: 'CreatedAt',
+                      heading: 'Assigned At',
                       value: assignment.assignedDate.toString()),
                 ],
               ),
@@ -82,7 +84,20 @@ class AssignmentCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  popUpMenu,
+                  PopupMenuButton(
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        value: 0,
+                        onTap: () {
+                          // TODO: DeletingSavedAssignments
+                          Provider.of<SavedAssignmentProvider>(context,
+                                  listen: false)
+                              .removeFromSaveAssignments(assignment.caseId);
+                        },
+                        child: const Text('Delete Task'),
+                      ),
+                    ],
+                  ),
                   CircleAvatar(
                     radius: 8,
                     backgroundColor: getStatusColour(assignment.status),

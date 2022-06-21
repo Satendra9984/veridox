@@ -32,7 +32,14 @@ class SPServices {
 
   Future<bool> checkIfExists(String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
+
     return (_prefs.getString(caseId) != null);
+  }
+
+  Future<void> removeSavedAssignment(String caseId) async {
+    final _prefs = await SharedPreferences.getInstance();
+    _prefs.remove(caseId);
+    _prefs.remove('$caseId/form');
   }
 
   /// Getting the store SavedAssignment with the given CaseId
@@ -68,11 +75,13 @@ class SPServices {
     await _prefs.setString(caseId, jsonEncode(data));
   }
 
-  Future<void> setSavedAssignmentForm(Map<String, dynamic> formData, String caseId) async {
+  Future<void> setSavedAssignmentForm(
+      Map<String, dynamic> formData, String caseId) async {
     final _prefs = await SharedPreferences.getInstance();
     await _prefs.setString('form$caseId', jsonEncode(formData));
   }
 
+  /// setting the list of SavedAssignmentList Id's
   Future<void> setSavedAssignmentList(List<String> list) async {
     final _prefs = await SharedPreferences.getInstance();
     await _prefs.setStringList('savedAssignments', list);

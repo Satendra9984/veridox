@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_models/saved_assignment_model.dart';
 import '../../app_models/assignment_model.dart';
 
 class FirestoreServices {
@@ -12,6 +13,7 @@ class FirestoreServices {
     return _firestore
         .collection('field_verifier')
         .doc(_uid)
+        // .doc('nZF37kTBVTMbAP452OUQ9ZKxIk32')
         .collection('assignments')
         .snapshots()
         .map(
@@ -34,10 +36,42 @@ class FirestoreServices {
     final snapshot = await _firestore
         .collection('assignments')
         .doc(id)
-        .collection('form_data').doc('data')
+        .collection('form_data')
+        .doc('data')
         .get();
     return snapshot.data();
   }
-  /// for getting the form data as json
 
+  Future<void> updateStatus(
+      {required String caseId, required String status}) async {
+    try {
+      await _firestore
+          .collection('assignments')
+          .doc(caseId)
+          .update({'status': status});
+      await _firestore
+          .collection('field_verifier')
+          .doc(_auth.currentUser!.uid)
+          .collection('assignments')
+          .doc(caseId)
+          .update({'status': status});
+    } catch (e) {
+      debugPrint(e.toString());
+      return;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAgencyList() async {
+    final QuerySnapshot<Map<String, dynamic>> fList =
+        await _firestore.collection('agency').get();
+
+    final docs = fList.docs;
+
+    return docs.map((e) {
+      var data = e.data();
+      data['id'] = e.id;
+      return data;
+    }).toList();
+  }
 }
+// nZF37kTBVTMbAP452OUQ9ZKxIk32 --> subhadepp

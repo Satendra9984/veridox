@@ -15,7 +15,11 @@ enum FilterOptions {
 
 class AssignmentsHomePage extends StatefulWidget {
   static String assignmentsHomePage = 'assignmentHomePage';
-  const AssignmentsHomePage({Key? key}) : super(key: key);
+  final int? pageIndex;
+  const AssignmentsHomePage({
+    Key? key,
+    this.pageIndex,
+  }) : super(key: key);
 
   @override
   State<AssignmentsHomePage> createState() => _AssignmentsHomePageState();
@@ -72,7 +76,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
           },
         );
       } catch (error) {
-        print(error);
+        debugPrint(error.toString());
         setState(() {
           _isLoading = false;
         });
@@ -107,11 +111,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // this widget will keep all the screen under the same state of this home_page so that no data will be loosen
-      // body: IndexedStack(
-      //   index: currentItemSelected,
-      //   children: screens,
-      // ),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -192,155 +191,3 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     );
   }
 }
-// final snap = await _firestore
-//     .collection('fv')
-//     .where('name', isEqualTo: 'Shubhadeep Chowdhary')
-//     .get();
-// final nasimDoc = snap.docs
-//     .firstWhere((element) => element['name'] == 'Shubhadeep Chowdhary');
-// await _firestore.collection('fv').doc(nasimDoc.id).update(
-//   {
-//     'date_of_birth': '01/10/2001',
-//   },
-// );
-
-//     .add({
-//   'address': 'kalyani west bengal',
-//   'agency': 'veridox',
-//   'date_of_birth': 'OOOOOOO',
-//   'date_of_joinig': '01/10/2021',
-//   'name': 'Nasim Shah',
-//   'phone': '8768715527',
-//
-// final docList = _firestore.collection('assignments').get();
-// List<QueryDocumentSnapshot> document = snap.docs;
-// for (var di in document) {
-//   print(di.data());
-// }
-
-//void printFirestore() async {
-//   final proProv = Provider.of<AssignmentProvider>(context);
-//   final user = Provider.of<User?>(context);
-//   print(' id in home page -->  ${user?.uid}');
-// address: '26A Iiit kalyani, West Bengal',
-// caseId: 'sbi123456',
-// description: 'description',
-// type: 'Home Loan',
-// status: Status.completed),
-
-// final snap = await _firestore
-//     .collection('fv')
-//     .doc('Gmq48PNnK4hNgeEAUOdt')
-//     .collection('assignments')
-//     .add(
-//   {
-//     'agency': 'veridox',
-//     'fv': 'shubhadeep chowdhary',
-//     'address': '26A Iiit kalyani, West Bengal',
-//     'description': 'description',
-//     'type': 'ass.type',
-//     'status': 'ass.status.toString()',
-//   },
-// );
-
-// for (var ass in proProv.tasks) {
-//   String id;
-//   var timestamp = Timestamp.now();
-//   await _firestore.collection('assignments').add(
-//     {
-//       'agency': 'veridox',
-//       'fv': 'shubhadeep chowdhary',
-//       'address': '26A Iiit kalyani, West Bengal',
-//       'description': ass.description,
-//       'type': ass.type,
-//       'status': ass.status.toString(),
-//     },
-//   ).then(
-//     (value) => {
-//       id = value.id,
-//     },
-//   );
-//   // adding in agency using this id
-// }
-// final da = await _firestore.collection('assignments').doc().delete();
-// final addAssWithServerTimeStamp = await _firestore.collection('assignments').doc(FieldValue.serverTimestamp().toString())
-
-// await _firestore
-//     .collection('fv')
-//     .doc('nZF37kTBVTMbAP452OUQ9ZKxIk32')
-//     .delete();
-
-// DONE: fetch Satendra Pal fv data form firestore
-// final list = await _firestore
-//     .collection('assignments')
-//     // .where('fv', isEqualTo: 'Satendra Pal')
-//     .get()
-//     .then(
-//   (value) async {
-//     final doc = value.docs;
-//     for (var ed in doc) {
-//       await _firestore
-//           .collection('assignments')
-//           .doc(ed.id)
-//           .update({'current_location': 'current_location'});
-//     }
-//   },
-// );
-// final list = await _firestore
-//     .collection('assignments')
-//     .where('fv', isEqualTo: 'nasim shah')
-//     .get()
-//     .then(
-//   (value) async {
-//     final doc = value.docs;
-//     for (var ev in doc) {
-// print('${ev.data()}\n\n');
-// final newData =
-//     ev.data().update('fv', (value) => 'Shubhadeep chowdhary');
-// await _firestore.collection('assignments').doc(ev.id).delete();
-// {
-//   'address': ev['address'],
-//   'agency': 'reignsys',
-//   'fv': 'nasim shah',
-//   'status': ev['status'],
-//   'type': ev['type'],
-//   'uid': 'nZF37kTBVTMbAP452OUQ9ZKxIk32',
-// },
-
-// }
-// },
-// );
-//}
-// _firestore.collection('agency').doc('5auCzgbq6HLOcPZuD2E5').delete();
-//     .doc('')
-// .set({
-//   'address': 'lko, it part',
-//   'agency_name': 'eklavya',
-//   'owner_name': 'shani',
-//   'phone': 7791824894,
-// });
-
-// _firestore.collection('fv').doc('r3vs22ORZVaDY4P2mbx2gR7v5583').set({
-//   'address': 'lucknow',
-//   'agency': 'eklavya',
-//   'current_location': const GeoPoint(0, 0),
-//   'date_of_birth': '27/6/2001',
-//   'date_of_joining': '03/05/2020',
-//   'name': 'ankit mishra',
-//   'phone': 8726452456,
-// });
-// _firestore
-//     .collection('assignments')
-// // .where('current_location', isEqualTo: 'current_location')
-// .get()
-//     .then((value) {
-// print(value.docs);
-// final dataa = value.docs;
-// for (var data in dataa) {
-// _firestore.collection('assignments').add(data.data());
-// _firestore
-// .collection('assignments')
-// .doc(data.id)
-// .update({'description': 'description'});
-// }
-// });
