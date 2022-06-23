@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
-import 'package:veridox/app_widgets/form_text_input.dart';
-import 'package:veridox/app_widgets/submit_button.dart';
+import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
+import 'package:veridox/app_widgets/submit_button.dart';
 
 class SendRequestScreen extends StatefulWidget {
   const SendRequestScreen({Key? key}) : super(key: key);
@@ -19,13 +18,13 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  // final TextEditingController _addressController = TextEditingController();
   String dropDown = 'select options';
 
   @override
   void initState() {
     // TODO: implement initState
-    debugPrint('sendrequest screen\n\n');
+    debugPrint('send request screen\n\n');
     super.initState();
   }
 
@@ -33,13 +32,26 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFFffffff),
-        appBar: AppBar(
-          title: const Text('Send Request'),
+        backgroundColor: const Color(0XFFf0f5ff),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.all(15),
+          child: SubmitButton(
+            icon: const Icon(Icons.send, size: 15,),
+            text: 'Send Request',
+            onPress: () {},
+          ),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(9.0),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Color(0XFFf0f5ff),
+                Colors.white
+              ]
+            )
           ),
           alignment: Alignment.center,
           child: SingleChildScrollView(
@@ -53,31 +65,48 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text('Send Request', style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Color(0XFF0e4a86)),),
+                          SizedBox(height: 10,),
+                          Text('To the agency you want to join', style: TextStyle(fontSize: 27),),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 60,
+                    ),
                     /// name
-                    FormTextInput(
+                    CustomTextInput(
+                      password: false,
                       controller: _nameController,
-                      label: 'Name',
-                      hintText: 'veridocs',
+                      text: 'Name', keyboardType: TextInputType.name,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
 
                     /// phone
-                    FormTextInput(
+                    CustomTextInput(
+                      password: false,
                       controller: _phoneController,
-                      label: 'Phone Number',
-                      hintText: '9988776655',
+                      text: 'Phone Number',
+                      keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(
                       height: 15,
                     ),
 
                     /// email
-                    FormTextInput(
+                    CustomTextInput(
                       controller: _emailController,
-                      label: 'Email',
-                      hintText: 'veridocs@gmail.com',
+                      text: 'Email',
+                      password: false,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(
                       height: 15,
@@ -110,13 +139,16 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         }),
 
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
 
-                    SubmitButton(
-                      text: 'Submit',
-                      onPress: () {},
-                    ),
+                    FileUploadButton(text: 'Aadhar Card', onPress: onPress,),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    //
+                    // const FileUploadButton(text: 'Pan Card'),
+
                   ],
                 ),
               ),
@@ -125,6 +157,12 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
         ),
       ),
     );
+  }
+
+  onPress() {
+    debugPrint('1');
+     Future.delayed(const Duration(seconds: 3),);
+    debugPrint('2');
   }
 }
 
