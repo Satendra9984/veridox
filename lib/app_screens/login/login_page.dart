@@ -1,19 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
-import '../assignments_home_page.dart';
+import '../../app_utils/app_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({Key? key}) : super(key: key);
 
   @override
-  _LogInPageState createState() => _LogInPageState();
+  State<LogInPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
@@ -29,15 +28,10 @@ class _LogInPageState extends State<LogInPage> {
         if (FirebaseAuth.instance.currentUser == null) {
           FirebaseFirestore.instance.collection('users');
           // print('${user?.uid}');
-          Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => const AssignmentsHomePage(),
-            ),
-          );
+          navigateTo();
         }
       },
-      verificationFailed: (FirebaseAuthException _authException) async {},
+      verificationFailed: (FirebaseAuthException authException) async {},
       codeSent: (String verificationId, int? token) async {
         id = verificationId;
         _pageController.jumpToPage(1);
@@ -67,22 +61,21 @@ class _LogInPageState extends State<LogInPage> {
 
   void changeScreen() async {
     if (FirebaseAuth.instance.currentUser == null) {
-      PhoneAuthCredential _credential = PhoneAuthProvider.credential(
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: id, smsCode: _pinputController.text);
-      await FirebaseAuth.instance.signInWithCredential(_credential);
-      await prefs.setLogInCredentials(_credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      await prefs.setLogInCredentials(credential);
     }
     // Navigator.pushReplacement(context,
     //     CupertinoPageRoute(builder: (context) => const AssignmentsHomePage()));
 
-    Navigator.pushReplacement(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => const SendRequestScreen(),
-      ),
-    );
+    navigateTo();
+
   }
 
+  navigateTo() {
+    navigatePushReplacement(context, const SendRequestScreen());
+  }
   final TextEditingController _pinputController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final PageController _pageController = PageController(

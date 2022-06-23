@@ -16,7 +16,9 @@ enum ScreenNumber {
   completed,
 }
 
-
+const double kBRad = 13;
+final kBorderRadius = BorderRadius.circular(kBRad);
+const double kElevation = 25;
 
 BoxDecoration containerElevationDecoration = BoxDecoration(
   border: Border.all(
