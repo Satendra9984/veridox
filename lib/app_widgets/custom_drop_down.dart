@@ -39,7 +39,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           ),
           value: dropDown,
           icon: const Icon(
-            Icons.arrow_drop_down_circle,
+            Icons.arrow_drop_down,
             size: 40,
             color: CupertinoColors.black,
           ),
