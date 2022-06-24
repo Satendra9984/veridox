@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:veridox/app_providers/auth_provider.dart';
 import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,8 +40,12 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<Assignment>>(
             create: (context) => FirestoreServices().getAssignments(),
             initialData: const []),
-        ChangeNotifierProvider(create: (context) => AssignmentProvider()),
-        ChangeNotifierProvider(create: (context) => SavedAssignmentProvider()),
+        ChangeNotifierProvider<AssignmentProvider>(
+            create: (context) => AssignmentProvider()),
+        ChangeNotifierProvider<SavedAssignmentProvider>(
+            create: (context) => SavedAssignmentProvider()),
+        ChangeNotifierProvider<CustomAuthProvider>(
+            create: (context) => CustomAuthProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
