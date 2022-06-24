@@ -59,7 +59,7 @@ class _LogInPageState extends State<LogInPage> {
           child: SubmitButton(
             text: 'Log In',
             onPress: () {
-              setState(() {});
+              _provider.setPhoneNumber(_phoneController.text);
               _provider.signInWithPhone(context);
             },
           ),

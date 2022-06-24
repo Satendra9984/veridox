@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:veridox/app_utils/app_functions.dart';
 
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
+import '../assignments_home_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -128,8 +130,13 @@ class _OTPPageState extends State<OTPPage> {
                 const SizedBox(height: 30, width: 742),
                 SubmitButton(
                   text: "Submit",
-                  onPress: () {
-                    _provider.verifyCredential();
+                  onPress: () async {
+                    await _provider.verifyCredential(context).then(
+                          (value) => navigatePushReplacement(
+                            context,
+                            const AssignmentsHomePage(),
+                          ),
+                        );
                   },
                 )
               ],
