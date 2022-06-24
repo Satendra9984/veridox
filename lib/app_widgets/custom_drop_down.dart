@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_utils/app_constants.dart';
 
 import '../app_services/database/firestore_services.dart';
 
@@ -23,26 +24,24 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
   Widget build(BuildContext context) {
     int index = 0;
     return Card(
-      elevation: 5,
-      color: const Color(0xFFf0f5ff),
+      elevation: kElevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: kBorderRadius,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 0),
+        height: 57,
         child: DropdownButton(
+          style: const TextStyle(fontSize: 17, color: Colors.black87, fontWeight: FontWeight.w500),
+          elevation: 0,
+          isExpanded: true,
+          borderRadius: BorderRadius.circular(kBRad),
           hint: const Text(
-            'select option',
-            style: TextStyle(
-              fontSize: 14,
-            ),
+            'Select option',
+            style: TextStyle(fontSize: 17, color: Colors.black45, fontWeight: FontWeight.w500),
           ),
+          underline: Container(),
           value: dropDown,
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            size: 40,
-            color: CupertinoColors.black,
-          ),
           items: widget.list.map((agency) {
             return DropdownMenuItem(
               value: index,
@@ -64,5 +63,3 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
     );
   }
 }
-// github token --> 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
-// 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

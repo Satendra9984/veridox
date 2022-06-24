@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,6 @@ class AssignmentsHomePage extends StatefulWidget {
 
 class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   bool oldestFilter = false;
-  final _firestore = FirebaseFirestore.instance;
   // this variable will be used to control the hiding of the bottomNavigationBar
   // we will pass the reference to other screens also to control hiding/showing
   static final ScrollController _controller = ScrollController();
