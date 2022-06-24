@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_screens/login/otp_page.dart';
 import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -40,9 +41,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     // } else {
     //   navigatePushReplacement(context, const LogInPage());
     // }
+    // navigatePushReplacement(
+    //   context,
+    //   const SendRequestScreen(),
+    // );
+    // navigatePushReplacement(
+    //   context,
+    //   const OTPPage(),
+    // );
     navigatePushReplacement(
       context,
-      const SendRequestScreen(),
+      const LogInPage(),
     );
   }
 
