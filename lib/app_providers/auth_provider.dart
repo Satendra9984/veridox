@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
@@ -22,6 +24,10 @@ class CustomAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setOTP(String otp) {
+    _otp = otp;
+  }
+
   String get phoneNumber {
     return _phoneNumber;
   }
@@ -37,8 +43,7 @@ class CustomAuthProvider extends ChangeNotifier {
     }
   }
 
-  void signInWithPhone(BuildContext context) async {
-    // phoneNumber = number;
+  Future<void> signInWithPhone(BuildContext context) async {
     isLoading = true;
     notifyListeners();
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -57,6 +62,8 @@ class CustomAuthProvider extends ChangeNotifier {
   }
 
   navigateTo(BuildContext context) {
-    navigatePushReplacement(context, const OTPPage());
+    if (ModalRoute.of(context)?.settings.name != OTPPage.otpRouteName) {
+      navigatePushReplacement(context, const OTPPage());
+    }
   }
 }

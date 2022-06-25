@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
+import 'package:veridox/app_screens/login/otp_page.dart';
 import 'package:veridox/app_screens/onBoarding/on_boarding_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
@@ -55,7 +56,11 @@ class MyApp extends StatelessWidget {
           primaryColor: const Color(0XFFC925E3),
           primarySwatch: Colors.purple,
         ),
-        home: const OnBoardingScreen(),
+        // home: const OnBoardingScreen(),
+        routes: {
+          '/': (context) => const OnBoardingScreen(),
+          OTPPage.otpRouteName: (context) => const OTPPage(),
+        },
       ),
     );
   }

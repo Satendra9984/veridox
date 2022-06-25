@@ -1,14 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/auth_provider.dart';
-import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
-import '../../app_utils/app_functions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({Key? key}) : super(key: key);
@@ -60,6 +56,7 @@ class _LogInPageState extends State<LogInPage> {
             text: 'Log In',
             onPress: () {
               _provider.setPhoneNumber(_phoneController.text);
+              if (kDebugMode) {}
               _provider.signInWithPhone(context);
             },
           ),
