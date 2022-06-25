@@ -10,6 +10,10 @@ navigatePushReplacement(BuildContext context, Widget widget) {
       context, MaterialPageRoute(builder: (context) => widget));
 }
 
+navigatePushReplacementNamed(BuildContext context, String routeName) {
+  Navigator.of(context).pushReplacementNamed(routeName);
+}
+
 navigatePop(
   BuildContext context,
 ) {

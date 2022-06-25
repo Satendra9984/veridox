@@ -53,6 +53,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       context,
       const LogInPage(),
     );
+    // navigatePushReplacementNamed(context, OTPPage.otpRouteName);
   }
 
   @override
