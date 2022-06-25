@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Form;
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
-import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import '../../app_services/database/shared_pref_services.dart';
 import '../../app_utils/app_functions.dart';
@@ -126,9 +125,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                             .then(
                               (value) => navigatePushReplacement(
                                 context,
-                                AssignmentsHomePage(
-                                  pageIndex: 1,
-                                ),
+                                const SavedAssignmentsPage(),
                               ),
                             );
                         // navigatePushReplacement(
@@ -142,7 +139,6 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       ),
                     )
 
-                  /// if the assignment is already in the local database
                   : ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
@@ -150,7 +146,6 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                         elevation: MaterialStateProperty.all(10),
                       ),
                       onPressed: () {
-                        // TODO: navigate to savedAssignment page
                         navigatePushReplacement(
                             context, const SavedAssignmentsPage());
                       },

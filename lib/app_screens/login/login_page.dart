@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/auth_provider.dart';
@@ -26,21 +25,15 @@ class _LogInPageState extends State<LogInPage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     _provider = Provider.of<CustomAuthProvider>(context);
     super.didChangeDependencies();
   }
 
   final TextEditingController _phoneController = TextEditingController();
-  final PageController _pageController = PageController(
-    initialPage: 0,
-  );
 
   @override
   void dispose() {
     _phoneController.dispose();
-    // _pinputController.dispose();
-    _pageController.dispose();
     super.dispose();
   }
 
@@ -52,11 +45,16 @@ class _LogInPageState extends State<LogInPage> {
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.all(15),
-          child: SubmitButton(
-            text: 'Log In',
+          child: _provider.isLoading ? SubmitButton(
+            color: Colors.blueGrey,
+            text: 'Sending',
+              onPress: () {}, loading: const SizedBox(
+              height: 17, width: 17,
+                child: CircularProgressIndicator(color: Colors.white,)),
+          ) : SubmitButton(
+            text: 'Send OTP',
             onPress: () {
               _provider.setPhoneNumber(_phoneController.text);
-              if (kDebugMode) {}
               _provider.signInWithPhone(context);
             },
           ),
@@ -69,6 +67,7 @@ class _LogInPageState extends State<LogInPage> {
               colors: [Color(0XFFf0f5ff), Colors.white],
             ),
           ),
+          alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -82,7 +81,7 @@ class _LogInPageState extends State<LogInPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const [
                         Text(
-                          'Verify\nPhone',
+                          'Verify Phone Number',
                           style: TextStyle(
                               fontSize: 70,
                               fontWeight: FontWeight.bold,
@@ -92,7 +91,7 @@ class _LogInPageState extends State<LogInPage> {
                           height: 10,
                         ),
                         Text(
-                          'To the agency you want to join',
+                          'To use the application',
                           style: TextStyle(fontSize: 27),
                         ),
                       ],
@@ -108,34 +107,9 @@ class _LogInPageState extends State<LogInPage> {
                           text: "Phone Number",
                           keyboardType: TextInputType.number,
                           password: false),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 7),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent, elevation: 0),
-                              child: const Text(
-                                "Having issues?",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+
                     ],
                   ),
-
-                  // SubmitButton(
-                  //   text: 'Log In',
-                  //   onPress: () {
-                  //     setState(() {});
-                  //     _provider.signInWithPhone(context);
-                  //   },
-                  // ),
                 ],
               ),
             ),

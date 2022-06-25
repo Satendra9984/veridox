@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 
-import '../app_services/database/firestore_services.dart';
 
 class CustomDropDownButton extends StatefulWidget {
   final List<String> list;

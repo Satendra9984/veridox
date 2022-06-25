@@ -36,24 +36,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void navigate() {
-    // if (loggedIn) {
-    //   navigatePushReplacement(context, const AssignmentsHomePage());
-    // } else {
-    //   navigatePushReplacement(context, const LogInPage());
-    // }
-    // navigatePushReplacement(
-    //   context,
-    //   const SendRequestScreen(),
-    // );
-    // navigatePushReplacement(
-    //   context,
-    //   const OTPPage(),
-    // );
-    navigatePushReplacement(
-      context,
-      const LogInPage(),
-    );
-    // navigatePushReplacementNamed(context, OTPPage.otpRouteName);
+    if (loggedIn) {
+      navigatePushReplacement(context, const AssignmentsHomePage());
+    } else {
+      navigatePushReplacement(context, const LogInPage());
+    }
   }
 
   @override

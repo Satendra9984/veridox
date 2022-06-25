@@ -1,39 +1,32 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_utils/app_functions.dart';
-
 import '../../app_providers/auth_provider.dart';
-import '../../app_utils/app_constants.dart';
 import '../../app_widgets/submit_button.dart';
 import '../assignments_home_page.dart';
 
 class OTPPage extends StatefulWidget {
-  static const String otpRouteName = 'OTPPage';
-
   const OTPPage({Key? key}) : super(key: key);
-
+ static const String otpRouteName = 'OTPPage';
   @override
   State<OTPPage> createState() => _OTPPageState();
 }
 
 class _OTPPageState extends State<OTPPage> {
   late CustomAuthProvider _provider;
-  String phone = '';
+
   final TextEditingController _pinputController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // _provider = Provider.of<CustomAuthProvider>(context);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _provider = Provider.of<CustomAuthProvider>(context);
-    phone = _provider.phoneNumber;
   }
 
   PinTheme get _pinPutDecoration {
@@ -50,7 +43,7 @@ class _OTPPageState extends State<OTPPage> {
           ),
         ],
         color: Colors.white,
-        border: Border.all(color: Colors.deepPurpleAccent),
+        border: Border.all(color: Colors.blueGrey, width: 1.4),
         borderRadius: BorderRadius.circular(15.0),
       ),
     );
@@ -59,18 +52,20 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('otp'),
-      // ),
-
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         margin: const EdgeInsets.all(15),
-        child: SubmitButton(
+        child: _provider.isLoading ? SubmitButton(
+          text: 'Verifying',
+          color: Colors.blueGrey, onPress: () {},
+          loading: const SizedBox(
+            width: 17, height: 17,
+            child: CircularProgressIndicator(color: Colors.white,),
+          ),
+        ): SubmitButton(
           text: "Verify OTP",
           onPress: () async {
             _provider.setOTP(_pinputController.text);
-
             await _provider
                 .verifyCredential(context)
                 .then(
@@ -81,9 +76,7 @@ class _OTPPageState extends State<OTPPage> {
                 )
                 .catchError((error) {
               SnackBar snackBar = const SnackBar(
-                content: Center(
-                  child: Text('Something went wrong.Try again'),
-                ),
+                content: Text('Something went wrong. Try again'),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             });
@@ -109,7 +102,7 @@ class _OTPPageState extends State<OTPPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
                       Text(
-                        "Enter Your Verifiation Code",
+                        "Enter Your Verification Code",
                         style: TextStyle(
                           color: Color(0XFF0e4a86),
                           // color: CupertinoColors.black,
@@ -143,7 +136,6 @@ class _OTPPageState extends State<OTPPage> {
                   length: 6,
                   controller: _pinputController,
                   submittedPinTheme: _pinPutDecoration.copyWith(
-                    // color: Colors.white.withOpacity(0.9),
                     decoration: _pinPutDecoration.decoration?.copyWith(
                       color: Colors.white.withOpacity(0.9),
                     ),
@@ -154,7 +146,7 @@ class _OTPPageState extends State<OTPPage> {
                       borderRadius: BorderRadius.circular(15.0),
                       border: Border.all(
                         width: 2.3,
-                        color: Colors.blueAccent,
+                        color: const Color(0XFF0e4a86),
                       ),
                     ),
                   ),

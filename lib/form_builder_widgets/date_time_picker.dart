@@ -42,11 +42,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         setState(() {
           _date = value;
         });
-        String date = _date.day.toString() +
-            '/' +
-            _date.month.toString() +
-            '/' +
-            _date.year.toString();
+        String date = '${_date.day}/${_date.month}/${_date.year}';
         widget.onChange(date);
       }
     });

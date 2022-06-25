@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../app_models/saved_assignment_model.dart';
 import '../app_providers/saved_assignment_provider.dart';
-import '../app_screens/assignments/saved_assignments_page.dart';
 import '../app_utils/app_functions.dart';
 import 'detail_text.dart';
 
