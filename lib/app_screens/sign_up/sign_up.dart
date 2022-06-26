@@ -14,9 +14,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         title: const Text('SignUp'),
       ),
-      body: Container(
-        child: Text('data'),
-      ),
+      body: const Text('data'),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/app_models/saved_assignment_model.dart';
 import '../../app_models/assignment_model.dart';
 
 class FirestoreServices {
@@ -9,11 +8,10 @@ class FirestoreServices {
   final _auth = FirebaseAuth.instance;
 
   Stream<List<Assignment>> getAssignments() {
-    final _uid = _auth.currentUser!.uid;
+    final uid = _auth.currentUser!.uid;
     return _firestore
         .collection('field_verifier')
-        .doc(_uid)
-        // .doc('nZF37kTBVTMbAP452OUQ9ZKxIk32')
+        .doc(uid)
         .collection('assignments')
         .snapshots()
         .map(

@@ -7,16 +7,21 @@ class SubmitButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPress,
+    this.loading,
     this.icon,
+    this.color
   }) : super(key: key);
+
   final String text;
   final Function onPress;
   final Icon? icon;
+  final Widget? loading;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: const Color(0XFF0e4a86),
+        primary: color ?? const Color(0XFF0e4a86),
         onPrimary: Colors.white,
         fixedSize: const Size(390, 57),
         elevation: 0,
@@ -29,6 +34,7 @@ class SubmitButton extends StatelessWidget {
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             text,
@@ -38,7 +44,8 @@ class SubmitButton extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          icon ?? Container()
+          icon ?? Container(),
+          loading ?? Container()
         ],
       ),
     );

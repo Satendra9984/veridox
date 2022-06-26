@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
@@ -80,16 +79,16 @@ class _AssignmentListState extends State<AssignmentList> {
             icon: const Icon(Icons.more_vert),
             itemBuilder: (_) => [
               const PopupMenuItem(
+                value: FilterOptions.oldest,
                 child: Text('Old to New'),
-                value: FilterOptions.oldest,
               ),
               const PopupMenuItem(
+                value: FilterOptions.oldest,
                 child: Text('Activity wise'),
-                value: FilterOptions.oldest,
               ),
               const PopupMenuItem(
-                child: Text('All'),
                 value: FilterOptions.all,
+                child: Text('All'),
               ),
             ],
           ),

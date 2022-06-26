@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/completed_assignement_page.dart';
 import 'package:veridox/app_screens/profile/profile_page.dart';
@@ -26,11 +25,11 @@ class AssignmentsHomePage extends StatefulWidget {
 
 class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   bool oldestFilter = false;
+
   // this variable will be used to control the hiding of the bottomNavigationBar
   // we will pass the reference to other screens also to control hiding/showing
-  static final ScrollController _controller = ScrollController();
   static final PageController _pageController = PageController();
-  bool bottomNavigationBarHide = false;
+
   // this variable will be use for pointing to the current selected screen in the bottomNavigationBar
   int currentItemSelected = 0;
   bool _isLoading = false;
@@ -41,13 +40,12 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   @override
   void initState() {
     // we can not initialize firebase data here because it will not refresh until app is active
-    _controller.addListener(listen);
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
-    screens = [
-      const AssignmentList(),
-      const SavedAssignmentsPage(),
-      const ProfilePage(),
-      const CompletedAssignemtsPage(),
+    screens = const [
+      AssignmentList(),
+      SavedAssignmentsPage(),
+      ProfilePage(),
+      CompletedAssignemtsPage(),
     ];
     setState(() {
       _isInit = true;
@@ -86,24 +84,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
   @override
   void dispose() {
-    // print('home page disposed');
-    _controller.removeListener(listen);
-    _controller.dispose();
+    _pageController.dispose();
     super.dispose();
-  }
-
-// this function will listen for all the changes in the _controller and notify to bottomNavigationBar to hide/show
-  void listen() {
-    final direction = _controller.position.userScrollDirection;
-    setState(
-      () {
-        if (direction == ScrollDirection.forward) {
-          bottomNavigationBarHide = false;
-        } else if (direction == ScrollDirection.reverse) {
-          bottomNavigationBarHide = true;
-        }
-      },
-    );
   }
 
   @override
@@ -124,7 +106,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                 );
               },
             ),
-      bottomNavigationBar: AnimatedContainer(
+      bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.only(
@@ -132,15 +114,13 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
             topRight: Radius.circular(30),
           ),
         ),
-        duration: const Duration(milliseconds: 100),
-        // the main trick behind the hiding of the bnb we just reduced the height of it when required
-        height: !bottomNavigationBarHide ? 50 : 0,
+        height: 50,
         child: Wrap(
-          // for no overflow of bnb
           children: [
             BottomNavigationBar(
-              currentIndex:
-                  currentItemSelected, // we have make it a variable so that selected item will be highlighted otherwise no means to notify
+              currentIndex: currentItemSelected,
+
+              // we have make it a variable so that selected item will be highlighted otherwise no means to notify
               selectedItemColor: Colors.black,
               unselectedItemColor: Colors.black38,
               items: const [
@@ -149,8 +129,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                     Icons.home,
                   ),
                   label: 'Home',
-                  // backgroundColor: Colors
-                  //     .purple, // this is the background colour of whole navBar if this icon is selected
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
@@ -173,13 +151,9 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                 ),
               ],
               onTap: (screen) {
-                // print('$screen selected');
-                // here we will notify all listeners which are dependent on the current selected item eg., selectedItemColor in bnb
-                setState(
-                  () {
+                setState(() {
                     _pageController.jumpToPage(screen);
-                  },
-                );
+                });
               },
             ),
           ],
