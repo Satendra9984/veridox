@@ -58,22 +58,111 @@ class SavedAssignmentCard extends StatelessWidget {
               flex: 5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   DetailTextStylesWidget(
-                      heading: 'Name', value: assignment.name.toString()),
+                      icon: const Icon(
+                        Icons.info,
+                        color: Colors.orange,
+                        size: 18,
+                      ),
+                      heading: 'Id',
+                      value: Text(
+                        assignment.caseId,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      )),
                   DetailTextStylesWidget(
-                      heading: 'CaseId      ',
-                      value: assignment.caseId.toString()),
+                      icon: const Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      heading: 'Name',
+                      value: Text(
+                        assignment.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      )),
                   DetailTextStylesWidget(
-                      heading: 'phone', value: assignment.phone.toString()),
+                      icon: const Icon(
+                        Icons.phone,
+                        color: Colors.greenAccent,
+                      ),
+                      heading: 'phone',
+                      value: Text(
+                        assignment.phone,
+                        style: const TextStyle(fontSize: 17),
+                      )),
                   DetailTextStylesWidget(
-                      heading: 'Address    ',
-                      value: assignment.address.toString()),
+                      icon: Icon(
+                        Icons.list_alt,
+                        color: Colors.grey.shade500,
+                        size: 20,
+                      ),
+                      heading: 'type',
+                      value: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                assignment.type,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
+                              // const SizedBox(width: 30),
+                            ],
+                          ),
+
+                          // const SizedBox(width: 8),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.date_range,
+                                color: Colors.grey.shade500,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 3),
+                              Text(
+                                assignment.assignedDate,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   DetailTextStylesWidget(
-                      heading: 'Type', value: assignment.type.toString()),
-                  DetailTextStylesWidget(
-                      heading: 'Assigned At',
-                      value: assignment.assignedDate.toString()),
+                    heading: 'Address',
+                    value: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          color: Colors.lightBlue,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          assignment.address,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.lightBlue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -41,6 +41,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     } else {
       navigatePushReplacement(context, const LogInPage());
     }
+    // navigatePushReplacement(context, const OTPPage());
   }
 
   @override
