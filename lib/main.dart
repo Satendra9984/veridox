@@ -41,10 +41,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Veridox',
         theme: ThemeData(
-          // fontFamily: 'Roboto',
-          primaryColor: const Color(0XFFC925E3),
-          primarySwatch: Colors.purple,
-        ),
+            // fontFamily: 'Roboto',
+            primaryColor: Colors.lightBlue,
+            primarySwatch: Colors.blue,
+            textTheme: TextTheme()
+            // fontFamily:
+            ),
         // home: const OnBoardingScreen(),
         routes: {
           '/': (context) => const OnBoardingScreen(),
@@ -54,3 +56,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// onst Color(0XFFC925E3)

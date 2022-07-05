@@ -1,43 +1,33 @@
 import 'package:flutter/material.dart';
 
 class DetailTextStylesWidget extends StatelessWidget {
-  final String heading, value;
+  final String heading;
+  final Widget? icon;
+  final Widget value;
   const DetailTextStylesWidget({
     Key? key,
     required this.value,
     required this.heading,
+    this.icon,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(3.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
+        // crossAxisAlignment: CrossAxisAlignment.baseline,
+        // textBaseline: TextBaseline.ideographic,
         children: [
           Expanded(
-            flex: 3,
-            child: Text(
-              heading,
-              softWrap: true,
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            flex: 1,
+            child: icon ?? Container(),
           ),
           Expanded(
             flex: 5,
-            child: Text(
-              value,
-              softWrap: true,
-              style: const TextStyle(
-                fontSize: 15.2,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
+            child: value,
           ),
         ],
       ),
