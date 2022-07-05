@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/login/otp_page.dart';
 import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -20,13 +18,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final SPServices _spServices = SPServices();
 
   void initialization() async {
-    final _auth = FirebaseAuth.instance;
-    final _uid = _auth.currentUser?.uid;
-    final String? _token = await _spServices.getToken();
+    final auth = FirebaseAuth.instance;
+    final uid = auth.currentUser?.uid;
+    final String? token = await _spServices.getToken();
     if (kDebugMode) {
-      print('uid: $_uid token: $_token');
+      print('uid: $uid token: $token');
     }
-    if (_uid != null && _token != null) {
+    if (uid != null && token != null) {
       loggedIn = true;
       debugPrint('loggedIn-->\n');
     } else {
@@ -37,10 +35,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void navigate() {
     if (loggedIn) {
-      navigatePushReplacement(context, const AssignmentsHomePage());
+      navigatePushReplacement(context, const SendRequestScreen());
     } else {
       navigatePushReplacement(context, const LogInPage());
     }
+    // navigatePushReplacement(context, const SendRequestScreen());
   }
 
   @override

@@ -1,60 +1,95 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_services/database/uploader.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 
 class FileUploadButton extends StatefulWidget {
-  const FileUploadButton({Key? key, required this.text, required this.onPress}) : super(key: key);
+  const FileUploadButton({Key? key, required this.text, required this.location}) : super(key: key);
+
   final String text;
-  final Function onPress;
+  final String location;
+
   @override
   State<FileUploadButton> createState() => _FileUploadButtonState();
 }
 
 class _FileUploadButtonState extends State<FileUploadButton> {
-  bool isUploading = false;
-  bool isUploaded = false;
-  bool isFailed = false;
 
-  void task() {
+  int progress = 0;
+  bool isLoading = false;
+  bool isDone = false;
+
+  chooseAndUploadFile() async {
     try {
-      widget.onPress();
-      isUploaded = true;
-    } catch (error) {
-      isFailed = true;
+      final UploadTask? task = await FileUploader.uploadSingleFileToFirebase(widget.location);
+      if (task != null) {
+        setState(() {
+          isDone = false;
+          isLoading = true;
+        });
+
+        task.snapshotEvents.listen((event) {
+          setState(() {
+            progress = (event.bytesTransferred / event.totalBytes * 100).floor();
+
+            if (event.state == TaskState.success) {
+              setState(() {
+                isLoading = false;
+                isDone = true;
+              });
+
+            }
+            debugPrint(progress.toString());
+          });
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        debugPrint('No file selected');
+      }
+
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+            onPrimary: Colors.lightBlue,
             primary: Colors.white,
-            onPrimary: const Color(0XFF0e4a86),
             fixedSize: const Size(390, 57),
             elevation: 0,
             shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Color(0X910e4a86,), width: 2),
               borderRadius: kBorderRadius,
             ),
           ),
         onPressed: () {
-            setState(() {
-              isUploading = true;
-            });
+            chooseAndUploadFile();
+          },
+          child: Builder(
+            builder: (context) {
+              return isDone ? Text('${widget.text} Uploaded', style: const TextStyle(color: Colors.lime),) : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  !isLoading ? Text('Upload ${widget.text}', style: const TextStyle(fontWeight: FontWeight.w600),) : Text('Uploading $progress%'),
+                  const SizedBox(width: 17,),
+                  !isLoading ? const Icon(Icons.upload, size: 20.0,)
+                        : const SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                          color: Colors.lightBlue),
+                        )
 
-            task();
-            setState(() {
-              isUploading = false;
-            });
-        },
-          child: isUploading ? const CircularProgressIndicator(color: Color(0XFF0e4a86),) : Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('Upload ${widget.text}', style: const TextStyle(fontWeight: FontWeight.w600),),
-              const SizedBox(width: 7,),
-              const Icon(Icons.upload, size: 20.0,)
-            ],
+                ],
+              );
+            }
           )
       ),
     );

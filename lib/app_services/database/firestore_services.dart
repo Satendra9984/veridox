@@ -10,17 +10,10 @@ class FirestoreServices {
   Stream<List<Assignment>> getAssignments() {
     final uid = _auth.currentUser!.uid;
     return _firestore
-        .collection('field_verifier')
-        .doc(uid)
-        .collection('assignments')
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => Assignment.fromJson(doc.data(), doc.id),
-              )
-              .toList(),
-        );
+        .collection('field_verifier').doc(uid).collection('assignments')
+        .snapshots().map(
+          (snapshot) => snapshot.docs.map(
+                (doc) => Assignment.fromJson(doc.data(), doc.id),).toList(),);
   }
 
   /// Below two functions are used for getting complete assignment from firebase

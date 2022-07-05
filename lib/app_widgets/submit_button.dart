@@ -21,7 +21,7 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: color ?? const Color(0XFF0e4a86),
+        primary: color ?? Colors.lightBlue,
         onPrimary: Colors.white,
         fixedSize: const Size(390, 57),
         elevation: 0,

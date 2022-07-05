@@ -14,17 +14,14 @@ class SendRequestScreen extends StatefulWidget {
 
 class _SendRequestScreenState extends State<SendRequestScreen> {
   final GlobalKey _key = GlobalKey();
-  // final FirestoreServices _firestoreServices = FirestoreServices();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   // final TextEditingController _addressController = TextEditingController();
-  String dropDown = 'select options';
+  String dropDown = 'Select your agency';
 
   @override
   void initState() {
-    // TODO: implement initState
-    debugPrint('send request screen\n\n');
     super.initState();
   }
 
@@ -70,7 +67,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text('Send Request', style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Color(0XFF0e4a86)),),
+                          Text('Send Request', style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Colors.lightBlue),),
                           SizedBox(height: 10,),
                           Text('To the agency you want to join', style: TextStyle(fontSize: 27),),
                         ],
@@ -142,12 +139,13 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       height: 15,
                     ),
 
-                    FileUploadButton(text: 'Aadhar Card', onPress: onPress,),
-                    // const SizedBox(
-                    //   height: 15,
-                    // ),
-                    //
-                    // const FileUploadButton(text: 'Pan Card'),
+                    const FileUploadButton(text: 'Aadhar Card', location: 'files/1'),
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+
+                    const FileUploadButton(text: 'Pan Card', location: 'files/2',),
 
                   ],
                 ),
@@ -158,12 +156,4 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
       ),
     );
   }
-
-  onPress() {
-    debugPrint('1');
-     Future.delayed(const Duration(seconds: 3),);
-    debugPrint('2');
-  }
 }
-
-// #f0f5ff

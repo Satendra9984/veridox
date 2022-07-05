@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -23,19 +22,12 @@ class _ImageInputState extends State<ImageInput>
           await ImagePicker().pickImage(source: ImageSource.camera);
       PickedFile recordedImage = PickedFile(image!.path);
 
-      if (recordedImage != null) {
+      GallerySaver.saveImage(recordedImage.path).then((path) async {
         // setState(() {
-        //   firstButtonText = 'saving in progress...';
+        //   firstButtonText = 'image saved!';
         // });
-
-        GallerySaver.saveImage(recordedImage.path).then((path) async {
-          // setState(() {
-          //   firstButtonText = 'image saved!';
-          // });
-          final dir = await getTemporaryDirectory();
-          await _pickImageGall(ImageSource.gallery);
-        });
-      }
+        await _pickImageGall(ImageSource.gallery);
+      });
     } else if (await Permission.storage.request().isPermanentlyDenied) {
       await openAppSettings();
     } else if (await Permission.storage.request().isDenied) {
@@ -46,10 +38,10 @@ class _ImageInputState extends State<ImageInput>
   }
 
   Future<void> _pickImageGall(ImageSource imageSource) async {
-    final _pickedImage = await _picker.pickImage(source: imageSource);
-    if (_pickedImage != null) {
+    final pickedImage = await _picker.pickImage(source: imageSource);
+    if (pickedImage != null) {
       setState(() {
-        _imageFileList.add(File(_pickedImage.path));
+        _imageFileList.add(File(pickedImage.path));
       });
     }
   }

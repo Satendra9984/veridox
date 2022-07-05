@@ -28,7 +28,7 @@ class CustomTextInput extends StatelessWidget {
           filled: true,
           focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(kBRad)),
-            borderSide: BorderSide(width: 2, color: Color(0XFF0e4a86)),
+            borderSide: BorderSide(width: 2, color: Colors.lightBlue),
           ),
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(kBRad)),

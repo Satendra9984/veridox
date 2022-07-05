@@ -10,7 +10,6 @@ class Page0 extends StatefulWidget {
 class _Page0State extends State<Page0> {
   late List<Map<String, dynamic>> _values;
   int _count = 0;
-  String _result = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +27,10 @@ class _Page0State extends State<Page0> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh),
               onPressed: () async {
                 setState(() {
                   _count = 0;
-                  _result = '';
                 });
               },
             )
@@ -53,7 +51,7 @@ class _Page0State extends State<Page0> {
     return Row(
       children: [
         Text('ID: $index'),
-        SizedBox(width: 30),
+        const SizedBox(width: 30),
         Expanded(
           child: TextFormField(
             onChanged: (val) {
