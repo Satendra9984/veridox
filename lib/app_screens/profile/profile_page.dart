@@ -48,23 +48,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'Satendra Pal',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'satyendrapal123@gmail.com',
                       style: TextStyle(
                         fontSize: 13,
                       ),
                     ),
-                    const Text(
+                    Text(
                       '1234567890',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                       ),
                     ),
@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text(
                     'Edit',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.blue,
                     ),
                   ),

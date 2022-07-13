@@ -1,8 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/form_builder_widgets/date_time_picker.dart';
 import 'package:veridox/form_builder_widgets/dropdown_menu.dart';
 import 'package:veridox/form_builder_widgets/image_input.dart';
@@ -172,10 +169,10 @@ class FormPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FormState createState() => _FormState();
+  FormState createState() => FormState();
 }
 
-class _FormState extends State<FormPage>
+class FormState extends State<FormPage>
     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   /// List of formDataElements for building the form
   late final List<Map<String, dynamic>> _widgetList;
@@ -230,7 +227,7 @@ class _FormState extends State<FormPage>
         const Duration(seconds: 1),
         () async => await _updateDatabases().catchError(
           (error) {
-            print('local dba --> $error');
+            debugPrint('local dba --> $error');
             return;
           },
         ),
@@ -329,11 +326,11 @@ class _FormState extends State<FormPage>
                           widgetjson: widgetData,
                         );
                       } else if (type == 'image_input') {
-                        return ImageInput();
+                        return const ImageInput();
                       } else if (type == 'location_image') {
-                        return Text('data');
+                        return const Text('data');
                       }
-                      return Text('Something went wrong');
+                      return const Text('Something went wrong');
                     },
                   ).toList(),
                 ),

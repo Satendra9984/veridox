@@ -51,8 +51,7 @@ class _FormTemplateState extends State<FormTemplate> {
       body: PageView(
         controller: _pageController,
         onPageChanged: (currentScreen) {
-          setState(
-            () {
+          setState(() {
               currentItemSelected = currentScreen;
             },
           );

@@ -28,7 +28,7 @@ class _TextDisplayState extends State<TextDisplay> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.widgetJson);
+    debugPrint(widget.widgetJson.toString());
   }
 
   @override

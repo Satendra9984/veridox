@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 
 class AssignmentProvider extends ChangeNotifier {
-  final _firestore = FirebaseFirestore.instance;
-  List<Assignment> _tasks = [];
+  final List<Assignment> _tasks = [];
 
   List<Assignment> get tasks {
     return [..._tasks];

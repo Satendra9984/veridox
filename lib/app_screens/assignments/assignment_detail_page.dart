@@ -27,7 +27,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
 
   /// getting data to display in detailsPage
   Future<Map<String, dynamic>> _getAssignment() async {
-    final res = await FirestoreServices().getAssignmentById(widget.caseId);
+    final res = await FirestoreServices.getAssignmentById(widget.caseId);
     debugPrint('res type --> ${res.runtimeType}\n\n');
     return Map<String, dynamic>.from(res!);
   }

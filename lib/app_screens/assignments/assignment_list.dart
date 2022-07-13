@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-import 'package:veridox/app_utils/app_constants.dart';
 
 import '../../app_widgets/custom_app_bar.dart';
 import 'assignment_detail_page.dart';
@@ -33,14 +32,13 @@ class _AssignmentListState extends State<AssignmentList> {
       body: RefreshIndicator(
         onRefresh: () => _refreshAssignments(context),
         child: Container(
-          padding: const EdgeInsets.all(8.0),
-          // decoration: const BoxDecoration(
-          //   gradient: LinearGradient(
-          //     begin: Alignment.bottomCenter,
-          //     end: Alignment.topCenter,
-          //     colors: [Color(0XFFf0f5ff), Colors.white],
-          //   ),
-          // ).
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [Color(0XFFf0f5ff), Colors.white],
+            ),
+          ),
           child: Consumer<List<Assignment>>(
             builder: (context, list, widget) {
               return ListView.builder(
