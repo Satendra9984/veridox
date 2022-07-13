@@ -34,6 +34,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
   int currentItemSelected = 0;
   bool _isLoading = false;
   bool _isInit = false;
+
   // here is the list of all the screens whose icons are present in the bnb , will initialize when the page initializes
   late List<Widget> screens;
 

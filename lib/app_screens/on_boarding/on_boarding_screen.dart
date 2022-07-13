@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/sign_up/send_request_screen.dart';
+import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 

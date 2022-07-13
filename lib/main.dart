@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             create: (context) => FirebaseAuth.instance.authStateChanges(),
             initialData: null),
         StreamProvider<List<Assignment>>(
-            create: (context) => FirestoreServices().getAssignments(),
+            create: (context) => FirestoreServices.getAssignments(),
             initialData: const []),
         ChangeNotifierProvider<AssignmentProvider>(
             create: (context) => AssignmentProvider()),
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             // fontFamily: 'Roboto',
             primaryColor: Colors.lightBlue,
             primarySwatch: Colors.blue,
-            textTheme: TextTheme()
+            textTheme: const TextTheme()
             // fontFamily:
             ),
         // home: const OnBoardingScreen(),

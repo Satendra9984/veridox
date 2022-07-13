@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 AppBar customAppBar({String label = ''}) {
@@ -6,10 +5,10 @@ AppBar customAppBar({String label = ''}) {
     elevation: 0.5,
     centerTitle: true,
     toolbarHeight: 50.0,
-    backgroundColor: Color(0xFFecf8ff),
+    backgroundColor: const Color(0xFFecf8ff),
     title: Text(
       label,
-      style: TextStyle(
+      style: const TextStyle(
         color: Color(0XFF0e4a86),
         fontSize: 18,
       ),

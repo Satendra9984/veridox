@@ -1,4 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/uploader.dart';
 import 'package:veridox/app_utils/app_constants.dart';
@@ -18,6 +19,7 @@ class _FileUploadButtonState extends State<FileUploadButton> {
   int progress = 0;
   bool isLoading = false;
   bool isDone = false;
+  String storageRef = '';
 
   chooseAndUploadFile() async {
     try {
@@ -34,6 +36,7 @@ class _FileUploadButtonState extends State<FileUploadButton> {
 
             if (event.state == TaskState.success) {
               setState(() {
+                storageRef = widget.location;
                 isLoading = false;
                 isDone = true;
               });
@@ -63,7 +66,7 @@ class _FileUploadButtonState extends State<FileUploadButton> {
             onPrimary: Colors.lightBlue,
             primary: Colors.white,
             fixedSize: const Size(390, 57),
-            elevation: 0,
+            elevation: kElevation,
             shape: RoundedRectangleBorder(
               borderRadius: kBorderRadius,
             ),
@@ -73,7 +76,7 @@ class _FileUploadButtonState extends State<FileUploadButton> {
           },
           child: Builder(
             builder: (context) {
-              return isDone ? Text('${widget.text} Uploaded', style: const TextStyle(color: Colors.lime),) : Row(
+              return isDone ? Text('${widget.text} Uploaded', style: const TextStyle(color: CupertinoColors.activeGreen),) : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

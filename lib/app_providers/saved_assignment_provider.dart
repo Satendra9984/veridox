@@ -42,7 +42,7 @@ class SavedAssignmentProvider with ChangeNotifier {
   }
 
   Future<void> updateStatus(SavedAssignment savedAssignment) async {
-    await FirestoreServices()
+    await FirestoreServices
         .updateStatus(status: 'working', caseId: savedAssignment.caseId);
   }
 
@@ -50,9 +50,9 @@ class SavedAssignmentProvider with ChangeNotifier {
     isLoading = true;
     try {
       // fetch from firebase database
-      final data = await FirestoreServices().getAssignmentById(caseId);
+      final data = await FirestoreServices.getAssignmentById(caseId);
 
-      final formData = await FirestoreServices().getFormDataById(caseId);
+      final formData = await FirestoreServices.getFormDataById(caseId);
 
       debugPrint(data.toString());
       debugPrint('formdata --> ${formData.toString()}\n\n');

@@ -115,7 +115,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     /// address
 
                     FutureBuilder(
-                        future: FirestoreServices().getAgencyList(),
+                        future: FirestoreServices.getAgencyList(),
                         builder: (context,
                             AsyncSnapshot<List<Map<String, dynamic>>>? list) {
                           List<Map<String, dynamic>>? data = list?.data;
@@ -124,8 +124,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                           }
 
                           return CustomDropDownButton(
-                              list: data
-                                  .map(
+                              list: data.map(
                                     (e) => e['agency_name'].toString(),
                                   )
                                   .toList(),
