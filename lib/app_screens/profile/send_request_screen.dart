@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
@@ -141,6 +142,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                                   .toList(),
                               onChanged: (int value) {
                                 dropDown = data[value]['agency_name'];
+                                _provider.agencyUid = data[value]['id'];
                                 debugPrint('$dropDown\n');
                               });
                         }),
@@ -151,7 +153,8 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
 
                     FileUploadButton(
                       text: 'Aadhar Card',
-                      location: 'gaandu/1',
+                      location:
+                          'aadhar/${FirebaseAuth.instance.currentUser!.uid}',
                       cntrl: _provider.getAadharRef,
                     ),
 
@@ -161,7 +164,8 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
 
                     FileUploadButton(
                       text: 'Pan Card',
-                      location: 'files/2',
+                      location:
+                          'pan_card/${FirebaseAuth.instance.currentUser!.uid}',
                       cntrl: _provider.getPhoneCtrl,
                     ),
                   ],

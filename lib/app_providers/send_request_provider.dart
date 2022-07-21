@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 
@@ -7,6 +9,7 @@ class SendRequestProvider extends ChangeNotifier {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final String _dropDown = 'Select your agency';
+  String agencyUid = '';
   final TextEditingController _aadharRef = TextEditingController();
   final TextEditingController _panRef = TextEditingController();
 
@@ -34,7 +37,11 @@ class SendRequestProvider extends ChangeNotifier {
         'aadharRef': _aadharRef.text,
         'panRef': _panRef.text
       };
-      FirestoreServices.sendJoinRequest(data, '', '');
+      FirestoreServices.sendJoinRequest(
+        data,
+        FirebaseAuth.instance.currentUser!.uid,
+        agencyUid,
+      );
     }
   }
 }
