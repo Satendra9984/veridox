@@ -35,12 +35,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void navigate() {
-    if (loggedIn) {
-      navigatePushReplacement(context, const SendRequestScreen());
-    } else {
-      navigatePushReplacement(context, const LogInPage());
-    }
-    // navigatePushReplacement(context, const SendRequestScreen());
+    // if (loggedIn) {
+    //   navigatePushReplacement(context, const SendRequestScreen());
+    // } else {
+    //   navigatePushReplacement(context, const LogInPage());
+    // }
+    navigatePushReplacement(context, const SendRequestScreen());
   }
 
   @override

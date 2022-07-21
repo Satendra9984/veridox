@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 
@@ -7,10 +6,9 @@ class SendRequestProvider extends ChangeNotifier {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  // final TextEditingController _addressController = TextEditingController();
   final String _dropDown = 'Select your agency';
-  final String _aadharRef = '';
-  final String _panRef = '';
+  final TextEditingController _aadharRef = TextEditingController();
+  final TextEditingController _panRef = TextEditingController();
 
   get getFormKey => _key;
   get getNameCtrl => _nameController;
@@ -19,7 +17,6 @@ class SendRequestProvider extends ChangeNotifier {
   get getDropDown => _dropDown;
   get getAadharRef => _aadharRef;
   get getPanRef => _panRef;
-
 
   get nameValidator {}
   get emailValidator {}
@@ -34,11 +31,10 @@ class SendRequestProvider extends ChangeNotifier {
         'name': _nameController.text,
         'phone': _phoneController.text,
         'email': _emailController.text,
-        'aadharRef': _aadharRef,
-        'panRef': _panRef
+        'aadharRef': _aadharRef.text,
+        'panRef': _panRef.text
       };
       FirestoreServices.sendJoinRequest(data, '', '');
     }
   }
-
 }

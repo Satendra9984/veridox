@@ -5,7 +5,13 @@ import 'package:veridox/app_services/database/uploader.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 
 class FileUploadButton extends StatefulWidget {
-  const FileUploadButton({Key? key, required this.text, required this.location}) : super(key: key);
+  final TextEditingController cntrl;
+  const FileUploadButton({
+    Key? key,
+    required this.text,
+    required this.location,
+    required this.cntrl,
+  }) : super(key: key);
 
   final String text;
   final String location;
@@ -15,7 +21,6 @@ class FileUploadButton extends StatefulWidget {
 }
 
 class _FileUploadButtonState extends State<FileUploadButton> {
-
   int progress = 0;
   bool isLoading = false;
   bool isDone = false;
@@ -23,7 +28,8 @@ class _FileUploadButtonState extends State<FileUploadButton> {
 
   chooseAndUploadFile() async {
     try {
-      final UploadTask? task = await FileUploader.uploadSingleFileToFirebase(widget.location);
+      final UploadTask? task =
+          await FileUploader.uploadSingleFileToFirebase(widget.location);
       if (task != null) {
         setState(() {
           isDone = false;
@@ -32,15 +38,16 @@ class _FileUploadButtonState extends State<FileUploadButton> {
 
         task.snapshotEvents.listen((event) {
           setState(() {
-            progress = (event.bytesTransferred / event.totalBytes * 100).floor();
+            progress =
+                (event.bytesTransferred / event.totalBytes * 100).floor();
 
             if (event.state == TaskState.success) {
               setState(() {
+                widget.cntrl.text = widget.location;
                 storageRef = widget.location;
                 isLoading = false;
                 isDone = true;
               });
-
             }
             debugPrint(progress.toString());
           });
@@ -51,7 +58,6 @@ class _FileUploadButtonState extends State<FileUploadButton> {
         });
         debugPrint('No file selected');
       }
-
     } catch (err) {
       debugPrint(err.toString());
     }
@@ -62,38 +68,54 @@ class _FileUploadButtonState extends State<FileUploadButton> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 0),
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            onPrimary: Colors.lightBlue,
-            primary: Colors.white,
-            fixedSize: const Size(390, 57),
-            elevation: kElevation,
-            shape: RoundedRectangleBorder(
-              borderRadius: kBorderRadius,
-            ),
+        style: ElevatedButton.styleFrom(
+          onPrimary: Colors.lightBlue,
+          primary: Colors.white,
+          fixedSize: const Size(390, 57),
+          elevation: kElevation,
+          shape: RoundedRectangleBorder(
+            borderRadius: kBorderRadius,
           ),
+        ),
         onPressed: () {
-            chooseAndUploadFile();
+          chooseAndUploadFile();
+        },
+        child: Builder(
+          builder: (context) {
+            return isDone
+                ? Text(
+                    '${widget.text} Uploaded',
+                    style: const TextStyle(color: CupertinoColors.activeGreen),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      !isLoading
+                          ? Text(
+                              'Upload ${widget.text}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
+                            )
+                          : Text('Uploading $progress%'),
+                      const SizedBox(
+                        width: 17,
+                      ),
+                      !isLoading
+                          ? const Icon(
+                              Icons.upload,
+                              size: 20.0,
+                            )
+                          : const SizedBox(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(
+                                  color: Colors.lightBlue),
+                            )
+                    ],
+                  );
           },
-          child: Builder(
-            builder: (context) {
-              return isDone ? Text('${widget.text} Uploaded', style: const TextStyle(color: CupertinoColors.activeGreen),) : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  !isLoading ? Text('Upload ${widget.text}', style: const TextStyle(fontWeight: FontWeight.w600),) : Text('Uploading $progress%'),
-                  const SizedBox(width: 17,),
-                  !isLoading ? const Icon(Icons.upload, size: 20.0,)
-                        : const SizedBox(
-                          height: 15,
-                          width: 15,
-                          child: CircularProgressIndicator(
-                          color: Colors.lightBlue),
-                        )
-
-                ],
-              );
-            }
-          )
+        ),
       ),
     );
   }

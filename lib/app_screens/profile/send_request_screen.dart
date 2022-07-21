@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veridox/app_providers/send_request_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
@@ -14,15 +15,13 @@ class SendRequestScreen extends StatefulWidget {
 
 class _SendRequestScreenState extends State<SendRequestScreen> {
   final GlobalKey _key = GlobalKey();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  // final TextEditingController _addressController = TextEditingController();
+  late SendRequestProvider _provider;
   String dropDown = 'Select your agency';
 
   @override
   void initState() {
     super.initState();
+    _provider = SendRequestProvider();
   }
 
   @override
@@ -34,22 +33,20 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.all(15),
           child: SubmitButton(
-            icon: const Icon(Icons.send, size: 15,),
+            icon: const Icon(
+              Icons.send,
+              size: 15,
+            ),
             text: 'Send Request',
             onPress: () {},
           ),
         ),
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [
-                Color(0XFFf0f5ff),
-                Colors.white
-              ]
-            )
-          ),
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Color(0XFFf0f5ff), Colors.white])),
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Container(
@@ -67,9 +64,20 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text('Send Request', style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold, color: Colors.lightBlue),),
-                          SizedBox(height: 10,),
-                          Text('To the agency you want to join', style: TextStyle(fontSize: 27),),
+                          Text(
+                            'Send Request',
+                            style: TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.lightBlue),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'To the agency you want to join',
+                            style: TextStyle(fontSize: 23),
+                          ),
                         ],
                       ),
                     ),
@@ -77,11 +85,13 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     const SizedBox(
                       height: 60,
                     ),
+
                     /// name
                     CustomTextInput(
                       password: false,
-                      controller: _nameController,
-                      text: 'Name', keyboardType: TextInputType.name,
+                      controller: _provider.getNameCtrl,
+                      text: 'Name',
+                      keyboardType: TextInputType.name,
                     ),
                     const SizedBox(
                       height: 15,
@@ -90,7 +100,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     /// phone
                     CustomTextInput(
                       password: false,
-                      controller: _phoneController,
+                      controller: _provider.getPhoneCtrl,
                       text: 'Phone Number',
                       keyboardType: TextInputType.phone,
                     ),
@@ -100,7 +110,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
 
                     /// email
                     CustomTextInput(
-                      controller: _emailController,
+                      controller: _provider.getEmailCtrl,
                       text: 'Email',
                       password: false,
                       keyboardType: TextInputType.emailAddress,
@@ -124,7 +134,8 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                           }
 
                           return CustomDropDownButton(
-                              list: data.map(
+                              list: data
+                                  .map(
                                     (e) => e['agency_name'].toString(),
                                   )
                                   .toList(),
@@ -138,14 +149,21 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       height: 15,
                     ),
 
-                    const FileUploadButton(text: 'Aadhar Card', location: 'files/1'),
+                    FileUploadButton(
+                      text: 'Aadhar Card',
+                      location: 'gaandu/1',
+                      cntrl: _provider.getAadharRef,
+                    ),
 
                     const SizedBox(
                       height: 15,
                     ),
 
-                    const FileUploadButton(text: 'Pan Card', location: 'files/2',),
-
+                    FileUploadButton(
+                      text: 'Pan Card',
+                      location: 'files/2',
+                      cntrl: _provider.getPhoneCtrl,
+                    ),
                   ],
                 ),
               ),
