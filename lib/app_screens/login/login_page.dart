@@ -45,19 +45,25 @@ class _LogInPageState extends State<LogInPage> {
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           margin: const EdgeInsets.all(15),
-          child: _provider.isLoading ? SubmitButton(
-            color: Colors.blueGrey,
-            text: 'Sending',
-              onPress: () {}, loading: const SizedBox(
-              height: 17, width: 17,
-                child: CircularProgressIndicator(color: Colors.white,)),
-          ) : SubmitButton(
-            text: 'Send OTP',
-            onPress: () {
-              _provider.setPhoneNumber(_phoneController.text);
-              _provider.signInWithPhone(context);
-            },
-          ),
+          child: _provider.isLoading
+              ? SubmitButton(
+                  color: Colors.blueGrey,
+                  text: 'Sending',
+                  onPress: () {},
+                  loading: const SizedBox(
+                      height: 17,
+                      width: 17,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      )),
+                )
+              : SubmitButton(
+                  text: 'Send OTP',
+                  onPress: () {
+                    _provider.setPhoneNumber(_phoneController.text);
+                    _provider.signInWithPhone(context);
+                  },
+                ),
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -103,11 +109,12 @@ class _LogInPageState extends State<LogInPage> {
                   Column(
                     children: [
                       CustomTextInput(
-                          controller: _phoneController,
-                          text: "Phone Number",
-                          keyboardType: TextInputType.number,
-                          password: false),
-
+                        controller: _phoneController,
+                        text: "Phone Number",
+                        keyboardType: TextInputType.number,
+                        password: false,
+                        validator: (value) {},
+                      ),
                     ],
                   ),
                 ],

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
@@ -28,8 +27,15 @@ class SendRequestProvider extends ChangeNotifier {
   get aadharLinkValidator {}
   get panLinkValidator {}
 
-  void submit() {
-    if (_key.currentState!.validate()) {
+  Future<void> submit() async {
+    // debugPrint('in submit');
+    // debugPrint('${_nameController.text}\n');
+    // debugPrint('${_key.currentState}\n');
+    if (_key.currentState != null && _key.currentState!.validate()) {
+      // debugPrint('name --> ${_nameController.text}');
+      // debugPrint('phone --> ${_phoneController.text}');
+      // debugPrint('email --> ${_emailController.text}');
+      // debugPrint('aadhar --> ${_aadharRef.text}');
       Map<String, dynamic> data = {
         'name': _nameController.text,
         'phone': _phoneController.text,
@@ -37,7 +43,8 @@ class SendRequestProvider extends ChangeNotifier {
         'aadharRef': _aadharRef.text,
         'panRef': _panRef.text
       };
-      FirestoreServices.sendJoinRequest(
+
+      await FirestoreServices.sendJoinRequest(
         data,
         FirebaseAuth.instance.currentUser!.uid,
         agencyUid,

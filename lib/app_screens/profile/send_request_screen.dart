@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
@@ -15,7 +16,7 @@ class SendRequestScreen extends StatefulWidget {
 }
 
 class _SendRequestScreenState extends State<SendRequestScreen> {
-  final GlobalKey _key = GlobalKey();
+  // final GlobalKey _key = GlobalKey();
   late SendRequestProvider _provider;
   String dropDown = 'Select your agency';
 
@@ -39,7 +40,11 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
               size: 15,
             ),
             text: 'Send Request',
-            onPress: () {},
+            onPress: () async {
+              debugPrint('submit before');
+              await _provider.submit();
+              debugPrint('submit afterr');
+            },
           ),
         ),
         body: Container(
@@ -54,7 +59,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
               margin: const EdgeInsets.all(15.0),
               padding: const EdgeInsets.all(10.0),
               child: Form(
-                key: _key,
+                key: _provider.getFormKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -93,6 +98,11 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       controller: _provider.getNameCtrl,
                       text: 'Name',
                       keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please enter your name';
+                        }
+                      },
                     ),
                     const SizedBox(
                       height: 15,
@@ -104,6 +114,13 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       controller: _provider.getPhoneCtrl,
                       text: 'Phone Number',
                       keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please enter your mobile number';
+                        } else if (!value.isPhoneNumber) {
+                          return 'Please enter a valid mobile number';
+                        }
+                      },
                     ),
                     const SizedBox(
                       height: 15,
@@ -115,15 +132,17 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       text: 'Email',
                       password: false,
                       keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please enter your email';
+                        } else if (!value.isEmail) {
+                          return 'Please enter a valid email';
+                        }
+                      },
                     ),
                     const SizedBox(
                       height: 15,
                     ),
-
-                    /// pan
-                    /// aadhar
-                    /// profile photo
-                    /// address
 
                     FutureBuilder(
                         future: FirestoreServices.getAgencyList(),
@@ -166,7 +185,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       text: 'Pan Card',
                       location:
                           'pan_card/${FirebaseAuth.instance.currentUser!.uid}',
-                      cntrl: _provider.getPhoneCtrl,
+                      cntrl: _provider.getPanRef,
                     ),
                   ],
                 ),
