@@ -16,7 +16,6 @@
     {
       "page" : [
         {
-
           "page": [
             {
               "type": "text",
@@ -67,56 +66,12 @@
                 "Mismatch noted (Yes/No)",
                 "Evidence procured (Yes/No)"
               ],
-              "value": [
+              "value" : [
                 {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
+                  "Name" : ["satendra pal", "yes", "no"]
                 },
                 {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
-                },
-                {
-                  "As per investigation": "",
-                  "Mismatch noted (Yes/No)": "",
-                  "Evidence procured (Yes/No)": ""
+                  "Date of birth" : ["10/03/2000", "no", "yes"]
                 }
               ]
             },

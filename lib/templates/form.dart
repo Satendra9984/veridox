@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:veridox/templates/form_page.dart';
 
 import '../app_models/saved_assignment_model.dart';
@@ -51,7 +52,8 @@ class _FormTemplateState extends State<FormTemplate> {
       body: PageView(
         controller: _pageController,
         onPageChanged: (currentScreen) {
-          setState(() {
+          setState(
+            () {
               currentItemSelected = currentScreen;
             },
           );

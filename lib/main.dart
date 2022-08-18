@@ -8,6 +8,7 @@ import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/login/otp_page.dart';
 import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/form_builder_widgets/image_input.dart';
 import 'app_models/assignment_model.dart';
 
 void main() async {
@@ -17,7 +18,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -47,11 +47,10 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme()
             // fontFamily:
             ),
-        // home: const OnBoardingScreen(),
-        routes: {
-          '/': (context) => const OnBoardingScreen(),
-          OTPPage.otpRouteName: (context) => const OTPPage(),
-        },
+        home: const ImageInput(),
+        // routes: {
+        //   '/': (context) (context) => const OTPPage(),
+        // },
       ),
     );
   }
