@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/app_screens/assignments_home_page.dart';
-import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
+import '../../form_screens/home_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -35,12 +33,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void navigate() {
+    navigatePushReplacement(
+      context,
+      FormHomePage(
+        formId: '123456797',
+      ),
+    );
+
     // if (loggedIn) {
     //   navigatePushReplacement(context, const SendRequestScreen());
     // } else {
+    //   debugPrint('not logged in --> \n');
     //   navigatePushReplacement(context, const LogInPage());
     // }
-    navigatePushReplacement(context, const SendRequestScreen());
   }
 
   @override

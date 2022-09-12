@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_screens/completed_assignement_page.dart';
 import 'package:veridox/app_screens/profile/profile_page.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
@@ -46,7 +45,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
       AssignmentList(),
       SavedAssignmentsPage(),
       ProfilePage(),
-      CompletedAssignemtsPage(),
+      // CompletedAssignemtsPage(),
     ];
     setState(() {
       _isInit = true;
@@ -153,14 +152,13 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
               ],
               onTap: (screen) {
                 setState(() {
-                    _pageController.jumpToPage(screen);
+                  _pageController.jumpToPage(screen);
                 });
               },
             ),
           ],
         ),
       ),
-      // bottom navigation bar
     );
   }
 }

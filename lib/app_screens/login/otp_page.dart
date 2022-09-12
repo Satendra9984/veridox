@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
-import '../assignments_home_page.dart';
+import '../../form_screens/home_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -80,9 +80,14 @@ class _OTPPageState extends State<OTPPage> {
                       .verifyCredential(context)
                       .then(
                         (value) => navigatePushReplacement(
-                          context,
-                          const AssignmentsHomePage(),
-                        ),
+                            context,
+
+                            /// TODO: CHANGE IT
+                            // const AssignmentsHomePage(),
+                            /// todo: only for testing purpose
+                            FormHomePage(
+                              formId: '1',
+                            )),
                       )
                       .catchError((error) {
                     SnackBar snackBar = const SnackBar(

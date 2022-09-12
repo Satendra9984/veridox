@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,9 +54,10 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
     }
   }
 
-  Future<XFile?> _onImageButtonPressed(ImageSource source,
+  Future<List<Uint8List>?> _onImageButtonPressed(ImageSource source,
       {BuildContext? context, bool isMultiImage = false}) async {
-    XFile? image;
+    List<Uint8List>? image = [];
+
     if (_controller != null) {
       await _controller!.setVolume(0.0);
     }
@@ -63,43 +66,47 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
           source: source, maxDuration: const Duration(seconds: 10));
       await _playVideo(file);
     } else if (isMultiImage) {
-      await _displayPickImageDialog(context!,
-          (double? maxWidth, double? maxHeight, int? quality) async {
-        try {
-          final List<XFile>? pickedFileList = await _picker.pickMultiImage(
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
-            imageQuality: quality,
-          );
-        } catch (e) {
-          setState(() {
-            _pickImageError = e;
-          });
-        }
-      });
-    } else {
-      await _displayPickImageDialog(context!,
-          (double? maxWidth, double? maxHeight, int? quality) async {
-        try {
-          final XFile? pickedFile = await _picker.pickImage(
-            source: source,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
-            imageQuality: quality,
-          );
-          image = pickedFile;
+      try {
+        final List<XFile>? pickedFileList = await _picker.pickMultiImage(
+          maxWidth: null,
+          maxHeight: null,
+          imageQuality: 50,
+        );
 
-          if (kDebugMode) {
-            print('path.........${pickedFile?.path}');
-          }
-          File file = File(pickedFile!.path);
-          file.deleteSync(recursive: true);
-        } catch (e) {
-          setState(() {
-            _pickImageError = e;
-          });
+        if (kDebugMode) {
+          print('path.........${pickedFileList?[0].path}');
         }
-      });
+
+        if (pickedFileList != null) {
+          for (int i = 0; i < pickedFileList.length; i++) {
+            Uint8List f = await pickedFileList[i].readAsBytes();
+            image.add(f);
+          }
+        }
+      } catch (e) {
+        setState(() {
+          _pickImageError = e;
+        });
+      }
+    } else {
+      try {
+        final XFile? pickedFile = await _picker.pickImage(
+          source: source,
+          maxWidth: null,
+          maxHeight: null,
+          imageQuality: 50,
+        );
+
+        if (kDebugMode) {
+          print('path.........${pickedFile?.path}');
+        }
+        File file = File(pickedFile!.path);
+        file.deleteSync(recursive: true);
+      } catch (e) {
+        setState(() {
+          _pickImageError = e;
+        });
+      }
     }
     return image;
   }
@@ -263,6 +270,22 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
           Semantics(
             label: 'image_picker_example_from_gallery',
             child: FloatingActionButton(
+              onPressed: () async {
+                isVideo = false;
+                _onImageButtonPressed(ImageSource.camera, context: context)
+                    .then((value) {
+                  debugPrint('list of length --> ${value?.length}');
+                  Navigator.pop(context, value);
+                });
+              },
+              heroTag: 'image0',
+              tooltip: 'Pick Image from gallery',
+              child: const Icon(Icons.photo),
+            ),
+          ),
+          Semantics(
+            label: 'image_picker_example_from_gallery',
+            child: FloatingActionButton(
               onPressed: () {
                 isVideo = false;
                 _onImageButtonPressed(ImageSource.gallery, context: context);
@@ -275,36 +298,18 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 isVideo = false;
-                _onImageButtonPressed(
-                  ImageSource.gallery,
-                  context: context,
-                  isMultiImage: true,
-                );
+                _onImageButtonPressed(ImageSource.gallery,
+                        context: context, isMultiImage: true)
+                    .then((value) {
+                  debugPrint('list of length --> ${value?.length}');
+                  Navigator.pop(context, value);
+                });
               },
               heroTag: 'image1',
               tooltip: 'Pick Multiple Image from gallery',
               child: const Icon(Icons.photo_library),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () async {
-                isVideo = false;
-                // XFile? image =
-                await _onImageButtonPressed(
-                  ImageSource.camera,
-                  context: context,
-                ).then((image) {
-                  debugPrint('image  path line 300 --> ${image?.path}');
-                  justNavigatePop(image);
-                });
-              },
-              heroTag: 'image2',
-              tooltip: 'Take a Photo',
-              child: const Icon(Icons.camera_alt),
             ),
           ),
         ],
@@ -319,64 +324,6 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
       return result;
     }
     return null;
-  }
-
-  Future<void> _displayPickImageDialog(
-      BuildContext context, OnPickImageCallback onPick) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Add optional parameters'),
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  controller: maxWidthController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter maxWidth if desired'),
-                ),
-                TextField(
-                  controller: maxHeightController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter maxHeight if desired'),
-                ),
-                TextField(
-                  controller: qualityController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      hintText: 'Enter quality if desired'),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                  child: const Text('PICK'),
-                  onPressed: () {
-                    final double? width = maxWidthController.text.isNotEmpty
-                        ? double.parse(maxWidthController.text)
-                        : null;
-                    final double? height = maxHeightController.text.isNotEmpty
-                        ? double.parse(maxHeightController.text)
-                        : null;
-                    final int? quality = qualityController.text.isNotEmpty
-                        ? int.parse(qualityController.text)
-                        : null;
-                    onPick(width, height, quality);
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          );
-        });
   }
 }
 

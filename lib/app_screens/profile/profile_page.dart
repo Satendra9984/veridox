@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:veridox/app_screens/completed_assignement_page.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -118,13 +117,13 @@ class _ProfilePageState extends State<ProfilePage> {
             option: 'Assignment Completed',
             onPress: () {
               // print('pushed');
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (BuildContext context) =>
-                      const CompletedAssignemtsPage(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   CupertinoPageRoute(
+              //     builder: (BuildContext context) =>
+              //         const CompletedAssignemtsPage(),
+              //   ),
+              // );
             },
           ),
           Divider(
