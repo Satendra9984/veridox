@@ -50,7 +50,7 @@ class _FormPageState extends State<FormPage> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('form page'),
+        title: const Text('form page'),
       ),
       body: Form(
         key: _formKey,
@@ -69,23 +69,18 @@ class _FormPageState extends State<FormPage> {
                         itemCount: _getLength(),
                         itemBuilder: (context, index) {
                           var field = _pageData;
-                          // print('fields --> $field');
                           if (field[index] != null &&
                               field[index]['widget'] == 'text') {
-                            // print('text');
                             return TextTitle(
                               widgetData: field[index],
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'text-input') {
-                            // print('text_input');
-
                             return FormTextInput(
                               widgetData: field[index],
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'toggle-button') {
-                            // print('toggle');
                             return ToggleButton(
                               widgetJson: field[index],
                             );
@@ -127,6 +122,7 @@ class _FormPageState extends State<FormPage> {
                       ),
                       const SizedBox(height: 15),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           widget.currentPage > 0
                               ? ElevatedButton(

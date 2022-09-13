@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:veridox/form_widgets/form_text_input.dart';
+import 'package:veridox/form_widgets/table_form_input.dart';
 
 import '../app_utils/app_constants.dart';
 
@@ -32,10 +32,11 @@ class _FormTableInputState extends State<FormTableInput> {
 
   @override
   Widget build(BuildContext context) {
-    int index = 0;
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      decoration: containerElevationDecoration,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,7 +52,7 @@ class _FormTableInputState extends State<FormTableInput> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,14 +60,11 @@ class _FormTableInputState extends State<FormTableInput> {
             /// For each row_label
             children: _rowLabels.map(
               (row) {
-                // debugPrint('row --> ${row.toString()}');
-
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     row != ''
                         ? Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
@@ -90,7 +88,7 @@ class _FormTableInputState extends State<FormTableInput> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: _columnLabels.map(
                         (col) {
-                          return FormTextInput(
+                          return FormTableTextInput(
                             widgetData: {
                               "id": col['id'],
                               "label": col['label'],
@@ -101,11 +99,10 @@ class _FormTableInputState extends State<FormTableInput> {
                       ).toList(),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                   ],
                 );
-                return Text(row.toString());
               },
             ).toList(),
           ),

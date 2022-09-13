@@ -104,7 +104,7 @@ class _FormTextInputState extends State<FormTextInput> {
               // }
               // return null;
             },
-            minLines: 1,
+            minLines: widget.widgetData['multi_line'] ?? false ? 2 : 1,
             maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
             maxLength: widget.widgetData['length'],
             // keyboardType: _getKeyboardType(),
