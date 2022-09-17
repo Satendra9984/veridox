@@ -19,7 +19,7 @@ class DropdownMenu extends StatefulWidget {
 class _DropdownMenuState extends State<DropdownMenu> {
   late final List<dynamic> items;
   dynamic currentValue;
-
+  final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
     _initializeOptionList();
@@ -27,7 +27,15 @@ class _DropdownMenuState extends State<DropdownMenu> {
   }
 
   void _initializeOptionList() {
-    items = widget.widgetJson['options'] ?? ['choose'];
+    items = [
+      {
+        'id': '-1',
+        'value': 'Choose',
+      }
+    ];
+    if (widget.widgetJson.containsKey('options')) {
+      items.addAll(widget.widgetJson['options']);
+    }
     currentValue = items[0];
   }
 
@@ -47,89 +55,143 @@ class _DropdownMenuState extends State<DropdownMenu> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       margin: const EdgeInsets.only(bottom: 15),
       decoration: containerElevationDecoration,
-      child: DropdownButtonHideUnderline(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _getLabel(),
-              softWrap: true,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _getLabel(),
+            softWrap: true,
+            style: const TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 15),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
-              decoration: containerElevationDecoration.copyWith(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade500,
-                    offset: const Offset(0.0, 0.75), //(x,y)
-                    blurRadius: 1.0,
-                  ),
-                ],
-              ),
-              child: DropdownButtonFormField<dynamic>(
-                hint: const Text(
-                  'select options',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                value: currentValue,
-                icon: const Icon(
-                  Icons.arrow_drop_down,
-                  size: 40,
-                  color: CupertinoColors.black,
-                ),
-                items: items.map(
-                  (option) {
-                    var optionMap = option;
-                    var value = optionMap['value'];
-
-                    debugPrint('value data type --> ${value.runtimeType}');
-                    if (value.toString().isEmpty) {
-                      value = 'choose';
-                    }
-
-                    debugPrint(option.toString());
-                    return DropdownMenuItem(
-                      value: option,
-                      onTap: () => setState(() {
-                        // if (option['value'] != null ) {
-                        // currentValue = option;
-                        // }
-                        debugPrint('value selected --> $option');
-                      }),
-                      child: Text(
-                        value,
-                        style: const TextStyle(fontSize: 14),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            initialValue: currentValue,
+            validator: (currentOption) {
+              if (widget.widgetJson.containsKey('required') &&
+                  currentValue['id'] == '-1') {
+                return 'Please choose a option';
+              }
+              return null;
+            },
+            builder: (formState) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 2.5),
+                    decoration: containerElevationDecoration.copyWith(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade500,
+                          offset: const Offset(0.0, 0.5), //(x,y)
+                          blurRadius: 0.0,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButton<dynamic>(
+                      hint: Text(
+                        'Choose',
+                        style: kHintTextStyle,
                       ),
-                    );
-                  },
-                ).toList(),
-                onChanged: (value) => setState(() {
-                  // if (value != null) {
-                  currentValue = value;
-                  // }
-                }),
-                validator: (curr) {
-                  if (curr['value'] == null) {
-                    return 'Please select a value';
-                  }
-                },
-                isExpanded: true,
-              ),
-            ),
-          ],
-        ),
+                      value: currentValue,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        size: 40,
+                        color: CupertinoColors.black,
+                      ),
+                      items: items.map(
+                        (option) {
+                          var optionMap = option;
+                          var value = optionMap['value'];
+
+                          debugPrint(
+                              'value data type --> ${value.runtimeType}');
+                          if (value.toString().isEmpty) {
+                            value = 'choose';
+                          }
+
+                          debugPrint(option.toString());
+                          return DropdownMenuItem(
+                            value: option,
+                            onTap: () => setState(() {
+                              debugPrint('value selected --> $option');
+                            }),
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: optionMap['id'] == '-1'
+                                    ? Colors.grey.shade600
+                                    : Colors.black,
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) => setState(() {
+                        currentValue = value;
+                        formState.didChange(currentValue);
+                      }),
+                      isExpanded: true,
+                    ),
+                  ),
+                  if (formState.hasError)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 8),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            color: CupertinoColors.systemRed,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            formState.errorText!,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: CupertinoColors.systemRed,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+          // TextFormField(
+          //   controller: _controller,
+          //   autovalidateMode: AutovalidateMode.onUserInteraction,
+          //   validator: (currentOption) {
+          //     if (widget.widgetJson.containsKey('required') &&
+          //         currentValue['id'] == '-1') {
+          //       return 'Please choose a option';
+          //     }
+          //     return null;
+          //   },
+          //   scrollPadding: const EdgeInsets.all(-5),
+          //   decoration: const InputDecoration(
+          //     border: InputBorder.none,
+          //     focusedBorder: InputBorder.none,
+          //     enabledBorder: InputBorder.none,
+          //     errorBorder: InputBorder.none,
+          //     disabledBorder: InputBorder.none,
+          //     isCollapsed: true,
+          //     isDense: true,
+          //     contentPadding: EdgeInsets.all(-5),
+          //   ),
+          // )
+        ],
       ),
     );
   }

@@ -72,12 +72,14 @@ class _FormTextInputState extends State<FormTextInput> {
             height: 25,
           ),
           TextFormField(
+            // focusNode: FocusNode(),
             controller: _textEditingController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              // if (widget.widgetData['required'] &&
-              //     (value == null || value.isEmpty)) {
-              //   return 'Please enter some text';
-              // }
+              if (widget.widgetData.containsKey('required') &&
+                  (value == null || value.isEmpty)) {
+                return 'Please write some text';
+              }
               // if (value != null && value.length > widget.widgetData['length']) {
               //   return 'Enter text is exceeding the size';
               // }
@@ -102,24 +104,23 @@ class _FormTextInputState extends State<FormTextInput> {
               //     return 'Please enter a valid email';
               //   }
               // }
-              // return null;
+              return null;
             },
-            minLines: widget.widgetData['multi_line'] ?? false ? 2 : 1,
+            minLines: 1,
             maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
             maxLength: widget.widgetData['length'],
             // keyboardType: _getKeyboardType(),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               //   border: InputBorder.none,
-              //   focusedBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
               //   enabledBorder: InputBorder.none,
               //   errorBorder: InputBorder.none,
               //   disabledBorder: InputBorder.none,
               hintText: 'Your Answer',
-              hintStyle: TextStyle(
-                fontSize: 14,
-              ),
+              hintStyle: kHintTextStyle,
+
               isDense: true, // Added this
-              // contentPadding: EdgeInsets.all(0),
+              // contentPadding: EdgeInsets.all(-10),
             ),
           ),
         ],

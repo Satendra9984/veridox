@@ -33,19 +33,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void navigate() {
-    navigatePushReplacement(
-      context,
-      FormHomePage(
-        formId: '123456817',
-      ),
-    );
-
     // if (loggedIn) {
-    //   navigatePushReplacement(context, const SendRequestScreen());
+    //   navigatePushReplacement(context, const AssignmentsHomePage());
     // } else {
     //   debugPrint('not logged in --> \n');
     //   navigatePushReplacement(context, const LogInPage());
     // }
+    navigatePushReplacement(
+      context,
+      const FormHomePage(
+        formId: '123456823',
+      ),
+    );
   }
 
   @override

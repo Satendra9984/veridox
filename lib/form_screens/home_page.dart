@@ -49,7 +49,7 @@ class _FormHomePageState extends State<FormHomePage> {
           } else if (form.hasData && snapshot != null) {
             final data = Map<String, dynamic>.from(snapshot);
 
-            // debugPrint('new data --> ${data.toString()}');
+            debugPrint('new data --> ${data.toString()}');
             // debugPrint('data type for page --> ${data.runtimeType}');
 
             return InitialFormPageView(pagesData: data);

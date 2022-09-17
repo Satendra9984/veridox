@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +23,7 @@ class _FileInputState extends State<FileInput>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('data'),
+        title: const Text('data'),
       ),
       body: Container(
         width: double.infinity,
@@ -50,7 +48,7 @@ class _FileInputState extends State<FileInput>
             GridView.builder(
               shrinkWrap: true,
               itemCount: _filesList.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 5,
                 childAspectRatio: 1.8,
                 mainAxisSpacing: 10,

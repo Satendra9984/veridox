@@ -6,7 +6,7 @@ import '../app_utils/app_constants.dart';
 import '../app_utils/pick_file/pick_file.dart';
 
 class FormFileInput extends StatefulWidget {
-  var widgetJson;
+  Map<String, dynamic> widgetJson;
   FormFileInput({
     Key? key,
     required this.widgetJson,
@@ -39,159 +39,194 @@ class _FormFileInputState extends State<FormFileInput>
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
       decoration: containerElevationDecoration,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.widgetJson['label'],
-            softWrap: true,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-              // color: Colors.black,
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          _filesList.isNotEmpty
-              ? GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: _filesList.length + 1,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: _getCrossAxisCount(),
-                    childAspectRatio: 4.7,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemBuilder: (context, index) {
-                    if (index <= 2) {
-                      if (index == _filesList.length) {
-                        /// add widget to add new files
+      child: FormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        initialValue: _filesList,
+        validator: (fileList) {
+          if (widget.widgetJson.containsKey('requires') && _filesList.isEmpty) {
+            return 'Please select a file';
+          }
+          return null;
+        },
+        builder: (formState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.widgetJson['label'],
+                softWrap: true,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  // color: Colors.black,
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              _filesList.isNotEmpty
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: _filesList.length + 1,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: _getCrossAxisCount(),
+                        childAspectRatio: 4.7,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemBuilder: (context, index) {
+                        if (index <= 2) {
+                          if (index == _filesList.length) {
+                            /// add widget to add new files
 
-                        return const Text('');
-                      } else {
-                        /// display files widget
-                        debugPrint('index is present in display block');
-                        return Container(
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                flex: 8,
-                                child: Text(
-                                  _filesList[index],
-                                  softWrap: false,
-                                  // overflow: TextOverflow.visible,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
+                            return const Text('');
+                          } else {
+                            /// display files widget
+                            debugPrint('index is present in display block');
+                            return Container(
+                              padding: const EdgeInsets.all(5),
+                              margin: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: Colors.grey.shade400,
                                 ),
                               ),
-                              const Divider(
-                                height: 10,
-                                color: Colors.black,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 8,
+                                    child: Text(
+                                      _filesList[index],
+                                      softWrap: false,
+                                      // overflow: TextOverflow.visible,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 10,
+                                    color: Colors.black,
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: IconButton(
+                                        padding:
+                                            const EdgeInsets.only(right: 2.5),
+                                        onPressed: () {
+                                          setState(() {
+                                            _filesList.removeAt(index);
+                                            _canAdd = true;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.cancel)),
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                flex: 2,
-                                child: IconButton(
-                                    padding: EdgeInsets.only(right: 2.5),
-                                    onPressed: () {
-                                      setState(() {
-                                        _filesList.removeAt(index);
-                                        _canAdd = true;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.cancel)),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    } else {
-                      return const Text('');
-                    }
-                  },
-                )
-              : const Text(''),
-          const SizedBox(
-            height: 5,
-          ),
-          _canAdd
-              ? Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey.shade400,
-                    ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade400,
-                        offset: const Offset(0.0, 0.5), //(x,y)
-                        blurRadius: 1.0,
-                      ),
-                    ],
-                  ),
-                  child: GestureDetector(
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text(
-                            'Add Files',
-                            // softWrap: true,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.upload,
-                            color: Colors.blue,
+                            );
+                          }
+                        } else {
+                          return const Text('');
+                        }
+                      },
+                    )
+                  : const Text(''),
+              const SizedBox(
+                height: 5,
+              ),
+              _canAdd
+                  ? Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400,
+                            offset: const Offset(0.0, 0.5), //(x,y)
+                            blurRadius: 1.0,
                           ),
                         ],
                       ),
-                    ),
-                    onTap: () async {
-                      PlatformFile? list =
-                          await PickFile.pickAndGetFileAsBytes();
-                      if (list != null) {
-                        debugPrint('file get --> ${list.name}');
+                      child: GestureDetector(
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Text(
+                                'Add Files',
+                                // softWrap: true,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.upload,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () async {
+                          PlatformFile? list =
+                              await PickFile.pickAndGetFileAsBytes();
+                          if (list != null) {
+                            debugPrint('file get --> ${list.name}');
 
-                        setState(() {
-                          _filesList.add(list.name);
-                          debugPrint(_filesList.length.toString());
-                        });
-                        debugPrint(_filesList.length.toString());
+                            setState(() {
+                              _filesList.add(list.name);
+                              debugPrint(_filesList.length.toString());
+                            });
+                            debugPrint(_filesList.length.toString());
 
-                        if (_filesList.length == 3) {
-                          setState(() {
-                            _canAdd = false;
-                          });
-                        }
-                      }
-                    },
+                            if (_filesList.length == 3) {
+                              setState(() {
+                                _canAdd = false;
+                              });
+                            }
+                          }
+                        },
+                      ),
+                    )
+                  : const Text(''),
+              if (formState.hasError)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: CupertinoColors.systemRed,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        formState.errorText!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: CupertinoColors.systemRed,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
                   ),
-                )
-              : const Text(''),
-        ],
+                ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -84,16 +84,14 @@ class _FormPageState extends State<FormPage> {
                             return ToggleButton(
                               widgetJson: field[index],
                             );
-                          }
-                          // else if (field[index] != null &&
-                          //     field[index]['widget'] == 'dropdown') {
-                          //   // print('dropdown');
-                          //
-                          //   return DropdownMenu(
-                          //     widgetJson: field[index],
-                          //   );
-                          // }
-                          else if (field[index] != null &&
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'dropdown') {
+                            // print('dropdown');
+
+                            return DropdownMenu(
+                              widgetJson: field[index],
+                            );
+                          } else if (field[index] != null &&
                               field[index]['widget'] == 'date-time') {
                             // print('date time');
 
@@ -139,8 +137,7 @@ class _FormPageState extends State<FormPage> {
                           widget.currentPage < widget.totalPages - 1
                               ? ElevatedButton(
                                   onPressed: () {
-                                    widget.pageController
-                                        .jumpToPage(widget.currentPage + 1);
+                                    _validateForm(context);
                                   },
                                   child: const Center(
                                     child: Text('Next'),
@@ -159,5 +156,16 @@ class _FormPageState extends State<FormPage> {
         ),
       ),
     );
+  }
+
+  void _validateForm(BuildContext cont) {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Submitting data'),
+        ),
+      );
+      widget.pageController.jumpToPage(widget.currentPage + 1);
+    }
   }
 }

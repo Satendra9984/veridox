@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/form_widgets/table_form_input.dart';
 
-import '../app_utils/app_constants.dart';
-
 class FormTableInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  // final Function(dynamic value) onChange;
+
   const FormTableInput({
     Key? key,
     required this.widgetJson,
-    // required this.onChange,
   }) : super(key: key);
 
   @override

@@ -1,9 +1,7 @@
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:signature/signature.dart';
 import 'package:veridox/app_utils/app_constants.dart';
@@ -51,7 +49,7 @@ class _GetSignatureState extends State<GetSignature> {
               borderRadius: BorderRadius.circular(5),
               child: Signature(
                 controller: _signatureController,
-                backgroundColor: Color(0XFFFAE5D3),
+                backgroundColor: const Color(0XFFFAE5D3),
                 width: MediaQuery.of(context).size.width - 20,
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:veridox/form_widgets/get_signature.dart';
+import 'package:veridox/form_widgets/signature.dart';
 import '../app_utils/app_constants.dart';
 import '../form_widgets/form_text_input.dart';
 
@@ -24,26 +25,11 @@ class FormSubmitPage extends StatefulWidget {
 
 class _FormSubmitPageState extends State<FormSubmitPage>
     with AutomaticKeepAliveClientMixin {
-  Uint8List? _signatureImage;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<void> _getImageFromGallery() async {
-    // PlatformFile? image =
-    //     await PickFile.pickAndGetFileAsBytes(fileExtensions: ['jpg', 'png']);
-
-    var image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      _signatureImage = await image.readAsBytes();
-      setState(() {
-        _signatureImage;
-      });
-    }
   }
 
   @override
@@ -57,128 +43,62 @@ class _FormSubmitPageState extends State<FormSubmitPage>
       body: Container(
         margin: const EdgeInsets.all(15),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                // padding: const EdgeInsets.all(5.0),
-                decoration: containerElevationDecoration,
-                child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const FormSignature(),
+                const SizedBox(
+                  height: 10,
+                ),
+                const FormTextInput(
+                  widgetData: {
+                    "id": 15,
+                    "label": "Final Report",
+                    "length": 300,
+                    "required": true,
+                    "widget": "text-input",
+                    "multi_line": true,
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width - 30,
-                      child: _signatureImage != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.memory(
-                                _signatureImage!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : const Text(''),
+                    ElevatedButton(
+                      onPressed: () {
+                        widget.pageController
+                            .jumpToPage(widget.currentPage - 1);
+                      },
+                      child: const Center(
+                        child: Text('Back'),
+                      ),
                     ),
-                    const Divider(thickness: 1.5),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _signatureImage = null;
-                              });
-                            },
-                            tooltip: 'Clear',
-                            icon: const Icon(
-                              Icons.close,
-                              size: 30,
-                              color: CupertinoColors.destructiveRed,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  await Navigator.of(context)
-                                      .push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const GetSignature(),
-                                    ),
-                                  )
-                                      .then((value) {
-                                    if (value != null) {
-                                      setState(() {
-                                        _signatureImage = value;
-                                      });
-                                    }
-                                  });
-                                },
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.pencil,
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  await _getImageFromGallery();
-                                },
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.image,
-                                  size: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    const SizedBox(width: 15),
+                    ElevatedButton(
+                      onPressed: () => _validateSubmitPage,
+                      child: const Center(
+                        child: Text('Submit'),
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const FormTextInput(
-                widgetData: {
-                  "id": 15,
-                  "label": "Final Report",
-                  "length": 300,
-                  "required": true,
-                  "widget": "text-input",
-                  "multi_line": true,
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.pageController.jumpToPage(widget.currentPage - 1);
-                    },
-                    child: const Center(
-                      child: Text('Back'),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Center(
-                      child: Text('Submit'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void _validateSubmitPage() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Submitting form'),
+        ),
+      );
+      Navigator.pop(context);
+    }
   }
 
   @override
