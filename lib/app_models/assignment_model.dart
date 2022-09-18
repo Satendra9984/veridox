@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 /// Assignment Model for the basic details of the assignment
 class Assignment {
@@ -11,7 +10,7 @@ class Assignment {
   final String name;
 
   /// todo: add form id
-  final String formId;
+  final String? formId;
 
   Map<String, dynamic> toJson() {
     return {

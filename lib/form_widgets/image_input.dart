@@ -21,6 +21,9 @@ class _ImageInputState extends State<ImageInput>
   String appBarTitle = " length ";
 
   Future<void> _addImageToList(List<Uint8List> image) async {
+    int leng = 3 - _imageFileList.length;
+    image.removeRange(leng, image.length);
+
     setState(() {
       _imageFileList.addAll(image);
     });
@@ -49,6 +52,16 @@ class _ImageInputState extends State<ImageInput>
     super.initState();
   }
 
+  String _getLabel() {
+    String label = widget.widgetJson['label'];
+
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
+      label += '*';
+    }
+    return label;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -61,6 +74,7 @@ class _ImageInputState extends State<ImageInput>
         initialValue: _imageFileList,
         validator: (list) {
           if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true &&
               _imageFileList.isEmpty) {
             return 'Please add some images';
           }
@@ -71,7 +85,7 @@ class _ImageInputState extends State<ImageInput>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${widget.widgetJson['label']}',
+                _getLabel(),
                 softWrap: true,
                 style: const TextStyle(
                   fontSize: 17,
@@ -126,7 +140,9 @@ class _ImageInputState extends State<ImageInput>
                                 );
                               })).then((value) {
                                 if (value != null) {
+                                  debugPrint('we got images');
                                   _addImageToList(value);
+                                  formState.didChange(_imageFileList);
                                 }
                               });
                               setState(() {
@@ -175,6 +191,7 @@ class _ImageInputState extends State<ImageInput>
                                   setState(() {
                                     _imageFileList.removeAt(index);
                                   });
+                                  formState.didChange(_imageFileList);
                                 },
                                 icon: const Icon(
                                   Icons.cancel,

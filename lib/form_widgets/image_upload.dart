@@ -280,19 +280,7 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
               },
               heroTag: 'image0',
               tooltip: 'Pick Image from gallery',
-              child: const Icon(Icons.photo),
-            ),
-          ),
-          Semantics(
-            label: 'image_picker_example_from_gallery',
-            child: FloatingActionButton(
-              onPressed: () {
-                isVideo = false;
-                _onImageButtonPressed(ImageSource.gallery, context: context);
-              },
-              heroTag: 'image0',
-              tooltip: 'Pick Image from gallery',
-              child: const Icon(Icons.photo),
+              child: const Icon(Icons.camera),
             ),
           ),
           Padding(
@@ -304,6 +292,7 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
                         context: context, isMultiImage: true)
                     .then((value) {
                   debugPrint('list of length --> ${value?.length}');
+
                   Navigator.pop(context, value);
                 });
               },

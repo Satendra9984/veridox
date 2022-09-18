@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../app_utils/app_constants.dart';
 
 class FormTextInput extends StatefulWidget {
-  final Map<String, dynamic> widgetData;
+  final Map<String, dynamic> widgetJson;
   const FormTextInput({
     Key? key,
-    required this.widgetData,
+    required this.widgetJson,
   }) : super(key: key);
 
   @override
@@ -39,10 +39,10 @@ class _FormTextInputState extends State<FormTextInput> {
   // }
 
   String _getLabel() {
-    String label = widget.widgetData['label'];
+    String label = widget.widgetJson['label'];
 
-    if (widget.widgetData.containsKey('required') &&
-        widget.widgetData['required'] == true) {
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
       label += '*';
       _isRequired = true;
     }
@@ -55,75 +55,81 @@ class _FormTextInputState extends State<FormTextInput> {
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
       decoration: containerElevationDecoration,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            _getLabel(),
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(
-            height: 25,
-          ),
-          TextFormField(
-            // focusNode: FocusNode(),
-            controller: _textEditingController,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if (widget.widgetData.containsKey('required') &&
-                  (value == null || value.isEmpty)) {
-                return 'Please write some text';
-              }
-              // if (value != null && value.length > widget.widgetData['length']) {
-              //   return 'Enter text is exceeding the size';
-              // }
-              // if (value != null && widget.widgetData['type'] == 'phone') {
-              //   bool phone = RegExp(
-              //           r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
-              //       .hasMatch(value ?? '');
-              //   if (!phone) {
-              //     return 'Please enter a valid phone number';
-              //   }
-              // }
-              // if (value != null &&
-              //     widget.widgetData['type'] == 'number' &&
-              //     int.tryParse(value) == null) {
-              //   return 'Please enter a valid number';
-              // }
-              // if (value != null && widget.widgetData['type'] == 'email') {
-              //   bool email = RegExp(
-              //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-              //       .hasMatch(value ?? '');
-              //   if (!email) {
-              //     return 'Please enter a valid email';
-              //   }
-              // }
-              return null;
-            },
-            minLines: 1,
-            maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
-            maxLength: widget.widgetData['length'],
-            // keyboardType: _getKeyboardType(),
-            decoration: InputDecoration(
-              //   border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              //   enabledBorder: InputBorder.none,
-              //   errorBorder: InputBorder.none,
-              //   disabledBorder: InputBorder.none,
-              hintText: 'Your Answer',
-              hintStyle: kHintTextStyle,
+      child: FormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        initialValue: _textEditingController,
+        validator: (val) {
+          String? value = _textEditingController.text;
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true &&
+              (value.isEmpty)) {
+            return 'Please write some text';
+          }
+          return null;
+        },
+        builder: (formState) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                _getLabel(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              TextField(
+                // focusNode: FocusNode(),
+                controller: _textEditingController,
 
-              isDense: true, // Added this
-              // contentPadding: EdgeInsets.all(-10),
-            ),
-          ),
-        ],
+                minLines: 1,
+                maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
+                maxLength: widget.widgetJson['length'],
+                // keyboardType: _getKeyboardType(),
+                decoration: InputDecoration(
+                  //   border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  //   enabledBorder: InputBorder.none,
+                  //   errorBorder: InputBorder.none,
+                  //   disabledBorder: InputBorder.none,
+                  hintText: 'Your Answer',
+                  hintStyle: kHintTextStyle,
+
+                  isDense: true, // Added this
+                  // contentPadding: EdgeInsets.all(-10),
+                ),
+              ),
+              if (formState.hasError)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: CupertinoColors.systemRed,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        formState.errorText!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: CupertinoColors.systemRed,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

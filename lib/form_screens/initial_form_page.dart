@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/form_screens/form_submit_screen.dart';
-import '../form_screens/form_page.dart';
+import 'form_page.dart';
 
 class InitialFormPageView extends StatefulWidget {
   var pagesData;

@@ -18,15 +18,16 @@ class FormSignature extends StatefulWidget {
 class _FormSignatureState extends State<FormSignature> {
   Uint8List? _signatureImage;
 
-  Future<void> _getImageFromGallery() async {
+  Future<void> _getImageFromGallery(FormFieldState formState) async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       _signatureImage = await image.readAsBytes();
-      setState(() {
-        _signatureImage;
-      });
+      // setState(() {
+      //   _signatureImage;
+      formState.didChange(_signatureImage);
+      // });
     }
   }
 
@@ -68,9 +69,10 @@ class _FormSignatureState extends State<FormSignature> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          setState(() {
-                            _signatureImage = null;
-                          });
+                          // setState(() {
+                          _signatureImage = null;
+                          formState.didChange(_signatureImage);
+                          // });
                         },
                         tooltip: 'Clear',
                         icon: const Icon(
@@ -92,9 +94,10 @@ class _FormSignatureState extends State<FormSignature> {
                               )
                                   .then((value) {
                                 if (value != null) {
-                                  setState(() {
-                                    _signatureImage = value;
-                                  });
+                                  // setState(() {
+                                  _signatureImage = value;
+                                  formState.didChange(_signatureImage);
+                                  // });
                                 }
                               });
                             },
@@ -108,7 +111,7 @@ class _FormSignatureState extends State<FormSignature> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await _getImageFromGallery();
+                              await _getImageFromGallery(formState);
                             },
                             icon: const FaIcon(
                               FontAwesomeIcons.image,

@@ -16,15 +16,32 @@ class FormTableInput extends StatefulWidget {
 class _FormTableInputState extends State<FormTableInput> {
   late List<dynamic> _columnLabels;
   late List<dynamic> _rowLabels;
+  bool _isRequired = false;
 
   @override
   void initState() {
     super.initState();
     _columnLabels = widget.widgetJson['columns'];
     _rowLabels = widget.widgetJson['rows'];
+
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
+      _isRequired = true;
+    }
+
     debugPrint(
         'rows --> ${_rowLabels.toString()}\n and type --> ${_columnLabels.runtimeType}');
     debugPrint('columns --> ${_columnLabels.toString()}');
+  }
+
+  String _getLabel() {
+    String label = widget.widgetJson['label'];
+
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
+      label += '*';
+    }
+    return label;
   }
 
   @override
@@ -41,7 +58,7 @@ class _FormTableInputState extends State<FormTableInput> {
           Container(
             margin: const EdgeInsets.only(left: 15, top: 25),
             child: Text(
-              widget.widgetJson['label'],
+              _getLabel(),
               style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w500,
@@ -89,6 +106,7 @@ class _FormTableInputState extends State<FormTableInput> {
                             widgetData: {
                               "id": col['id'],
                               "label": col['label'],
+                              "required": _isRequired,
                               "widget": "text-input"
                             },
                           );

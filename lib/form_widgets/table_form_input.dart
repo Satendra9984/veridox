@@ -58,67 +58,104 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _getLabel(),
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextFormField(
-            controller: _textEditingController,
-            validator: (value) {
-              // if (widget.widgetData['required'] &&
-              //     (value == null || value.isEmpty)) {
-              //   return 'Please enter some text';
-              // }
-              // if (value != null && value.length > widget.widgetData['length']) {
-              //   return 'Enter text is exceeding the size';
-              // }
-              // if (value != null && widget.widgetData['type'] == 'phone') {
-              //   bool phone = RegExp(
-              //           r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
-              //       .hasMatch(value ?? '');
-              //   if (!phone) {
-              //     return 'Please enter a valid phone number';
-              //   }
-              // }
-              // if (value != null &&
-              //     widget.widgetData['type'] == 'number' &&
-              //     int.tryParse(value) == null) {
-              //   return 'Please enter a valid number';
-              // }
-              // if (value != null && widget.widgetData['type'] == 'email') {
-              //   bool email = RegExp(
-              //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-              //       .hasMatch(value ?? '');
-              //   if (!email) {
-              //     return 'Please enter a valid email';
-              //   }
-              // }
-              // return null;
-            },
-            minLines: 1,
-            maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
-            maxLength: widget.widgetData['length'],
-            // keyboardType: _getKeyboardType(),
-            decoration: const InputDecoration(
-              hintText: 'Your Answer',
-              hintStyle: TextStyle(
-                fontSize: 14,
+      child: FormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        initialValue: _textEditingController,
+        validator: (val) {
+          if (widget.widgetData['required'] == true &&
+              _textEditingController.text.isEmpty) {
+            return 'Please enter a value';
+          }
+          return null;
+        },
+        builder: (formState) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _getLabel(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-              isDense: true, // Added this
-              // contentPadding: EdgeInsets.all(0),
-            ),
-          ),
-        ],
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: _textEditingController,
+                onChanged: (text) {
+                  formState.didChange(_textEditingController);
+                },
+                minLines: 1,
+                maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
+                maxLength: widget.widgetData['length'],
+                // keyboardType: _getKeyboardType(),
+                decoration: const InputDecoration(
+                  hintText: 'Your Answer',
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                  ),
+                  isDense: true, // Added this
+                  // contentPadding: EdgeInsets.all(0),
+                ),
+              ),
+              if (formState.hasError)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: CupertinoColors.systemRed,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        formState.errorText!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: CupertinoColors.systemRed,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
 }
+
+// if (widget.widgetData['required'] &&
+//     (value == null || value.isEmpty)) {
+//   return 'Please enter some text';
+// }
+// if (value != null && value.length > widget.widgetData['length']) {
+//   return 'Enter text is exceeding the size';
+// }
+// if (value != null && widget.widgetData['type'] == 'phone') {
+//   bool phone = RegExp(
+//           r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
+//       .hasMatch(value ?? '');
+//   if (!phone) {
+//     return 'Please enter a valid phone number';
+//   }
+// }
+// if (value != null &&
+//     widget.widgetData['type'] == 'number' &&
+//     int.tryParse(value) == null) {
+//   return 'Please enter a valid number';
+// }
+// if (value != null && widget.widgetData['type'] == 'email') {
+//   bool email = RegExp(
+//           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+//       .hasMatch(value ?? '');
+//   if (!email) {
+//     return 'Please enter a valid email';
+//   }
+// }
+// return null;

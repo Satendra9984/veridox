@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/app_api_collection.dart';
 
-import '../form_widgets/initial_form_page.dart';
+import 'initial_form_page.dart';
 
 class FormHomePage extends StatefulWidget {
   final String formId;

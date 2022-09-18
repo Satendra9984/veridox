@@ -74,6 +74,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
             initialValue: currentValue,
             validator: (currentOption) {
               if (widget.widgetJson.containsKey('required') &&
+                  widget.widgetJson['required'] == true &&
                   currentValue['id'] == '-1') {
                 return 'Please choose a option';
               }

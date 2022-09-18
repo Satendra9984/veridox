@@ -52,7 +52,7 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                   height: 10,
                 ),
                 const FormTextInput(
-                  widgetData: {
+                  widgetJson: {
                     "id": 15,
                     "label": "Final Report",
                     "length": 300,
@@ -75,7 +75,7 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                     ),
                     const SizedBox(width: 15),
                     ElevatedButton(
-                      onPressed: () => _validateSubmitPage,
+                      onPressed: () => _validateSubmitPage(),
                       child: const Center(
                         child: Text('Submit'),
                       ),

@@ -5,11 +5,11 @@ import 'package:intl/intl.dart';
 import '../app_utils/app_constants.dart';
 
 class DateTimePicker extends StatefulWidget {
-  final Map<String, dynamic> widgetData;
+  final Map<String, dynamic> widgetJson;
   // final void Function(dynamic value) onChange;
   const DateTimePicker({
     Key? key,
-    required this.widgetData,
+    required this.widgetJson,
     // required this.onChange,
   }) : super(key: key);
 
@@ -29,11 +29,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.didChangeDependencies();
     try {
       setState(() {
-        _date = DateFormat('dd/mm/yyyy').parse(widget.widgetData['value']);
+        _date = DateFormat('dd/mm/yyyy').parse(widget.widgetJson['value']);
         _firstDate =
-            DateFormat('dd/mm/yyyy').parse(widget.widgetData['first-date']);
+            DateFormat('dd/mm/yyyy').parse(widget.widgetJson['first-date']);
         _lastDate =
-            DateFormat('dd/mm/yyyy').parse(widget.widgetData['last-date']);
+            DateFormat('dd/mm/yyyy').parse(widget.widgetJson['last-date']);
       });
     } catch (e) {
       _date = DateTime.now();
@@ -59,10 +59,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 
   String _getLabel() {
-    String label = widget.widgetData['label'];
+    String label = widget.widgetJson['label'];
 
-    if (widget.widgetData.containsKey('required') &&
-        widget.widgetData['required'] == true) {
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
       label += '*';
     }
     return label;
@@ -80,7 +80,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: _date,
         validator: (date) {
-          if (widget.widgetData.containsKey('required') && _date == null) {
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true &&
+              _date == null) {
             return 'Please select a date';
           }
           return null;

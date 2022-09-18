@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
 import 'package:veridox/form_widgets/toggle_button.dart';
+import '../app_utils/app_constants.dart';
 import '../form_widgets/date_time.dart';
 import '../form_widgets/dropdown.dart';
 import '../form_widgets/form_file_input.dart';
@@ -77,7 +78,7 @@ class _FormPageState extends State<FormPage> {
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'text-input') {
                             return FormTextInput(
-                              widgetData: field[index],
+                              widgetJson: field[index],
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'toggle-button') {
@@ -96,7 +97,7 @@ class _FormPageState extends State<FormPage> {
                             // print('date time');
 
                             return DateTimePicker(
-                              widgetData: field[index],
+                              widgetJson: field[index],
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'file') {
@@ -114,7 +115,38 @@ class _FormPageState extends State<FormPage> {
                               widgetJson: field[index],
                             );
                           } else {
-                            return const Text('Start make some form');
+                            return Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              decoration: containerElevationDecoration.copyWith(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade500,
+                                    offset: const Offset(0.0, 0.5), //(x,y)
+                                    blurRadius: 0.0,
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.error_outline,
+                                    color: CupertinoColors.systemRed,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Invalid Form Field',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: CupertinoColors.systemRed,
+                                    ),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
+                            );
                           }
                         },
                       ),

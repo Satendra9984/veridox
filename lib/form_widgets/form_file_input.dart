@@ -32,6 +32,16 @@ class _FormFileInputState extends State<FormFileInput>
     return count;
   }
 
+  String _getLabel() {
+    String label = widget.widgetJson['label'];
+
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
+      label += '*';
+    }
+    return label;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -41,9 +51,11 @@ class _FormFileInputState extends State<FormFileInput>
       decoration: containerElevationDecoration,
       child: FormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        initialValue: _filesList,
+        initialValue: _canAdd,
         validator: (fileList) {
-          if (widget.widgetJson.containsKey('requires') && _filesList.isEmpty) {
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true &&
+              _filesList.isEmpty) {
             return 'Please select a file';
           }
           return null;
@@ -54,7 +66,7 @@ class _FormFileInputState extends State<FormFileInput>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.widgetJson['label'],
+                _getLabel(),
                 softWrap: true,
                 style: const TextStyle(
                   fontSize: 17,
@@ -77,131 +89,123 @@ class _FormFileInputState extends State<FormFileInput>
                         mainAxisSpacing: 8,
                       ),
                       itemBuilder: (context, index) {
-                        if (index <= 2) {
-                          if (index == _filesList.length) {
-                            /// add widget to add new files
-
-                            return const Text('');
-                          } else {
-                            /// display files widget
-                            debugPrint('index is present in display block');
-                            return Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.grey.shade400,
-                                ),
+                        if (index <= 2 && index != _filesList.length) {
+                          return Container(
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Colors.grey.shade400,
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 8,
-                                    child: Text(
-                                      _filesList[index],
-                                      softWrap: false,
-                                      // overflow: TextOverflow.visible,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: Text(
+                                    _filesList[index],
+                                    softWrap: false,
+                                    // overflow: TextOverflow.visible,
+                                    style: const TextStyle(
+                                      fontSize: 14,
                                     ),
                                   ),
-                                  const Divider(
-                                    height: 10,
-                                    color: Colors.black,
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: IconButton(
-                                        padding:
-                                            const EdgeInsets.only(right: 2.5),
-                                        onPressed: () {
-                                          setState(() {
-                                            _filesList.removeAt(index);
-                                            _canAdd = true;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.cancel)),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        } else {
-                          return const Text('');
+                                ),
+                                const Divider(
+                                  height: 10,
+                                  color: Colors.black,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: IconButton(
+                                      padding:
+                                          const EdgeInsets.only(right: 2.5),
+                                      onPressed: () {
+                                        setState(() {
+                                          _filesList.removeAt(index);
+                                          _canAdd = true;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.cancel)),
+                                ),
+                              ],
+                            ),
+                          );
                         }
+
+                        return const Text('');
                       },
                     )
                   : const Text(''),
               const SizedBox(
                 height: 5,
               ),
-              _canAdd
-                  ? Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade400,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade400,
-                            offset: const Offset(0.0, 0.5), //(x,y)
-                            blurRadius: 1.0,
+              if (_canAdd)
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey.shade400,
+                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: const Offset(0.0, 0.5), //(x,y)
+                        blurRadius: 1.0,
+                      ),
+                    ],
+                  ),
+                  child: GestureDetector(
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text(
+                            'Add Files',
+                            // softWrap: true,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.upload,
+                            color: Colors.blue,
                           ),
                         ],
                       ),
-                      child: GestureDetector(
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Text(
-                                'Add Files',
-                                // softWrap: true,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Icon(
-                                Icons.upload,
-                                color: Colors.blue,
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () async {
-                          PlatformFile? list =
-                              await PickFile.pickAndGetFileAsBytes();
-                          if (list != null) {
-                            debugPrint('file get --> ${list.name}');
+                    ),
+                    onTap: () async {
+                      PlatformFile? list =
+                          await PickFile.pickAndGetFileAsBytes();
+                      if (list != null) {
+                        debugPrint('file get --> ${list.name}');
 
-                            setState(() {
-                              _filesList.add(list.name);
-                              debugPrint(_filesList.length.toString());
-                            });
-                            debugPrint(_filesList.length.toString());
+                        setState(() {
+                          _filesList.add(list.name);
+                          debugPrint(_filesList.length.toString());
+                        });
+                        debugPrint(_filesList.length.toString());
 
-                            if (_filesList.length == 3) {
-                              setState(() {
-                                _canAdd = false;
-                              });
-                            }
-                          }
-                        },
-                      ),
-                    )
-                  : const Text(''),
+                        if (_filesList.length == 3) {
+                          setState(() {
+                            _canAdd = false;
+                            formState.didChange(_canAdd);
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ),
               if (formState.hasError)
                 Padding(
                   padding:

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../form_screens/home_page.dart';
+import '../assignments_home_page.dart';
+import '../login/login_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -33,18 +35,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void navigate() {
-    // if (loggedIn) {
-    //   navigatePushReplacement(context, const AssignmentsHomePage());
-    // } else {
-    //   debugPrint('not logged in --> \n');
-    //   navigatePushReplacement(context, const LogInPage());
-    // }
-    navigatePushReplacement(
-      context,
-      const FormHomePage(
-        formId: '123456823',
-      ),
-    );
+    if (loggedIn) {
+      navigatePushReplacement(context, const AssignmentsHomePage());
+    } else {
+      debugPrint('not logged in --> \n');
+      navigatePushReplacement(context, const LogInPage());
+    }
+    // navigatePushReplacement(
+    //   context,
+    //   const FormHomePage(
+    //     formId: '5',
+    //   ),
+    // );
   }
 
   @override

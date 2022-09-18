@@ -52,7 +52,9 @@ class _ToggleButtonState extends State<ToggleButton> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: status,
         validator: (value) {
-          if (widget.widgetJson.containsKey('required') && status == null) {
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true &&
+              status == null) {
             return 'Please select a value';
           }
           return null;
