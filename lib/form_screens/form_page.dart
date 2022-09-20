@@ -27,7 +27,8 @@ class FormPage extends StatefulWidget {
   State<FormPage> createState() => _FormPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _FormPageState extends State<FormPage>
+    with AutomaticKeepAliveClientMixin {
   final _formKey = GlobalKey<FormState>();
   late var _pageData;
 
@@ -48,6 +49,7 @@ class _FormPageState extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
@@ -200,4 +202,8 @@ class _FormPageState extends State<FormPage> {
       widget.pageController.jumpToPage(widget.currentPage + 1);
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

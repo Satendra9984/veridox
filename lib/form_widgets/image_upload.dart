@@ -101,6 +101,7 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
           print('path.........${pickedFile?.path}');
         }
         File file = File(pickedFile!.path);
+        image.add(await file.readAsBytes());
         file.deleteSync(recursive: true);
       } catch (e) {
         setState(() {
@@ -272,7 +273,8 @@ class _ImagePickerImageInputState extends State<ImagePickerImageInput> {
             child: FloatingActionButton(
               onPressed: () async {
                 isVideo = false;
-                _onImageButtonPressed(ImageSource.camera, context: context)
+                await _onImageButtonPressed(ImageSource.camera,
+                        context: context)
                     .then((value) {
                   debugPrint('list of length --> ${value?.length}');
                   Navigator.pop(context, value);

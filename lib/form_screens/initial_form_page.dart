@@ -66,6 +66,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
   Widget build(BuildContext context) {
     return PageView(
       scrollDirection: Axis.horizontal,
+      physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       children: _getFormPages(widget.pagesData),
       onPageChanged: (currentPage) {
@@ -74,6 +75,3 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
     );
   }
 }
-
-/// todo: we can transfer pagecontroller to each formpage
-/// and there can make buttons for submit form

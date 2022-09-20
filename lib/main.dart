@@ -10,6 +10,7 @@ import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/form_screens/form_submit_screen.dart';
 import 'package:veridox/form_screens/home_page.dart';
+import 'package:veridox/form_widgets/location_input.dart';
 import 'app_models/assignment_model.dart';
 
 List<CameraDescription> cameras = [];
@@ -67,10 +68,10 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme()
             // fontFamily:
             ),
-        // home: const FormSubmitPage(),
-        routes: {
-          '/': (context) => const OnBoardingScreen(),
-        },
+        home: LocationInput(),
+        // routes: {
+        //   '/': (context) => const OnBoardingScreen(),
+        // },
       ),
     );
   }

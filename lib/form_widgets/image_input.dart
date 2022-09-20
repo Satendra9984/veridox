@@ -21,11 +21,14 @@ class _ImageInputState extends State<ImageInput>
   String appBarTitle = " length ";
 
   Future<void> _addImageToList(List<Uint8List> image) async {
-    int leng = 3 - _imageFileList.length;
-    image.removeRange(leng, image.length);
-
+    // int leng = 3 - _imageFileList.length;
+    // image.removeRange(leng, image.length);
+    int j = 0;
+    for (int i = _imageFileList.length; i < 3 && j < image.length; i++) {
+      _imageFileList.add(image[j++]);
+    }
     setState(() {
-      _imageFileList.addAll(image);
+      _imageFileList;
     });
   }
 
@@ -138,10 +141,10 @@ class _ImageInputState extends State<ImageInput>
                                 return const ImagePickerImageInput(
                                   title: "Image",
                                 );
-                              })).then((value) {
+                              })).then((value) async {
                                 if (value != null) {
-                                  debugPrint('we got images');
-                                  _addImageToList(value);
+                                  debugPrint('we got images ${value.length}');
+                                  await _addImageToList(value);
                                   formState.didChange(_imageFileList);
                                 }
                               });

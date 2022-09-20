@@ -87,7 +87,10 @@ class _FormTextInputState extends State<FormTextInput> {
               TextField(
                 // focusNode: FocusNode(),
                 controller: _textEditingController,
-
+                onChanged: (val) {
+                  // _textEditingController.text = val;
+                  formState.didChange(_textEditingController);
+                },
                 minLines: 1,
                 maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
                 maxLength: widget.widgetJson['length'],
