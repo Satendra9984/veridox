@@ -68,7 +68,14 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme()
             // fontFamily:
             ),
-        home: LocationInput(),
+        home: const Scaffold(
+          body: GetUserLocation(
+            widgetJson: {
+              'label': 'enter location',
+              "required": true,
+            },
+          ),
+        ),
         // routes: {
         //   '/': (context) => const OnBoardingScreen(),
         // },
@@ -77,5 +84,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// veridox_githubtoken_1
-// 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
+// veridox_githubtoken_2
+// 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

@@ -62,6 +62,7 @@ dependencies:
   signature: ^5.2.1
   location: ^4.2.0
   geocode: 1.0.1
+#  geolocator: ^9.0.1
 
 
 dev_dependencies:

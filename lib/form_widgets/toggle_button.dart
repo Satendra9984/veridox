@@ -78,23 +78,6 @@ class _ToggleButtonState extends State<ToggleButton> {
                   const SizedBox(
                     width: 15,
                   ),
-                  // Expanded(
-                  //   flex: 2,
-                  //   child: FlutterSwitch(
-                  //     width: 45.0,
-                  //     height: 25.0,
-                  //     toggleSize: 20.0,
-                  //     value: status ?? false,
-                  //     onToggle: (val) {
-                  //       setState(() {
-                  //         status = val;
-                  //       });
-                  //       // widget.onChange(val);
-                  //     },
-                  //     activeColor: CupertinoColors.systemGreen,
-                  //     // inactiveColor: CupertinoColors.systemRed,
-                  //   ),
-                  // ),
                   Expanded(
                     flex: 2,
                     child: IconButton(
