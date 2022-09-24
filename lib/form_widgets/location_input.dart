@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocode/geocode.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:veridox/app_utils/app_constants.dart';
+import 'package:veridox/form_widgets/show_map.dart';
 
 class GetUserLocation extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -18,7 +19,7 @@ class GetUserLocation extends StatefulWidget {
 }
 
 class _GetUserLocationState extends State<GetUserLocation> {
-  LocationData? _currentLocation;
+  Position? _currentLocation;
   bool _gettingLocation = false;
   String _address = "";
 
@@ -78,22 +79,40 @@ class _GetUserLocationState extends State<GetUserLocation> {
                   if (_currentLocation != null && !_gettingLocation)
                     Expanded(
                       flex: 8,
-                      child: Column(
-                        children: [
-                          Text(
-                            "Location: ${_currentLocation?.latitude}, ${_currentLocation?.longitude}",
-                            style: const TextStyle(
-                              fontSize: 14,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_currentLocation != null) {
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (context) {
+                                  double? lat = _currentLocation!.latitude;
+                                  double? long = _currentLocation!.longitude;
+                                  return ShowMapScreen(
+                                    lat: lat!,
+                                    longi: long!,
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              "Location: ${_currentLocation?.latitude}, ${_currentLocation?.longitude}",
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "Address: $_address",
-                            style: const TextStyle(
-                              fontSize: 14,
+                            const SizedBox(height: 5),
+                            Text(
+                              "Address: $_address",
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   if (_currentLocation == null)
@@ -111,7 +130,7 @@ class _GetUserLocationState extends State<GetUserLocation> {
                               _gettingLocation = true;
                             });
                             await _getLocation().then((value) async {
-                              LocationData? location = value;
+                              Position? location = value;
                               await _getAddress(
                                       location?.latitude, location?.longitude)
                                   .then((value) {
@@ -177,20 +196,9 @@ class _GetUserLocationState extends State<GetUserLocation> {
     );
   }
 
-  // _getLocation1() async {
-  //   Position position =
-  //       await Geolocator.getCurrentPosition();
-  //   debugPrint('location: ${position.latitude}');
-  //   List<Placemark> addresses =
-  //       await placemarkFromCoordinates(position.latitude, position.longitude);
-  //
-  //   var first = addresses.first;
-  //   print("${first.name} : ${first..administrativeArea}");
-  // }
-  //
-  Future<LocationData?> _getLocation() async {
+  Future<Position?> _getLocation() async {
     Location location = Location();
-    LocationData _locationData;
+    Position _locationData;
 
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -211,14 +219,16 @@ class _GetUserLocationState extends State<GetUserLocation> {
       }
     }
 
-    _locationData = await location.getLocation();
-
+    _locationData = await Geolocator.getCurrentPosition();
+    debugPrint(
+        'lat --> ${_locationData.latitude}, long --> ${_locationData.longitude}');
     return _locationData;
   }
 
   Future<String> _getAddress(double? lat, double? lang) async {
     if (lat == null || lang == null) return "";
     GeoCode geoCode = GeoCode();
+    debugPrint("lat $lat, long $lang");
     Address address =
         await geoCode.reverseGeocoding(latitude: lat, longitude: lang);
 
