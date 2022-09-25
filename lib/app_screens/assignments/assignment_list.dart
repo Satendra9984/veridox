@@ -41,6 +41,13 @@ class _AssignmentListState extends State<AssignmentList> {
           ),
           child: Consumer<List<Assignment>>(
             builder: (context, list, widget) {
+              if (list.length == 0) {
+                return Center(
+                  child: Text('You do not have any assignments yet,'
+                      'contact your agency for more details'),
+                );
+              }
+
               return ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (context, index) {

@@ -87,7 +87,7 @@ class _LogInPageState extends State<LogInPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const [
                         Text(
-                          'Verify Phone Number',
+                          'Enter Phone Number',
                           style: TextStyle(
                               fontSize: 70,
                               fontWeight: FontWeight.bold,

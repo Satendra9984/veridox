@@ -15,10 +15,20 @@ class ShowMapScreen extends StatefulWidget {
 }
 
 class _ShowMapScreenState extends State<ShowMapScreen> {
+  late Map<MarkerId, Marker> _marker = <MarkerId, Marker>{};
   late GoogleMapController _googleMapController;
 
   void _onMapCreated(GoogleMapController controller) {
     _googleMapController = controller;
+
+    final marker = Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(widget.lat, widget.longi),
+    );
+
+    setState(() {
+      _marker[MarkerId("1")] = marker;
+    });
   }
 
   late final LatLng _center;
@@ -26,6 +36,7 @@ class _ShowMapScreenState extends State<ShowMapScreen> {
   void initState() {
     // TODO: implement initState
     _center = LatLng((widget.lat), (widget.longi));
+
     super.initState();
   }
 
@@ -38,6 +49,7 @@ class _ShowMapScreenState extends State<ShowMapScreen> {
           target: _center,
           zoom: 11.0,
         ),
+        markers: _marker.values.toSet(),
       ),
     );
   }

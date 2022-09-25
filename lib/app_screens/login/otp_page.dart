@@ -27,7 +27,6 @@ class _OTPPageState extends State<OTPPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _provider = Provider.of<CustomAuthProvider>(context);
-    // _provider.startTimer();
   }
 
   PinTheme get _pinPutDecoration {
@@ -73,7 +72,7 @@ class _OTPPageState extends State<OTPPage> {
                 ),
               )
             : SubmitButton(
-                text: "Verify OTP",
+                text: "Enter OTP",
                 onPress: () async {
                   _provider.setOTP(_pinputController.text);
                   await _provider
@@ -133,7 +132,7 @@ class _OTPPageState extends State<OTPPage> {
                   height: 12,
                 ),
                 Text(
-                  "We had sent a verification code to +91-${_provider.phoneNumber}",
+                  "Have sent a verification code to +91-${_provider.phoneNumber}",
                   style: TextStyle(
                     color: Colors.grey.shade700,
                     // color: Color(0XFF0e4a86),
