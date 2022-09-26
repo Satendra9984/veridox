@@ -7,7 +7,6 @@ import 'package:camera/camera.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
-import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/form_screens/form_submit_screen.dart';
 import 'package:veridox/form_screens/home_page.dart';
@@ -69,7 +68,14 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme()
             // fontFamily:
             ),
-        // home: SendRequestScreen(),
+        // home: const Scaffold(
+        //   body: GetUserLocation(
+        //     widgetJson: {
+        //       'label': 'enter location',
+        //       "required": true,
+        //     },
+        //   ),
+        // ),
         routes: {
           '/': (context) => const OnBoardingScreen(),
         },

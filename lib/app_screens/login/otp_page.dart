@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
+import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_screens/profile/send_request_screen.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
@@ -89,27 +93,26 @@ class _OTPPageState extends State<OTPPage> {
                 text: "Enter OTP",
                 onPress: () async {
                   _provider.setOTP(_pinputController.text);
-                  await _provider.verifyCredential(context).then(
-                        (value) => navigatePushReplacement(
-                          context,
-
-                          /// TODO: CHANGE IT
-                          const AssignmentsHomePage(),
-
-                          /// todo: only for testing purpose
-                          // FormHomePage(
-                          //   formId: '1',
-                          // )),
-                        ).catchError(
-                          (error) {
+                  await _provider.verifyCredential(context).whenComplete(() async {
+                    final uid = FirebaseAuth.instance.currentUser?.uid;
+                    if (uid == null) {
+                      navigatePushRemoveUntil(context, LogInPage());
+                    } else {
+                      await FirestoreServices.checkIfFvExists(uid).then((value) {
+                        if (value) {
+                          navigatePushRemoveUntil(context, AssignmentsHomePage());
+                        } else {
+                          navigatePushRemoveUntil(context, const SendRequestScreen());
+                        }
+                      });
+                    }
+                  }).catchError((error) {
                             SnackBar snackBar = const SnackBar(
                               content: Text('Something went wrong. Try again'),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
-                          },
-                        ),
-                      );
+                          });
                 },
               ),
       ),

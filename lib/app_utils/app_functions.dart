@@ -10,6 +10,11 @@ navigatePushReplacement(BuildContext context, Widget widget) {
       context, MaterialPageRoute(builder: (context) => widget));
 }
 
+navigatePushRemoveUntil(BuildContext context, Widget widget) {
+  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget),
+          (Route<dynamic> route) => false);
+}
+
 navigatePushReplacementNamed(BuildContext context, String routeName) {
   Navigator.of(context).pushReplacementNamed(routeName);
 }
