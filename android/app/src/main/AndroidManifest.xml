@@ -10,7 +10,7 @@
     <application
         android:label="veridocs"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">
        <!--            android:launchMode="singleTop"-->
         <!-- TODO: Add your Google Maps API key here -->
