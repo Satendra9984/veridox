@@ -31,6 +31,10 @@ class FirestoreServices {
     return snapshot.data();
   }
 
+  static Future<bool> checkIfFvExists(String uid) async {
+    final snapshot = await _firestore.collection('field_verifier').get();
+    return snapshot.docs.where((element) => element.id == uid).toList().isNotEmpty;
+  }
   static Future<Map<String, dynamic>?> getFormDataById(String id) async {
     final snapshot = await _firestore
         .collection('assignments')
