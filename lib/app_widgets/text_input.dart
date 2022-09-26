@@ -23,7 +23,7 @@ class CustomTextInput extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: kBorderRadius,
       ),
-      elevation: kElevation,
+      elevation: 10,
       child: TextFormField(
         controller: controller,
         style:

@@ -41,6 +41,19 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            // padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
+            child: Image.asset(
+              'assets/launcher_icons/only_icon.jpeg',
+              fit: BoxFit.contain,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: const Color(0XFFf0f5ff),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -51,11 +64,12 @@ class _LogInPageState extends State<LogInPage> {
                   text: 'Sending',
                   onPress: () {},
                   loading: const SizedBox(
-                      height: 17,
-                      width: 17,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      )),
+                    height: 17,
+                    width: 17,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
                 )
               : SubmitButton(
                   text: 'Send OTP',
@@ -89,7 +103,7 @@ class _LogInPageState extends State<LogInPage> {
                         Text(
                           'Enter Phone Number',
                           style: TextStyle(
-                              fontSize: 70,
+                              fontSize: 50,
                               fontWeight: FontWeight.bold,
                               color: Color(0XFF0e4a86)),
                         ),

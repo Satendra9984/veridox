@@ -4,6 +4,7 @@ import 'package:veridox/app_screens/profile/profile_page.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
 import 'assignments/assignment_list.dart';
+import 'assignments/completed_assignments_page.dart';
 
 enum FilterOptions {
   oldest,
@@ -44,8 +45,8 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     screens = const [
       AssignmentList(),
       SavedAssignmentsPage(),
+      CompletedAssignmentsPage(),
       ProfilePage(),
-      // CompletedAssignemtsPage(),
     ];
     setState(() {
       _isInit = true;
@@ -119,10 +120,9 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
           children: [
             BottomNavigationBar(
               currentIndex: currentItemSelected,
-
               // we have make it a variable so that selected item will be highlighted otherwise no means to notify
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.black38,
+              selectedItemColor: Colors.green,
+              unselectedItemColor: Colors.black,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(
@@ -138,16 +138,16 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
+                    Icons.send,
+                  ),
+                  label: 'Completed',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
                     Icons.person,
                   ),
                   // backgroundColor: Colors.purple,
                   label: 'Profile',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.send,
-                  ),
-                  label: 'Completed',
                 ),
               ],
               onTap: (screen) {

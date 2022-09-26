@@ -41,12 +41,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       debugPrint('not logged in --> \n');
       navigatePushReplacement(context, const LogInPage());
     }
-    // navigatePushReplacement(
-    //   context,
-    //   const FormHomePage(
-    //     formId: '5',
-    //   ),
-    // );
   }
 
   @override

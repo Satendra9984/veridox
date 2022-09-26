@@ -5,6 +5,7 @@ import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
 import '../../form_screens/home_page.dart';
+import '../assignments_home_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -55,6 +56,19 @@ class _OTPPageState extends State<OTPPage> {
     final seconds = strDigits(_provider.myDuration.inSeconds.remainder(60));
 
     return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          // padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
+          margin:
+              const EdgeInsets.only(right: 8.0, left: 15, top: 0.0, bottom: 4),
+          child: Image.asset(
+            'assets/launcher_icons/only_icon.jpeg',
+            fit: BoxFit.contain,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         margin: const EdgeInsets.all(15),
@@ -75,25 +89,27 @@ class _OTPPageState extends State<OTPPage> {
                 text: "Enter OTP",
                 onPress: () async {
                   _provider.setOTP(_pinputController.text);
-                  await _provider
-                      .verifyCredential(context)
-                      .then(
+                  await _provider.verifyCredential(context).then(
                         (value) => navigatePushReplacement(
-                            context,
+                          context,
 
-                            /// TODO: CHANGE IT
-                            // const AssignmentsHomePage(),
-                            /// todo: only for testing purpose
-                            FormHomePage(
-                              formId: '1',
-                            )),
-                      )
-                      .catchError((error) {
-                    SnackBar snackBar = const SnackBar(
-                      content: Text('Something went wrong. Try again'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  });
+                          /// TODO: CHANGE IT
+                          const AssignmentsHomePage(),
+
+                          /// todo: only for testing purpose
+                          // FormHomePage(
+                          //   formId: '1',
+                          // )),
+                        ).catchError(
+                          (error) {
+                            SnackBar snackBar = const SnackBar(
+                              content: Text('Something went wrong. Try again'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                        ),
+                      );
                 },
               ),
       ),

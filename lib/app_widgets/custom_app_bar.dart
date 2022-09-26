@@ -6,7 +6,7 @@ AppBar customAppBar({String label = ''}) {
     centerTitle: true,
     toolbarHeight: 50.0,
     backgroundColor: const Color(0xFFecf8ff),
-    leading: Image.asset('assets/launcher_icons/only_icon.jpeg'),
+    // leading: AssetImage(),
     title: Text(
       label,
       style: const TextStyle(

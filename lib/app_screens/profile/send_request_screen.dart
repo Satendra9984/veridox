@@ -30,6 +30,18 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
+            child: Image.asset(
+              'assets/launcher_icons/only_icon.jpeg',
+              fit: BoxFit.contain,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: const Color(0XFFf0f5ff),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),

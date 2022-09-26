@@ -9,11 +9,19 @@ class FirestoreServices {
 
   static Stream<List<Assignment>> getAssignments() {
     final uid = _auth.currentUser!.uid;
+    debugPrint('uid --> ${uid}');
     return _firestore
-        .collection('field_verifier').doc(uid).collection('assignments')
-        .snapshots().map(
-          (snapshot) => snapshot.docs.map(
-                (doc) => Assignment.fromJson(doc.data(), doc.id),).toList(),);
+        .collection('field_verifier')
+        .doc(uid)
+        .collection('assignments')
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => Assignment.fromJson(doc.data(), doc.id),
+              )
+              .toList(),
+        );
   }
 
   /// Below two functions are used for getting complete assignment from firebase
@@ -65,10 +73,15 @@ class FirestoreServices {
     }).toList();
   }
 
-  static Future<void> sendJoinRequest(Map<String, dynamic> data, String fv, String agency) async {
-    return await _firestore.collection('agency').doc(agency).collection('add_requests').doc(fv).set(data);
+  static Future<void> sendJoinRequest(
+      Map<String, dynamic> data, String fv, String agency) async {
+    return await _firestore
+        .collection('agency')
+        .doc(agency)
+        .collection('add_requests')
+        .doc(fv)
+        .set(data);
   }
 }
-
 
 // nZF37kTBVTMbAP452OUQ9ZKxIk32 --> subhadepp

@@ -22,6 +22,26 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
+  String _getEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String? email = user.email;
+
+      return email ?? 'No registered email';
+    }
+    return 'No registered email';
+  }
+
+  String _getName() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String? name = user.displayName;
+
+      return name ?? 'No registered name';
+    }
+    return 'No registered name';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,22 +67,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Satendra Pal',
+                      _getName(),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
-                      'satyendrapal123@gmail.com',
+                      _getEmail(),
                       style: TextStyle(
                         fontSize: 13,
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
-                      '1234567890',
+                      FirebaseAuth.instance.currentUser!.phoneNumber.toString(),
                       style: TextStyle(
                         fontSize: 14,
                       ),
