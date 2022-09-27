@@ -58,151 +58,158 @@ class _OTPPageState extends State<OTPPage> {
   Widget build(BuildContext context) {
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final seconds = strDigits(_provider.myDuration.inSeconds.remainder(60));
-
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
-          margin:
-              const EdgeInsets.only(right: 8.0, left: 15, top: 0.0, bottom: 4),
-          child: Image.asset(
-            'assets/launcher_icons/only_icon.jpeg',
-            fit: BoxFit.contain,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        margin: const EdgeInsets.all(15),
-        child: _provider.isLoading
-            ? SubmitButton(
-                text: 'Verifying',
-                color: Colors.blueGrey,
-                onPress: () {},
-                loading: const SizedBox(
-                  width: 17,
-                  height: 17,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            : SubmitButton(
-                text: "Enter OTP",
-                onPress: () async {
-                  _provider.setOTP(_pinputController.text);
-                  await _provider.verifyCredential(context).whenComplete(() async {
-                    final uid = FirebaseAuth.instance.currentUser?.uid;
-                    if (uid == null) {
-                      navigatePushRemoveUntil(context, LogInPage());
-                    } else {
-                      await FirestoreServices.checkIfFvExists(uid).then((value) {
-                        if (value) {
-                          navigatePushRemoveUntil(context, AssignmentsHomePage());
-                        } else {
-                          navigatePushRemoveUntil(context, const SendRequestScreen());
-                        }
-                      });
-                    }
-                  }).catchError((error) {
-                            SnackBar snackBar = const SnackBar(
-                              content: Text('Something went wrong. Try again'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          });
-                },
-              ),
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(30.0),
-            padding: const EdgeInsets.all(30.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(9.0),
+//664751
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
+            child: Image.asset(
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+              fit: BoxFit.contain,
+              height: 84,
+              width: 134,
             ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Text(
-                        "Enter Your Verification Code",
-                        style: TextStyle(
-                          color: Color(0XFF0e4a86),
-                          // color: CupertinoColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 30,
-                        ),
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text(
-                  "Have sent a verification code to +91-${_provider.phoneNumber}",
-                  style: TextStyle(
-                    color: Colors.grey.shade700,
-                    // color: Color(0XFF0e4a86),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 27,
-                ),
-                Pinput(
-                  length: 6,
-                  controller: _pinputController,
-                  submittedPinTheme: _pinPutDecoration.copyWith(
-                    decoration: _pinPutDecoration.decoration?.copyWith(
-                      color: Colors.white.withOpacity(0.9),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.all(15),
+          child: _provider.isLoading
+              ? SubmitButton(
+                  text: 'Verifying',
+                  color: Colors.blueGrey,
+                  onPress: () {},
+                  loading: const SizedBox(
+                    width: 17,
+                    height: 17,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
                   ),
-                  focusedPinTheme: _pinPutDecoration,
-                  followingPinTheme: _pinPutDecoration.copyWith(
-                    decoration: _pinPutDecoration.decoration?.copyWith(
-                      borderRadius: BorderRadius.circular(15.0),
-                      border: Border.all(
-                        width: 2.3,
-                        color: const Color(0XFF0e4a86),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30, width: 742),
-                TextButton(
-                  onPressed: () async {
-                    if (seconds == '00') {
-                      await _provider.signInWithPhone(context);
-                    }
+                )
+              : SubmitButton(
+                  text: "Enter OTP",
+                  onPress: () async {
+                    _provider.setOTP(_pinputController.text);
+                    await _provider
+                        .verifyCredential(context)
+                        .whenComplete(() async {
+                      final uid = FirebaseAuth.instance.currentUser?.uid;
+                      if (uid == null) {
+                        navigatePushRemoveUntil(context, LogInPage());
+                      } else {
+                        await FirestoreServices.checkIfFvExists(uid)
+                            .then((value) {
+                          if (value) {
+                            navigatePushRemoveUntil(
+                                context, AssignmentsHomePage());
+                          } else {
+                            navigatePushRemoveUntil(
+                                context, const SendRequestScreen());
+                          }
+                        });
+                      }
+                    }).catchError((error) {
+                      SnackBar snackBar = const SnackBar(
+                        content: Text('Something went wrong. Try again'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    });
                   },
-                  child: Text(
-                    'Resend OTP  ${seconds == '00' ? '' : seconds}',
-                    style: const TextStyle(
-                      // color: Colors.grey.shade700,
-                      color: Color(0XFF0e4a86),
-                      fontWeight: FontWeight.w300,
+                ),
+        ),
+        body: Container(
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(30.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9.0),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: const [
+                        Text(
+                          "Enter Your Verification Code",
+                          style: TextStyle(
+                            color: Color(0XFF0e4a86),
+                            // color: CupertinoColors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    "Have sent a verification code to +91-${_provider.phoneNumber}",
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      // color: Color(0XFF0e4a86),
+                      fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
                     softWrap: true,
                     textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 27,
+                  ),
+                  Pinput(
+                    length: 6,
+                    controller: _pinputController,
+                    submittedPinTheme: _pinPutDecoration.copyWith(
+                      decoration: _pinPutDecoration.decoration?.copyWith(
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                    ),
+                    focusedPinTheme: _pinPutDecoration,
+                    followingPinTheme: _pinPutDecoration.copyWith(
+                      decoration: _pinPutDecoration.decoration?.copyWith(
+                        borderRadius: BorderRadius.circular(15.0),
+                        border: Border.all(
+                          width: 2.3,
+                          color: const Color(0XFF0e4a86),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30, width: 742),
+                  TextButton(
+                    onPressed: () async {
+                      if (seconds == '00') {
+                        await _provider.signInWithPhone(context);
+                      }
+                    },
+                    child: Text(
+                      'Resend OTP  ${seconds == '00' ? '' : seconds}',
+                      style: const TextStyle(
+                        // color: Colors.grey.shade700,
+                        color: Color(0XFF0e4a86),
+                        fontWeight: FontWeight.w300,
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

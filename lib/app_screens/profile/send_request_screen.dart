@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
+import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
+
+import '../../app_widgets/default_text.dart';
 
 class SendRequestScreen extends StatefulWidget {
   const SendRequestScreen({Key? key}) : super(key: key);
@@ -31,12 +35,14 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          flexibleSpace: Container(
+          title: Container(
             margin:
                 const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
             child: Image.asset(
-              'assets/launcher_icons/only_icon.jpeg',
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
               fit: BoxFit.contain,
+              height: 84,
+              width: 134,
             ),
           ),
           backgroundColor: Colors.white,
@@ -55,16 +61,25 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
             onPress: () async {
               debugPrint('submit before');
               await _provider.submit();
-              debugPrint('submit afterr');
+              debugPrint('submit after');
+              await Navigator.of(context).pushReplacement(
+                CupertinoPageRoute(
+                  builder: (context) {
+                    return AssignmentsHomePage();
+                  },
+                ),
+              );
             },
           ),
         ),
         body: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [Color(0XFFf0f5ff), Colors.white])),
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [Color(0XFFf0f5ff), Colors.white],
+            ),
+          ),
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Container(
@@ -83,9 +98,9 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'Send Request',
+                            'Send \nRequest',
                             style: TextStyle(
-                                fontSize: 60,
+                                fontSize: 50,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.lightBlue),
                           ),
@@ -111,9 +126,10 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       text: 'Name',
                       keyboardType: TextInputType.name,
                       validator: (value) {
-                        if (value == null) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your name';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
@@ -121,18 +137,11 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     ),
 
                     /// phone
-                    CustomTextInput(
-                      password: false,
+                    CustomDefaultText(
+                      password: true,
                       controller: _provider.getPhoneCtrl,
-                      text: 'Phone Number',
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please enter your mobile number';
-                        } else if (!value.isPhoneNumber) {
-                          return 'Please enter a valid mobile number';
-                        }
-                      },
+                      text: FirebaseAuth.instance.currentUser!.phoneNumber
+                          .toString(),
                     ),
                     const SizedBox(
                       height: 15,
@@ -145,11 +154,12 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       password: false,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         } else if (!value.isEmail) {
                           return 'Please enter a valid email';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
@@ -157,7 +167,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     ),
 
                     FutureBuilder(
-                        future: FirestoreServices.getAgencyList(),
+                        future: FirestoreServices.getAgencyDemo(),
                         builder: (context,
                             AsyncSnapshot<List<Map<String, dynamic>>>? list) {
                           List<Map<String, dynamic>>? data = list?.data;

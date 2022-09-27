@@ -33,8 +33,12 @@ class FirestoreServices {
 
   static Future<bool> checkIfFvExists(String uid) async {
     final snapshot = await _firestore.collection('field_verifier').get();
-    return snapshot.docs.where((element) => element.id == uid).toList().isNotEmpty;
+    return snapshot.docs
+        .where((element) => element.id == uid)
+        .toList()
+        .isNotEmpty;
   }
+
   static Future<Map<String, dynamic>?> getFormDataById(String id) async {
     final snapshot = await _firestore
         .collection('assignments')
@@ -75,6 +79,26 @@ class FirestoreServices {
       data['id'] = e.id;
       return data;
     }).toList();
+  }
+
+  static Future<List<Map<String, dynamic>>> getAgencyDemo() async {
+    final DocumentSnapshot<Map<String, dynamic>> fList =
+        await _firestore.collection('agency').doc('sBPZoR1xfEQtYlHk2riF').get();
+
+    List<Map<String, dynamic>> agencyList = [];
+    debugPrint(fList.data()!.toString());
+
+
+
+    agencyList.add(
+      fList.data() ??
+          {
+            "address": " Tollygunge, Kolkata",
+            "agency_name": "Pert Investigation"
+            "id" :
+          },
+    );
+    return agencyList;
   }
 
   static Future<void> sendJoinRequest(

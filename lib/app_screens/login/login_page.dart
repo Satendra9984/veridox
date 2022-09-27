@@ -43,12 +43,13 @@ class _LogInPageState extends State<LogInPage> {
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
-            // padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4.0),
             margin:
                 const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
             child: Image.asset(
-              'assets/launcher_icons/only_icon.jpeg',
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
               fit: BoxFit.contain,
+              height: 84,
+              width: 134,
             ),
           ),
           backgroundColor: Colors.white,

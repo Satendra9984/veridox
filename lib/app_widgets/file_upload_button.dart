@@ -69,8 +69,8 @@ class _FileUploadButtonState extends State<FileUploadButton> {
       padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          onPrimary: Colors.lightBlue,
-          primary: Colors.white,
+          foregroundColor: Colors.lightBlue,
+          backgroundColor: Colors.white,
           fixedSize: const Size(390, 57),
           elevation: kElevation,
           shape: RoundedRectangleBorder(

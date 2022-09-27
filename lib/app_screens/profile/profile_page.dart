@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../assignments/assignment_detail_page.dart';
 
@@ -98,6 +99,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 TextButton(
                   onPressed: () {
                     // TODO: navigate to the edit profile screen
+                    Navigator.of(context)
+                        .push(CupertinoPageRoute(builder: (context) {
+                      return SendRequestScreen();
+                    }));
                   },
                   child: const Text(
                     'Edit',
