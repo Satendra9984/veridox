@@ -88,16 +88,14 @@ class FirestoreServices {
     List<Map<String, dynamic>> agencyList = [];
     debugPrint(fList.data()!.toString());
 
-
-
     agencyList.add(
       fList.data() ??
           {
             "address": " Tollygunge, Kolkata",
-            "agency_name": "Pert Investigation"
-            "id" :
+            "agency_name": "Pert Investigation",
           },
     );
+    agencyList[0]['id'] = fList.id;
     return agencyList;
   }
 

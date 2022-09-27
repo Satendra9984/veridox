@@ -184,7 +184,8 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                               onChanged: (int value) {
                                 dropDown = data[value]['agency_name'];
                                 _provider.agencyUid = data[value]['id'];
-                                debugPrint('$dropDown\n');
+                                debugPrint('${data[value]['id']}\n');
+                                debugPrint('${data[value]['agency_name']}\n');
                               });
                         }),
 
