@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
 import 'package:veridox/form_widgets/toggle_button.dart';
@@ -32,8 +35,11 @@ class _FormPageState extends State<FormPage>
   final _formKey = GlobalKey<FormState>();
   late var _pageData;
 
+  late FormProvider provider;
+
   @override
   void initState() {
+
     super.initState();
     _initializePageData();
   }
@@ -49,6 +55,7 @@ class _FormPageState extends State<FormPage>
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<FormProvider>(context);
     super.build(context);
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
@@ -80,7 +87,9 @@ class _FormPageState extends State<FormPage>
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'text-input') {
                             return FormTextInput(
-                              widgetJson: field[index],
+                              pageId: current.toString(),
+                              fieldId: index.toString(),
+                              widgetJson: field[index], provider: provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'toggle-button') {

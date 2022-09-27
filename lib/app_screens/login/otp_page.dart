@@ -8,7 +8,6 @@ import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
-import '../../form_screens/home_page.dart';
 import '../assignments_home_page.dart';
 
 class OTPPage extends StatefulWidget {
