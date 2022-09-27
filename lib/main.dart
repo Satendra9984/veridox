@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
+import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
@@ -57,6 +58,8 @@ class MyApp extends StatelessWidget {
             create: (context) => SavedAssignmentProvider()),
         ChangeNotifierProvider<CustomAuthProvider>(
             create: (context) => CustomAuthProvider()),
+        ChangeNotifierProvider(
+            create: (context) => FormProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
