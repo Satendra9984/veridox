@@ -9,8 +9,9 @@ import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
-
+import '../../app_utils/app_functions.dart';
 import '../../app_widgets/default_text.dart';
+import '../login/login_page.dart';
 
 class SendRequestScreen extends StatefulWidget {
   const SendRequestScreen({Key? key}) : super(key: key);
@@ -20,13 +21,14 @@ class SendRequestScreen extends StatefulWidget {
 }
 
 class _SendRequestScreenState extends State<SendRequestScreen> {
-  // final GlobalKey _key = GlobalKey();
+  late FirebaseAuth _auth;
   late SendRequestProvider _provider;
   String dropDown = 'Select your agency';
 
   @override
   void initState() {
     super.initState();
+    _auth = FirebaseAuth.instance;
     _provider = SendRequestProvider();
   }
 
@@ -45,6 +47,36 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
               width: 134,
             ),
           ),
+          actions: [
+            PopupMenuButton(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: Text(
+                      'Log Out',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    onTap: () async {
+                      await _auth.signOut();
+                      navigatePushReplacement(context, const LogInPage());
+                    },
+                  ),
+                ];
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            )
+          ],
           backgroundColor: Colors.white,
           elevation: 0,
         ),
