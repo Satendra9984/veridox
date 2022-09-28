@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class FormTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const FormTextInput({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -14,7 +21,7 @@ class FormTextInput extends StatefulWidget {
 }
 
 class _FormTextInputState extends State<FormTextInput> {
-  late final TextEditingController _textEditingController;
+  late TextEditingController _textEditingController;
   bool _isRequired = false;
 
   @override
@@ -89,6 +96,8 @@ class _FormTextInputState extends State<FormTextInput> {
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
+                  widget.provider.updateData(pageId: widget.pageId,
+                      fieldId: widget.fieldId, value: _textEditingController.text);
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
