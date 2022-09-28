@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
-// response done
-class FormTextInput extends StatefulWidget {
+class FormPhoneNumberInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
   final String pageId;
   final String fieldId;
-  const FormTextInput({
+  const FormPhoneNumberInput({
     Key? key,
     required this.pageId,
     required this.fieldId,
@@ -18,10 +17,10 @@ class FormTextInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FormTextInput> createState() => _FormTextInputState();
+  State<FormPhoneNumberInput> createState() => _FormPhoneNumberInputState();
 }
 
-class _FormTextInputState extends State<FormTextInput> {
+class _FormPhoneNumberInputState extends State<FormPhoneNumberInput> {
   late TextEditingController _textEditingController;
   bool _isRequired = false;
 
@@ -31,20 +30,6 @@ class _FormTextInputState extends State<FormTextInput> {
     // debugPrint('form text input data --> ${widget.widgetData}');
     super.initState();
   }
-
-  // TextInputType _getKeyboardType() {
-  //   if (widget.widgetData['multi_line']) {
-  //     return TextInputType.multiline;
-  //   } else if (widget.widgetData['type'] == 'number') {
-  //     return TextInputType.number;
-  //   } else if (widget.widgetData['type'] == 'phone') {
-  //     return TextInputType.phone;
-  //   } else if (widget.widgetData['type'] == 'email') {
-  //     return TextInputType.emailAddress;
-  //   }
-  //
-  //   return TextInputType.text;
-  // }
 
   String _getLabel() {
     String label = widget.widgetJson['label'];
@@ -69,9 +54,14 @@ class _FormTextInputState extends State<FormTextInput> {
         validator: (val) {
           String? value = _textEditingController.text;
           if (widget.widgetJson.containsKey('required') &&
-              widget.widgetJson['required'] == true &&
-              (value.isEmpty)) {
-            return 'Please write some text';
+              widget.widgetJson['required'] == true
+              ) {
+            if((value.isEmpty))
+            return 'Please enter phone number';
+
+            bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(value);
+            if(!phoneValid)
+              return 'Please enter a valid phone number';
           }
           return null;
         },
@@ -93,21 +83,17 @@ class _FormTextInputState extends State<FormTextInput> {
                 height: 25,
               ),
               TextField(
-                // focusNode: FocusNode(),
-
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
-                  widget.provider.updateData(
-                      pageId: widget.pageId,
-                      fieldId: widget.fieldId,
-                      value: _textEditingController.text);
+                  widget.provider.updateData(pageId: widget.pageId,
+                      fieldId: widget.fieldId, value: _textEditingController.text);
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
-                maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
-                maxLength: widget.widgetJson['length'],
-                // keyboardType: _getKeyboardType(),
+                maxLines: 1,
+                maxLength: 12,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   //   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -124,7 +110,7 @@ class _FormTextInputState extends State<FormTextInput> {
               if (formState.hasError)
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     children: [
                       const Icon(

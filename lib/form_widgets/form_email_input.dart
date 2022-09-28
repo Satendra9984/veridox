@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
-// response done
-class FormTextInput extends StatefulWidget {
+class FormEmailTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
   final String pageId;
   final String fieldId;
-  const FormTextInput({
+  const FormEmailTextInput({
     Key? key,
     required this.pageId,
     required this.fieldId,
@@ -18,10 +17,10 @@ class FormTextInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FormTextInput> createState() => _FormTextInputState();
+  State<FormEmailTextInput> createState() => _FormEmailTextInputState();
 }
 
-class _FormTextInputState extends State<FormTextInput> {
+class _FormEmailTextInputState extends State<FormEmailTextInput> {
   late TextEditingController _textEditingController;
   bool _isRequired = false;
 
@@ -69,9 +68,14 @@ class _FormTextInputState extends State<FormTextInput> {
         validator: (val) {
           String? value = _textEditingController.text;
           if (widget.widgetJson.containsKey('required') &&
-              widget.widgetJson['required'] == true &&
-              (value.isEmpty)) {
+              widget.widgetJson['required'] == true
+              ) {
+            if(value.isEmpty)
             return 'Please write some text';
+
+            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+            if(!emailValid)
+              return 'Please enter a valid email';
           }
           return null;
         },
@@ -98,16 +102,13 @@ class _FormTextInputState extends State<FormTextInput> {
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
-                  widget.provider.updateData(
-                      pageId: widget.pageId,
-                      fieldId: widget.fieldId,
-                      value: _textEditingController.text);
+                  widget.provider.updateData(pageId: widget.pageId,
+                      fieldId: widget.fieldId, value: _textEditingController.text);
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
-                maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
-                maxLength: widget.widgetJson['length'],
-                // keyboardType: _getKeyboardType(),
+                maxLines: 1,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   //   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -124,7 +125,7 @@ class _FormTextInputState extends State<FormTextInput> {
               if (formState.hasError)
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     children: [
                       const Icon(
