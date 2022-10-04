@@ -60,7 +60,9 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
 
       if (Navigator.canPop(context)) {
         debugPrint('can pop\n\n');
-        _isLocationPermissionEnabled = true;
+        setState(() {
+          _isLocationPermissionEnabled = true;
+        });
         Navigator.popUntil(context, ModalRoute.withName("/"));
       }
       permission = await location.requestPermission();
