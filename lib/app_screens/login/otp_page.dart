@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_screens/permissions_page.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -98,17 +99,29 @@ class _OTPPageState extends State<OTPPage> {
                         .verifyCredential(context)
                         .whenComplete(() async {
                       final uid = FirebaseAuth.instance.currentUser?.uid;
+                      debugPrint('Now the user is --> $uid\n\n');
                       if (uid == null) {
                         navigatePushRemoveUntil(context, LogInPage());
                       } else {
                         await FirestoreServices.checkIfFvExists(uid)
-                            .then((value) {
+                            .then((value) async {
                           if (value) {
                             navigatePushRemoveUntil(
                                 context, AssignmentsHomePage());
                           } else {
-                            navigatePushRemoveUntil(
-                                context, const SendRequestScreen());
+                            // check if requested
+                            bool reqStatus =
+                                await FirestoreServices.checkIfRequested(uid);
+
+                            if (reqStatus) {
+                              navigatePushRemoveUntil(
+                                  context, const AssignmentsHomePage());
+                            } else {
+                              navigatePushRemoveUntil(
+                                context,
+                                const SendRequestScreen(),
+                              );
+                            }
                           }
                         });
                       }

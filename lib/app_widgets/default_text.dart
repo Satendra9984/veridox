@@ -28,6 +28,8 @@ class _CustomDefaultTextState extends State<CustomDefaultText> {
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, right: 15, left: 15),
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0.5),
+      height: 60,
+      alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         // border: Border.all(
         //   color: Colors.grey.shade400,
@@ -45,7 +47,7 @@ class _CustomDefaultTextState extends State<CustomDefaultText> {
       child: Text(
         _getDefaultText(),
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 16,
         ),
       ),
     );

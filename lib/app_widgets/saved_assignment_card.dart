@@ -177,6 +177,8 @@ class SavedAssignmentCard extends StatelessWidget {
                         value: 0,
                         onTap: () {
                           // TODO: DeletingSavedAssignments
+                          debugPrint(
+                              'deleting caseId --> ${assignment.caseId}\n\n');
                           Provider.of<SavedAssignmentProvider>(context,
                                   listen: false)
                               .removeFromSaveAssignments(assignment.caseId);

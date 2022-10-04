@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 
@@ -27,15 +28,10 @@ class SendRequestProvider extends ChangeNotifier {
   get aadharLinkValidator {}
   get panLinkValidator {}
 
-  Future<void> submit() async {
-    // debugPrint('in submit');
-    // debugPrint('${_nameController.text}\n');
-    // debugPrint('${_key.currentState}\n');
+  Future<void> submit(BuildContext context) async {
     if (_key.currentState != null && _key.currentState!.validate()) {
-      // debugPrint('name --> ${_nameController.text}');
-      // debugPrint('phone --> ${_phoneController.text}');
-      // debugPrint('email --> ${_emailController.text}');
-      // debugPrint('aadhar --> ${_aadharRef.text}');
+      _phoneController.text =
+          FirebaseAuth.instance.currentUser!.phoneNumber.toString();
       Map<String, dynamic> data = {
         'name': _nameController.text,
         'phone': _phoneController.text,
@@ -47,7 +43,8 @@ class SendRequestProvider extends ChangeNotifier {
       await FirestoreServices.sendJoinRequest(
         data,
         FirebaseAuth.instance.currentUser!.uid,
-        agencyUid,
+        // agencyUid,
+        'nZF37kTBVTMbAP452OUQ9ZKxIk32',
       );
     }
   }

@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
-import 'package:veridox/app_screens/assignments_home_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import '../../app_utils/app_functions.dart';
-import '../../app_widgets/default_text.dart';
+import '../assignments_home_page.dart';
 import '../login/login_page.dart';
 
 class SendRequestScreen extends StatefulWidget {
@@ -62,9 +61,24 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    child: Icon(
-                      Icons.logout,
-                      color: Colors.black,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          FirebaseAuth.instance.currentUser!.phoneNumber
+                              .toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                     onTap: () async {
                       await _auth.signOut();
@@ -92,7 +106,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
             text: 'Send Request',
             onPress: () async {
               debugPrint('submit before');
-              await _provider.submit();
+              await _provider.submit(context);
               debugPrint('submit after');
               await Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
@@ -101,6 +115,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                   },
                 ),
               );
+              // Navigator.pop(context);
             },
           ),
         ),
@@ -114,6 +129,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
           ),
           alignment: Alignment.center,
           child: SingleChildScrollView(
+            // physics: NeverScrollableScrollPhysics(),
             child: Container(
               margin: const EdgeInsets.all(15.0),
               padding: const EdgeInsets.all(10.0),
@@ -130,9 +146,9 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'Send \nRequest',
+                            'Send Request',
                             style: TextStyle(
-                                fontSize: 50,
+                                fontSize: 32,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.lightBlue),
                           ),
@@ -141,14 +157,14 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                           ),
                           Text(
                             'To the agency you want to join',
-                            style: TextStyle(fontSize: 23),
+                            style: TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
 
                     const SizedBox(
-                      height: 60,
+                      height: 30,
                     ),
 
                     /// name
@@ -163,17 +179,6 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         }
                         return null;
                       },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-
-                    /// phone
-                    CustomDefaultText(
-                      password: true,
-                      controller: _provider.getPhoneCtrl,
-                      text: FirebaseAuth.instance.currentUser!.phoneNumber
-                          .toString(),
                     ),
                     const SizedBox(
                       height: 15,
@@ -199,27 +204,29 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     ),
 
                     FutureBuilder(
-                        future: FirestoreServices.getAgencyDemo(),
-                        builder: (context,
-                            AsyncSnapshot<List<Map<String, dynamic>>>? list) {
-                          List<Map<String, dynamic>>? data = list?.data;
-                          if (data == null) {
-                            return const Text('');
-                          }
+                      future: FirestoreServices.getAgencyList(),
+                      builder: (context,
+                          AsyncSnapshot<List<Map<String, dynamic>>>? list) {
+                        List<Map<String, dynamic>>? data = list?.data;
+                        if (data == null) {
+                          return const Text('');
+                        }
 
-                          return CustomDropDownButton(
-                              list: data
-                                  .map(
-                                    (e) => e['agency_name'].toString(),
-                                  )
-                                  .toList(),
-                              onChanged: (int value) {
-                                dropDown = data[value]['agency_name'];
-                                _provider.agencyUid = data[value]['id'];
-                                debugPrint('${data[value]['id']}\n');
-                                debugPrint('${data[value]['agency_name']}\n');
-                              });
-                        }),
+                        return CustomDropDownButton(
+                          list: data
+                              .map(
+                                (e) => e['agency_name'].toString(),
+                              )
+                              .toList(),
+                          onChanged: (int value) {
+                            dropDown = data[value]['agency_name'];
+                            _provider.agencyUid = data[value]['id'];
+                            debugPrint('${data[value]['id']}\n');
+                            debugPrint('${data[value]['agency_name']}\n');
+                          },
+                        );
+                      },
+                    ),
 
                     const SizedBox(
                       height: 15,

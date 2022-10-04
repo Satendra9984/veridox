@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late FirebaseAuth _auth;
+  late String _name, _email;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -23,163 +26,197 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
-  String _getEmail() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      String? email = user.email;
+  Future<void> _getEmail() async {
+    try {
+      final snap =
+          await FirebaseFirestore.instance.collection('field_verifier').get();
 
-      return email ?? 'No registered email';
+      final user = snap.docs
+          .firstWhere((element) => element.id == _auth.currentUser!.uid)
+          .data();
+
+      // setState(() {
+      _name = user['email'];
+      // });
+
+    } catch (e) {
+      _email = 'No Registered Email';
     }
-    return 'No registered email';
   }
 
-  String _getName() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      String? name = user.displayName;
+  Future<void> _getName() async {
+    try {
+      final snap =
+          await FirebaseFirestore.instance.collection('field_verifier').get();
 
-      return name ?? 'No registered name';
+      final user = snap.docs
+          .firstWhere((element) => element.id == _auth.currentUser!.uid)
+          .data();
+
+      // setState(() {
+      _name = user['name'];
+      // });/
+
+    } catch (e) {
+      _name = 'No Registered User';
+      return;
     }
-    return 'No registered name';
+  }
+
+  Future<void> _setDetails() async {
+    await _getEmail();
+    await _getName();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      // height: 300,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-            color: Colors.blueGrey[50],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: FutureBuilder(
+        future: _setDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Column(
               children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/doc_image.png',
-                    height: 80,
-                    width: 80,
-                    fit: BoxFit.cover,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                  color: Colors.blueGrey[50],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ClipOval(
+                        child: Image.asset(
+                          'assets/images/doc_image.png',
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _name,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            _email,
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            FirebaseAuth.instance.currentUser!.phoneNumber
+                                .toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // TODO: navigate to the edit profile screen
+                          Navigator.of(context)
+                              .push(CupertinoPageRoute(builder: (context) {
+                            return SendRequestScreen();
+                          }));
+                        },
+                        child: const Text(
+                          'Edit',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _getName(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      _getEmail(),
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      FirebaseAuth.instance.currentUser!.phoneNumber.toString(),
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                const SizedBox(
+                  height: 10,
                 ),
-                TextButton(
-                  onPressed: () {
-                    // TODO: navigate to the edit profile screen
-                    Navigator.of(context)
-                        .push(CupertinoPageRoute(builder: (context) {
-                      return SendRequestScreen();
-                    }));
+                ProfileOptions(
+                  option: 'Assignment History',
+                  onPress: () {
+                    // print('pushed');
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (BuildContext context) =>
+                            const AssignmentDetailPage(
+                          caseId: '',
+                        ),
+                      ),
+                    );
                   },
+                ),
+                ProfileOptions(
+                  option: 'Saved Assignment',
+                  onPress: () {
+                    // print('pushed');
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (BuildContext context) =>
+                            const SavedAssignmentsPage(),
+                      ),
+                    );
+                  },
+                ),
+                ProfileOptions(
+                  option: 'Assignment Completed',
+                  onPress: () {
+                    // print('pushed');
+                    // Navigator.push(
+                    //   context,
+                    //   CupertinoPageRoute(
+                    //     builder: (BuildContext context) =>
+                    //         const CompletedAssignemtsPage(),
+                    //   ),
+                    // );
+                  },
+                ),
+                Divider(
+                  thickness: 5,
+                  color: Colors.blueGrey[50],
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    // TODO: NAVIGATE TO DETAILS PAGE FOR PROFILE DETAILS
+                    _auth.signOut();
+                    navigatePushRemoveUntil(context, const LogInPage());
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.black),
+                    minimumSize: const Size(300, 40),
+                  ),
                   child: const Text(
-                    'Edit',
+                    'Logout',
                     style: TextStyle(
-                      color: Colors.blue,
+                      fontSize: 18,
+                      color: Colors.black,
                     ),
                   ),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ProfileOptions(
-            option: 'Assignment History',
-            onPress: () {
-              // print('pushed');
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (BuildContext context) => const AssignmentDetailPage(
-                    caseId: '',
-                  ),
-                ),
-              );
-            },
-          ),
-          ProfileOptions(
-            option: 'Saved Assignment',
-            onPress: () {
-              // print('pushed');
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (BuildContext context) =>
-                      const SavedAssignmentsPage(),
-                ),
-              );
-            },
-          ),
-          ProfileOptions(
-            option: 'Assignment Completed',
-            onPress: () {
-              // print('pushed');
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute(
-              //     builder: (BuildContext context) =>
-              //         const CompletedAssignemtsPage(),
-              //   ),
-              // );
-            },
-          ),
-          Divider(
-            thickness: 5,
-            color: Colors.blueGrey[50],
-          ),
-          OutlinedButton(
-            onPressed: () {
-              // TODO: NAVIGATE TO DETAILS PAGE FOR PROFILE DETAILS
-              _auth.signOut();
-              navigatePush(context, const LogInPage());
-            },
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Colors.black),
-              minimumSize: const Size(300, 40),
-            ),
-            child: const Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ],
+            );
+          }
+        },
       ),
     );
   }

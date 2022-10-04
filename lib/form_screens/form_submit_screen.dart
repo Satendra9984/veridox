@@ -1,22 +1,21 @@
-import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:veridox/form_widgets/get_signature.dart';
+import 'package:provider/provider.dart';
+import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/signature.dart';
-import '../app_utils/app_constants.dart';
+import '../app_providers/form_provider.dart';
 import '../form_widgets/form_text_input.dart';
 
 class FormSubmitPage extends StatefulWidget {
   final PageController pageController;
   final int currentPage;
   final int totalPages;
+  final FormProvider provider;
   const FormSubmitPage({
     Key? key,
     required this.currentPage,
     required this.pageController,
     required this.totalPages,
+    required this.provider,
   }) : super(key: key);
 
   @override
@@ -51,7 +50,7 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                 const SizedBox(
                   height: 10,
                 ),
-                const FormTextInput(
+                FormTextInput(
                   widgetJson: {
                     "id": 15,
                     "label": "Final Report",
@@ -59,6 +58,17 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                     "required": true,
                     "widget": "text-input",
                     "multi_line": true,
+                  },
+                  pageId: widget.currentPage.toString(),
+                  fieldId: '1',
+                  provider: widget.provider,
+                ),
+                GetUserLocation(
+                  widgetJson: {
+                    'id': 8,
+                    'label': 'user location',
+                    'widget': 'geolocation',
+                    'required': true,
                   },
                 ),
                 Row(

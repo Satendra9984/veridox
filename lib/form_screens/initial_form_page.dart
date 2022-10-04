@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/form_screens/form_submit_screen.dart';
 import 'form_page.dart';
 
@@ -17,6 +19,8 @@ class InitialFormPageView extends StatefulWidget {
 
 class _InitialFormPageViewState extends State<InitialFormPageView> {
   late final PageController _pageController;
+  late final FormProvider _formProvider;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +48,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
     for (int i = 0; i < pageData.length; i++) {
       screen.add(
         FormPage(
+          provider: _formProvider,
           singlePageData: pageData[i],
           currentPage: i,
           totalPages: pageData.length + 1,
@@ -53,6 +58,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
     }
     screen.add(
       FormSubmitPage(
+        provider: _formProvider,
         currentPage: pageData.length,
         pageController: _pageController,
         totalPages: pageData.length + 1,
@@ -63,6 +69,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   Widget build(BuildContext context) {
+    _formProvider = Provider.of<FormProvider>(context);
     return PageView(
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),

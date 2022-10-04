@@ -18,12 +18,15 @@ class FormPage extends StatefulWidget {
   final PageController pageController;
   final int currentPage;
   final int totalPages;
+  final FormProvider provider;
+
   FormPage({
     Key? key,
     required this.currentPage,
     required this.singlePageData,
     required this.pageController,
     required this.totalPages,
+    required this.provider,
   }) : super(key: key);
 
   @override
@@ -39,8 +42,8 @@ class _FormPageState extends State<FormPage>
 
   @override
   void initState() {
-
     super.initState();
+    provider = widget.provider;
     _initializePageData();
   }
 
@@ -55,12 +58,12 @@ class _FormPageState extends State<FormPage>
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<FormProvider>(context);
+    // provider = Provider.of<FormProvider>(context);
     super.build(context);
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: const Text('form page'),
+        title: const Text('Customer Verification Form'),
       ),
       body: Form(
         key: _formKey,
@@ -89,7 +92,8 @@ class _FormPageState extends State<FormPage>
                             return FormTextInput(
                               pageId: current.toString(),
                               fieldId: index.toString(),
-                              widgetJson: field[index], provider: provider,
+                              widgetJson: field[index],
+                              provider: provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'toggle-button') {
@@ -98,8 +102,6 @@ class _FormPageState extends State<FormPage>
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'dropdown') {
-                            // print('dropdown');
-
                             return DropdownMenu(
                               widgetJson: field[index],
                             );
@@ -203,7 +205,7 @@ class _FormPageState extends State<FormPage>
 
   void _validateForm(BuildContext cont) {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(cont).showSnackBar(
         const SnackBar(
           content: Text('Submitting data'),
         ),

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../app_utils/app_constants.dart';
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({
-    Key? key,
-    required this.text,
-    required this.onPress,
-    this.loading,
-    this.icon,
-    this.color
-  }) : super(key: key);
+  const SubmitButton(
+      {Key? key,
+      required this.text,
+      required this.onPress,
+      this.loading,
+      this.icon,
+      this.color})
+      : super(key: key);
 
   final String text;
   final Function onPress;
@@ -39,7 +39,10 @@ class SubmitButton extends StatelessWidget {
           Text(
             text,
             style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(
             width: 12,

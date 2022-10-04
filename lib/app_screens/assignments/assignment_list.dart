@@ -58,14 +58,14 @@ class _AssignmentListState extends State<AssignmentList> {
 
               return ListView.builder(
                 itemCount: list.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (ctxt, index) {
                   // print(list[index]);
                   return AssignmentCard(
                     navigate: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) =>
+                          builder: (context) =>
                               AssignmentDetailPage(caseId: list[index].caseId),
                         ),
                       );

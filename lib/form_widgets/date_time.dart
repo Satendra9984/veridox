@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../app_utils/app_constants.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  // final void Function(dynamic value) onChange;
+
   const DateTimePicker({
     Key? key,
     required this.widgetJson,
-    // required this.onChange,
   }) : super(key: key);
 
   @override

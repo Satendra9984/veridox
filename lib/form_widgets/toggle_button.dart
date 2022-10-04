@@ -7,11 +7,10 @@ import '../app_utils/app_constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  // final Function(dynamic value) onChange;
+
   const ToggleButton({
     Key? key,
     required this.widgetJson,
-    // required this.onChange,
   }) : super(key: key);
 
   @override
