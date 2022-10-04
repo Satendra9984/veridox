@@ -8,16 +8,16 @@ import 'package:veridox/app_utils/app_constants.dart';
 import '../app_providers/form_provider.dart';
 
 class GetSignature extends StatefulWidget {
-  final Map<String, dynamic> widgetJson;
-  final FormProvider provider;
-  final String pageId;
-  final String fieldId;
+  // final Map<String, dynamic> widgetJson;
+  // final FormProvider provider;
+  // final String pageId;
+  // final String fieldId;
   const GetSignature({
     Key? key,
-    required this.pageId,
-    required this.fieldId,
-    required this.provider,
-    required this.widgetJson,
+    // required this.pageId,
+    // required this.fieldId,
+    // required this.provider,
+    // required this.widgetJson,
   }) : super(key: key);
 
   @override

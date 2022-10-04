@@ -8,14 +8,14 @@ import '../app_utils/pick_file/pick_file.dart';
 
 class FormFileInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  final FormProvider provider;
-  final String pageId;
-  final String fieldId;
+  // final FormProvider provider;
+  // final String pageId;
+  // final String fieldId;
   const FormFileInput({
     Key? key,
-    required this.pageId,
-    required this.fieldId,
-    required this.provider,
+    // required this.pageId,
+    // required this.fieldId,
+    // required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 

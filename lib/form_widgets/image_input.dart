@@ -26,7 +26,7 @@ class _ImageInputState extends State<ImageInput>
     int j = 0;
     for (int i = _imageFileList.length; i < 3 && j < image.length; i++) {
       _imageFileList.add(image[j++]);
-      widget.
+      // widget.
     }
     setState(() {
       _imageFileList;

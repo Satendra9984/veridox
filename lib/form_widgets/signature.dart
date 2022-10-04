@@ -5,12 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 import 'get_signature.dart';
 
 class FormSignature extends StatefulWidget {
-  const FormSignature({Key? key}) : super(key: key);
-
+  // final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  const FormSignature({
+    Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
+    // required this.widgetJson,
+  }) : super(key: key);
   @override
   State<FormSignature> createState() => _FormSignatureState();
 }
@@ -24,10 +34,9 @@ class _FormSignatureState extends State<FormSignature> {
 
     if (image != null) {
       _signatureImage = await image.readAsBytes();
-      // setState(() {
-      //   _signatureImage;
+
+      // widget.provider.updateData(pageId: widget.pageId, fieldId: widget.fieldId, value: );
       formState.didChange(_signatureImage);
-      // });
     }
   }
 

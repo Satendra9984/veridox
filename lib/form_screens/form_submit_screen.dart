@@ -46,7 +46,11 @@ class _FormSubmitPageState extends State<FormSubmitPage>
             key: _formKey,
             child: Column(
               children: [
-                const FormSignature(),
+                FormSignature(
+                  pageId: widget.currentPage.toString(),
+                  fieldId: '1',
+                  provider: widget.provider,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
