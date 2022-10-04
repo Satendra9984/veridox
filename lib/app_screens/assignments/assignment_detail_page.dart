@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Form;
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
@@ -22,13 +23,15 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   /// Function for checking if the given assignment with the caseId
   /// already exist in the local_database
   Future<bool> checkSaved() async {
-    return await SPServices().checkIfExists(widget.caseId);
+    String _userId = FirebaseAuth.instance.currentUser!.uid;
+    debugPrint('Checking for ${_userId}${widget.caseId}\n');
+    return await SPServices().checkIfExists('${_userId}${widget.caseId}');
   }
 
   /// getting data to display in detailsPage
   Future<Map<String, dynamic>> _getAssignment() async {
     final res = await FirestoreServices.getAssignmentById(widget.caseId);
-    debugPrint('res type --> ${res.runtimeType}\n\n');
+    debugPrint('res type in ass details page --> ${res.runtimeType}\n\n');
     return Map<String, dynamic>.from(res!);
   }
 
@@ -120,14 +123,16 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       ),
                       onPressed: () async {
                         /// adding assignment in savedAssignmentList/local database
+
                         await _savedAssignmentProvider
                             .addSavedAssignment(widget.caseId)
-                            .then(
-                              (value) => navigatePushReplacement(
-                                context,
-                                const SavedAssignmentsPage(),
-                              ),
-                            );
+                            .then((value) {
+                          debugPrint('Now navigating to Saved Assignment Page');
+                          navigatePushReplacement(
+                            context,
+                            const SavedAssignmentsPage(),
+                          );
+                        });
                         // navigatePushReplacement(
                         //     context, const SavedAssignmentsPage());
                       },
@@ -138,7 +143,6 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                         ),
                       ),
                     )
-
                   : ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:

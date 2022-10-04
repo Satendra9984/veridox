@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../app_providers/saved_assignment_provider.dart';
 import '../../app_widgets/saved_assignment_card.dart';
-import '../../templates/form.dart';
+import '../../form_screens/home_page.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   const SavedAssignmentsPage({Key? key}) : super(key: key);
@@ -27,18 +27,6 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
     super.dispose();
   }
 
-  /*
-  * AppBar(
-        backgroundColor: Colors.orange,
-        title: const Text(
-          'Saved Assignment',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-  * */
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +40,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
         ),
       ),
       body: Consumer<SavedAssignmentProvider>(
-        builder: (context, data, child) {
+        builder: (ctx, data, child) {
           if (data.isLoading) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,11 +57,10 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
                         navigate: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (ctx) => FormTemplate(
-                                saveAssignment: saveAssignment,
-                              ),
-                            ),
+                            MaterialPageRoute(builder: (ctx) {
+                              debugPrint('Entering from Home page');
+                              return FormHomePage(formId: '31');
+                            }),
                           );
                         },
                         assignment: saveAssignment,

@@ -32,7 +32,6 @@ class SPServices {
 
   Future<bool> checkIfExists(String caseId) async {
     final prefs = await SharedPreferences.getInstance();
-
     return (prefs.getString(caseId) != null);
   }
 

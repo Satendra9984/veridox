@@ -1,129 +1,345 @@
 {
-  "id": "12345ab893adfjADF9aksl",
-  "pages" : [
+  "id": 10,
+  "name": "Customer Verification Form",
+  "createdAt": "2022-09-18T15:37:49.292868Z",
+  "data": [
     {
-      "page" :
+      "id": 0,
+      "name": "new page",
+      "fields": [
         {
-          "Policy Number" : "7583046",
-          "Customer Name" : "Subhadeep Chowdhary",
-          "Applied for policy" : "Yes",
-          "Application Date" : "01/03/22",
-          "Date and time of field visit" : "03/01/22 12:00pm",
-          "Age" : "NA",
-          "Application No." : "1234567"
-        }
-    },
-    {
-      "page" : [
+          "id": 0,
+          "label": "Note:",
+          "widget": "text"
+        },
         {
-          "page": [
-            {
-              "type": "text",
-              "label": "Death Claim Investigation Report",
-              "heading_type": 1
-            },
-            {
-              "type": "text",
-              "label": "Heading 2",
-              "heading_type": 2
-            },
-            {
-              "type": "text",
-              "label": "Heading 3",
-              "heading_type": 3
-            },
-            {
-              "type": "single_line_input",
-              "label": "Other life/health insurance*",
-              "value": "",
-              "input_type": "string/integer/email",
-              "hint": "yahan likho"
-            },
-            {
-              "type": "single_line_row_input",
-              "label": "Other life/health insurance*",
-              "value": "",
-              "input_type": "string/integer/email",
-              "hint": "yahan likho"
-            },
-            {
-              "type": "table_input",
-              "label": "Profile of the life assured*",
-              "row_labels": [
-                "Name",
-                "Date of Birth",
-                "Age",
-                "Marital Status",
-                "Occupation",
-                "Annual Income",
-                "Education",
-                "Other life/health insurance",
-                "Address",
-                "Nominee Relationship"
-              ],
-              "column_labels": [
-                "As per investigation",
-                "Mismatch noted (Yes/No)",
-                "Evidence procured (Yes/No)"
-              ],
-              "value" : [
-                {
-                  "Name" : ["satendra pal", "yes", "no"]
-                },
-                {
-                  "Date of birth" : ["10/03/2000", "no", "yes"]
-                }
-              ]
-            },
-            {
-              "type": "multi_line_input",
-              "label": "Final Remarks*-:",
-              "value": null,
-              "input_type": "string",
-              "hint": "yahan likho"
-            },
-            {
-              "type": "dropdown_menu",
-              "label": "Select Options",
-              "value": null,
-              "options": [
-                "1", "2", "3", "4", "5"
-              ],
-              "hint": "yahan likho"
-            },
-            {
-              "type": "toggle_button",
-              "label":
-              "Collect Ration Card / Parivar Card/Voter ID or other possible age proofs of all family members*",
-              "value": false,
-              "lines": "multi line",
-              "heading_type": 1
-            },
-            {
-              "type": "date_time_picker",
-              "label": "Visited On",
-              "value": ""
-            },
-            {
-              "type": "location_image",
-              "value": "firebase_storage_id"
-            },
-            {
-              "type": "image_input",
-              "value": "firebase_storage_id"
-            }
-          ]
+          "id": 1,
+          "label": "Fields marked with(*) are mandatory remarks to be updated",
+          "widget": "text"
+        },
+        {
+          "id": 2,
+          "label": "Policy Number*-: 7583046",
+          "widget": "text"
+        },
+        {
+          "id": 3,
+          "label": "Age*-:NA",
+          "widget": "text"
+        },
+        {
+          "id": 4,
+          "label": "Customer Name*-: SINGH KUMAR RAHUL",
+          "widget": "text"
+        },
+        {
+          "id": 5,
+          "label": "Received the Policy*-:YES",
+          "widget": "text"
+        },
+        {
+          "id": 6,
+          "label": "Applied for Policy*-:YES",
+          "widget": "text"
+        },
+        {
+          "id": 7,
+          "label": "Allocation Date*-:AUGUST 11,2021",
+          "widget": "text"
+        },
+        {
+          "id": 8,
+          "label": "Existing Address Details*",
+          "widget": "text"
+        },
+        {
+          "id": 9,
+          "label": "Address: RAHUL KUMAR SINGH S/O LATE SITA RAM SINGH AT-JHAUA PO-BENWALIA",
+          "widget": "text"
+        },
+        {
+          "id": 10,
+          "label": "Pin Code:  802351",
+          "widget": "text"
+        },
+        {
+          "id": 11,
+          "label": "Landmark NA",
+          "widget": "text"
+        },
+        {
+          "id": 12,
+          "label": "Landline No & Extension Number NA",
+          "widget": "text"
+        },
+        {
+          "id": 13,
+          "label": "E-mail ID 1 NA",
+          "widget": "text"
+        },
+        {
+          "id": 14,
+          "label": "Mobile Number* 7654987152",
+          "widget": "text"
+        },
+        {
+          "id": 15,
+          "label": "New Address(if any)*",
+          "widget": "text"
+        },
+        {
+          "id": 16,
+          "label": "Address",
+          "length": 50,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 17,
+          "label": "Pin Code",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 18,
+          "label": "Landmark",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 19,
+          "label": "Landline No & Extension Number",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 20,
+          "label": "E-mail ID 1",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 21,
+          "label": "Phone Number 1",
+          "widget": "text-input"
+        },
+        {
+          "id": 22,
+          "label": "Other Details-:",
+          "widget": "text"
+        },
+        {
+          "id": 23,
+          "label": "Marital Status*\tMARRIED",
+          "widget": "text"
+        },
+        {
+          "id": 24,
+          "label": "Total Family Members \t06",
+          "widget": "text"
+        },
+        {
+          "id": 25,
+          "label": "Nominee Name *\tNA",
+          "widget": "text"
+        },
+        {
+          "id": 26,
+          "label": "Occupation",
+          "length": 20,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 27,
+          "label": "Company Name*\tNA",
+          "widget": "text"
+        },
+        {
+          "id": 28,
+          "label": "Office Address \tNA",
+          "widget": "text"
+        },
+        {
+          "id": 29,
+          "label": "Office Address \tNA",
+          "widget": "text"
         }
       ]
     },
     {
-      "page" : [
-
+      "id": 1,
+      "name": "new page",
+      "fields": [
+        {
+          "id": 0,
+          "label": "In case, subscriber is not available, specify details of Third Party confirmation including spouse/children/relation/neighbor(this check needs to be done when LA is not available even after giving appointment)*",
+          "widget": "text"
+        },
+        {
+          "id": 1,
+          "label": "Details obtained from family representatives:*",
+          "widget": "text"
+        },
+        {
+          "id": 2,
+          "label": "Customer Representative Name (if any)",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 3,
+          "label": "Relationship with LA",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 4,
+          "label": "Contact number of the representative*",
+          "length": 20,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 5,
+          "label": "Representative Comments:",
+          "length": 100,
+          "widget": "text-input",
+          "multi_line": true
+        }
       ]
     },
     {
-      "page" : [
+      "id": 2,
+      "name": "new page",
+      "fields": [
+        {
+          "id": 0,
+          "label": "Details obtained during vicinity check:*",
+          "widget": "text"
+        },
+        {
+          "id": 1,
+          "label": "Name of the person met",
+          "length": 20,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 2,
+          "label": "Address of the person met",
+          "length": 100,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 3,
+          "label": "Contact number of the person met*",
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 4,
+          "label": "Residence Status",
+          "widget": "text"
+        },
+        {
+          "id": 5,
+          "label": "Type of House",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 6,
+          "label": "Traceability",
+          "length": 20,
+          "widget": "text-input"
+        },
+        {
+          "id": 7,
+          "label": "Location",
+          "length": 50,
+          "widget": "text-input",
+          "required": true
+        },
+        {
+          "id": 8,
+          "label": "Ownership",
+          "length": 20,
+          "widget": "text-input"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "new page",
+      "fields": [
+        {
+          "id": 0,
+          "label": "Product Information",
+          "widget": "text"
+        },
+        {
+          "id": 1,
+          "label": "Premium Amount ",
+          "widget": "text-input"
+        },
+        {
+          "id": 2,
+          "label": "Product Name ",
+          "widget": "text-input"
+        },
+        {
+          "id": 3,
+          "label": "Premium Frequency ",
+          "widget": "text-input"
+        },
+        {
+          "id": 4,
+          "label": "Sum Assured & Accidental ",
+          "widget": "text-input"
+        },
+        {
+          "id": 5,
+          "label": "Policy Term ",
+          "widget": "text-input"
+        },
+        {
+          "id": 6,
+          "label": "Premium Paying Term ",
+          "widget": "text-input"
+        },
+        {
+          "id": 7,
+          "label": "Premium Paying Term ",
+          "widget": "text-input"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "new page",
+      "fields": [
+        {
+          "id": 0,
+          "label": "Photographs*-:  ",
+          "widget": "image",
+          "required": true
+        },
+        {
+          "id": 1,
+          "label": "IDs*",
+          "widget": "file",
+          "required": true
+        },
+        {
+          "id": 2,
+          "label": "Final Status",
+          "widget": "toggle-button",
+          "required": true
+        }
       ]
     }
-  ]
+  ],
+  "createdBy": "user.uid"
 }

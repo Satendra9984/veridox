@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_widgets/assignment_card.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_providers/assignment_provider.dart';
-
 import '../../app_widgets/custom_app_bar.dart';
 import 'assignment_detail_page.dart';
 
@@ -41,16 +40,32 @@ class _AssignmentListState extends State<AssignmentList> {
           ),
           child: Consumer<List<Assignment>>(
             builder: (context, list, widget) {
+              if (list.length == 0) {
+                return Container(
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'You do not have any assignments yet,'
+                    '\ncontact your agency for more details',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              }
+
               return ListView.builder(
                 itemCount: list.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (ctxt, index) {
                   // print(list[index]);
                   return AssignmentCard(
                     navigate: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) =>
+                          builder: (context) =>
                               AssignmentDetailPage(caseId: list[index].caseId),
                         ),
                       );

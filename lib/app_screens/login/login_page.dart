@@ -41,6 +41,20 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
+            child: Image.asset(
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+              fit: BoxFit.contain,
+              height: 84,
+              width: 134,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: const Color(0XFFf0f5ff),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -51,11 +65,12 @@ class _LogInPageState extends State<LogInPage> {
                   text: 'Sending',
                   onPress: () {},
                   loading: const SizedBox(
-                      height: 17,
-                      width: 17,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      )),
+                    height: 17,
+                    width: 17,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
                 )
               : SubmitButton(
                   text: 'Send OTP',
@@ -87,9 +102,9 @@ class _LogInPageState extends State<LogInPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const [
                         Text(
-                          'Verify Phone Number',
+                          'Enter Phone Number',
                           style: TextStyle(
-                              fontSize: 70,
+                              fontSize: 50,
                               fontWeight: FontWeight.bold,
                               color: Color(0XFF0e4a86)),
                         ),

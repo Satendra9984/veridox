@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import '../app_models/saved_assignment_model.dart';
@@ -17,11 +18,16 @@ class SavedAssignmentProvider with ChangeNotifier {
     List<String>? lastAssignments = await _spServices.getSavedAssignmentList();
     debugPrint(lastAssignments.toString());
     _savedAssignments.clear();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
     if (lastAssignments != null && lastAssignments.isNotEmpty) {
       for (var id in lastAssignments) {
         final jsonData = await _spServices.getSavedAssignment(id);
         final formData = await _spServices.getSavedAssignmentForm(id);
-        _savedAssignments.add(SavedAssignment.fromJson(jsonData, formData, id));
+
+        String _actualCaseId = id.substring(userId.length, id.length);
+        _savedAssignments
+            .add(SavedAssignment.fromJson(jsonData, formData, _actualCaseId));
       }
     }
     isLoading = false;
@@ -31,8 +37,6 @@ class SavedAssignmentProvider with ChangeNotifier {
 
   Future<void> _add(SavedAssignment assignment) async {
     if (_savedAssignments.contains(assignment) == false) {
-      // assignment.status = 'working';
-      // await updateStatus(assignment);
       _savedAssignments.insert(_savedAssignments.length, assignment);
 
       /// todo : update assignment status in firebase
@@ -42,8 +46,8 @@ class SavedAssignmentProvider with ChangeNotifier {
   }
 
   Future<void> updateStatus(SavedAssignment savedAssignment) async {
-    await FirestoreServices
-        .updateStatus(status: 'working', caseId: savedAssignment.caseId);
+    await FirestoreServices.updateStatus(
+        status: 'working', caseId: savedAssignment.caseId);
   }
 
   Future<void> addSavedAssignment(String caseId) async {
@@ -51,18 +55,22 @@ class SavedAssignmentProvider with ChangeNotifier {
     try {
       // fetch from firebase database
       final data = await FirestoreServices.getAssignmentById(caseId);
-
+      // fetching form data from firestore
       final formData = await FirestoreServices.getFormDataById(caseId);
 
       debugPrint(data.toString());
-      debugPrint('formdata --> ${formData.toString()}\n\n');
+      debugPrint(
+          'formdata in saved ass provider --> \n${formData.toString()}\n\n');
 
       SavedAssignment savedAssignment =
           SavedAssignment.fromJson(data!, formData!, caseId);
 
+      // now we will use caseId --> '$userId$caseId'
+      String userId = FirebaseAuth.instance.currentUser!.uid;
       // save data in local database
-      await _spServices.setSavedAssignment(savedAssignment.toJson(), caseId);
-      await _spServices.setSavedAssignmentForm(formData, caseId);
+      await _spServices.setSavedAssignment(
+          savedAssignment.toJson(), '$userId$caseId');
+      await _spServices.setSavedAssignmentForm(formData, '$userId$caseId');
 
       // add object in provider
       debugPrint('add called\n\n');
@@ -71,7 +79,7 @@ class SavedAssignmentProvider with ChangeNotifier {
 
       // update the saved assignment list in local database
       await _spServices.setSavedAssignmentList(
-          savedAssignments.map((e) => e.caseId).toList());
+          savedAssignments.map((e) => '$userId${e.caseId}').toList());
       notifyListeners();
     } catch (err) {
       debugPrint(err.toString());
@@ -80,45 +88,46 @@ class SavedAssignmentProvider with ChangeNotifier {
   }
 
   void updateSaveAssignment(SavedAssignment assignment) {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     isLoading = true;
     _savedAssignments[_savedAssignments.indexWhere(
-        (element) => element.caseId == assignment.caseId)] = assignment;
+            (element) => element.caseId == '$userId${assignment.caseId}')] =
+        assignment;
     isLoading = false;
     notifyListeners();
   }
 
   void removeFromSaveAssignments(String caseId) async {
     isLoading = true;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     // remove object from savedAssignments list
-    _savedAssignments.removeWhere((element) => element.caseId == caseId);
+    _savedAssignments.removeWhere((element) => element.caseId == '$caseId');
 
-    _spServices
-        .setSavedAssignmentList(savedAssignments.map((e) => e.caseId).toList());
+    _spServices.setSavedAssignmentList(
+        savedAssignments.map((e) => '$userId${e.caseId}').toList());
 
     // TODO: remove from local database
 
     try {
-      await _spServices.removeSavedAssignment(caseId);
+      await _spServices.removeSavedAssignment('$userId$caseId');
     } catch (error) {
       debugPrint(error.toString());
     }
 
     notifyListeners();
-
     isLoading = false;
   }
 
   SavedAssignment getAssignmentById(String id) {
-    return _savedAssignments.firstWhere((element) => element.caseId == id);
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    return _savedAssignments
+        .firstWhere((element) => element.caseId == '$userId$id');
   }
 
   /// TODO : DELETE SAVED ASSIGNMENT
   Future<void> deleteSavedAssignment(String caseId) async {
-    _savedAssignments.removeWhere((element) => element.caseId == caseId);
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    _savedAssignments.removeWhere((element) => element.caseId == '$caseId');
+    notifyListeners();
   }
-
-  // Future<List<String>?> getSavedAssignmentList() async {
-  //   final list = await _spServices.getSavedAssignmentList();
-  //   return list;
-  // }
 }

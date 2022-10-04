@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
@@ -7,6 +8,9 @@ import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
+import '../../app_utils/app_functions.dart';
+import '../assignments_home_page.dart';
+import '../login/login_page.dart';
 
 class SendRequestScreen extends StatefulWidget {
   const SendRequestScreen({Key? key}) : super(key: key);
@@ -16,13 +20,14 @@ class SendRequestScreen extends StatefulWidget {
 }
 
 class _SendRequestScreenState extends State<SendRequestScreen> {
-  // final GlobalKey _key = GlobalKey();
+  late FirebaseAuth _auth;
   late SendRequestProvider _provider;
   String dropDown = 'Select your agency';
 
   @override
   void initState() {
     super.initState();
+    _auth = FirebaseAuth.instance;
     _provider = SendRequestProvider();
   }
 
@@ -30,6 +35,65 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: Container(
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 4, bottom: 4),
+            child: Image.asset(
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+              fit: BoxFit.contain,
+              height: 84,
+              width: 134,
+            ),
+          ),
+          actions: [
+            PopupMenuButton(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: Text(
+                      'Log Out',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          FirebaseAuth.instance.currentUser!.phoneNumber
+                              .toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      await _auth.signOut();
+                      navigatePushReplacement(context, const LogInPage());
+                    },
+                  ),
+                ];
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            )
+          ],
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: const Color(0XFFf0f5ff),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -42,19 +106,30 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
             text: 'Send Request',
             onPress: () async {
               debugPrint('submit before');
-              await _provider.submit();
-              debugPrint('submit afterr');
+              await _provider.submit(context);
+              debugPrint('submit after');
+              await Navigator.of(context).pushReplacement(
+                CupertinoPageRoute(
+                  builder: (context) {
+                    return AssignmentsHomePage();
+                  },
+                ),
+              );
+              // Navigator.pop(context);
             },
           ),
         ),
         body: Container(
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [Color(0XFFf0f5ff), Colors.white])),
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [Color(0XFFf0f5ff), Colors.white],
+            ),
+          ),
           alignment: Alignment.center,
           child: SingleChildScrollView(
+            // physics: NeverScrollableScrollPhysics(),
             child: Container(
               margin: const EdgeInsets.all(15.0),
               padding: const EdgeInsets.all(10.0),
@@ -73,7 +148,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                           Text(
                             'Send Request',
                             style: TextStyle(
-                                fontSize: 60,
+                                fontSize: 32,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.lightBlue),
                           ),
@@ -82,14 +157,14 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                           ),
                           Text(
                             'To the agency you want to join',
-                            style: TextStyle(fontSize: 23),
+                            style: TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
                     ),
 
                     const SizedBox(
-                      height: 60,
+                      height: 30,
                     ),
 
                     /// name
@@ -99,27 +174,10 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       text: 'Name',
                       keyboardType: TextInputType.name,
                       validator: (value) {
-                        if (value == null) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your name';
                         }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-
-                    /// phone
-                    CustomTextInput(
-                      password: false,
-                      controller: _provider.getPhoneCtrl,
-                      text: 'Phone Number',
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please enter your mobile number';
-                        } else if (!value.isPhoneNumber) {
-                          return 'Please enter a valid mobile number';
-                        }
+                        return null;
                       },
                     ),
                     const SizedBox(
@@ -133,11 +191,12 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                       password: false,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         } else if (!value.isEmail) {
                           return 'Please enter a valid email';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
@@ -145,26 +204,29 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                     ),
 
                     FutureBuilder(
-                        future: FirestoreServices.getAgencyList(),
-                        builder: (context,
-                            AsyncSnapshot<List<Map<String, dynamic>>>? list) {
-                          List<Map<String, dynamic>>? data = list?.data;
-                          if (data == null) {
-                            return const Text('');
-                          }
+                      future: FirestoreServices.getAgencyList(),
+                      builder: (context,
+                          AsyncSnapshot<List<Map<String, dynamic>>>? list) {
+                        List<Map<String, dynamic>>? data = list?.data;
+                        if (data == null) {
+                          return const Text('');
+                        }
 
-                          return CustomDropDownButton(
-                              list: data
-                                  .map(
-                                    (e) => e['agency_name'].toString(),
-                                  )
-                                  .toList(),
-                              onChanged: (int value) {
-                                dropDown = data[value]['agency_name'];
-                                _provider.agencyUid = data[value]['id'];
-                                debugPrint('$dropDown\n');
-                              });
-                        }),
+                        return CustomDropDownButton(
+                          list: data
+                              .map(
+                                (e) => e['agency_name'].toString(),
+                              )
+                              .toList(),
+                          onChanged: (int value) {
+                            dropDown = data[value]['agency_name'];
+                            _provider.agencyUid = data[value]['id'];
+                            debugPrint('${data[value]['id']}\n');
+                            debugPrint('${data[value]['agency_name']}\n');
+                          },
+                        );
+                      },
+                    ),
 
                     const SizedBox(
                       height: 15,
