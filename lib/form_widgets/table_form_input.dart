@@ -1,12 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class FormTableTextInput extends StatefulWidget {
-  final Map<String, dynamic> widgetData;
+  final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  final String colId, rowId;
   const FormTableTextInput({
     Key? key,
-    required this.widgetData,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
+    required this.widgetJson,
+    required this.colId,
+    required this.rowId,
   }) : super(key: key);
 
   @override
@@ -39,10 +49,10 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
   // }
 
   String _getLabel() {
-    String label = widget.widgetData['label'];
+    String label = widget.widgetJson['label'];
 
-    if (widget.widgetData.containsKey('required') &&
-        widget.widgetData['required'] == true) {
+    if (widget.widgetJson.containsKey('required') &&
+        widget.widgetJson['required'] == true) {
       label += '*';
       _isRequired = true;
     }
@@ -62,7 +72,7 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: _textEditingController,
         validator: (val) {
-          if (widget.widgetData['required'] == true &&
+          if (widget.widgetJson['required'] == true &&
               _textEditingController.text.isEmpty) {
             return 'Please enter a value';
           }
@@ -85,11 +95,18 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
               TextField(
                 controller: _textEditingController,
                 onChanged: (text) {
+                  widget.provider.updateData(
+                    pageId: widget.pageId,
+                    fieldId: widget.fieldId,
+                    columnId: widget.colId,
+                    rowId: widget.rowId,
+                    value: _textEditingController.text.toString(),
+                  );
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
-                maxLines: widget.widgetData['multi_line'] ?? false ? 7 : 1,
-                maxLength: widget.widgetData['length'],
+                maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
+                maxLength: widget.widgetJson['length'],
                 // keyboardType: _getKeyboardType(),
                 decoration: const InputDecoration(
                   hintText: 'Your Answer',

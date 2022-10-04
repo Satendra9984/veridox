@@ -5,9 +5,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:signature/signature.dart';
 import 'package:veridox/app_utils/app_constants.dart';
+import '../app_providers/form_provider.dart';
 
 class GetSignature extends StatefulWidget {
-  const GetSignature({Key? key}) : super(key: key);
+  final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  const GetSignature({
+    Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
+    required this.widgetJson,
+  }) : super(key: key);
 
   @override
   State<GetSignature> createState() => _GetSignatureState();

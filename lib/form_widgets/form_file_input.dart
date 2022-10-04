@@ -2,13 +2,20 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 import '../app_utils/pick_file/pick_file.dart';
 
 class FormFileInput extends StatefulWidget {
-  Map<String, dynamic> widgetJson;
-  FormFileInput({
+  final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  const FormFileInput({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 

@@ -5,8 +5,13 @@ class FormProvider extends ChangeNotifier {
 
   get getResult => _result;
 
-  updateData({required String pageId, required String fieldId, String? rowId,
-    String? columnId, String? type, required String value}) {
+  updateData(
+      {required String pageId,
+      required String fieldId,
+      String? rowId,
+      String? columnId,
+      String? type,
+      required dynamic value}) {
     if (rowId != null && columnId != null) {
       _result['$pageId,$fieldId,$rowId,$columnId'] = value;
     } else {
@@ -14,7 +19,7 @@ class FormProvider extends ChangeNotifier {
       debugPrint(_result.toString());
     }
   }
-  
+
   refreshData() {
     _result.removeWhere((key, value) => value == "");
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
@@ -58,7 +57,6 @@ class _FormPageState extends State<FormPage>
 
   @override
   Widget build(BuildContext context) {
-    // provider = Provider.of<FormProvider>(context);
     super.build(context);
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
@@ -99,11 +97,17 @@ class _FormPageState extends State<FormPage>
                               field[index]['widget'] == 'toggle-button') {
                             return ToggleButton(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'dropdown') {
                             return DropdownMenu(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'date-time') {
@@ -111,6 +115,9 @@ class _FormPageState extends State<FormPage>
 
                             return DateTimePicker(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'file') {
@@ -126,6 +133,9 @@ class _FormPageState extends State<FormPage>
                               field[index]['widget'] == 'table') {
                             return FormTableInput(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else {
                             return Container(

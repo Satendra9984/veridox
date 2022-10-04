@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const DateTimePicker({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -49,6 +55,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
         setState(() {
           _date = value;
         });
+        widget.provider.updateData(
+            pageId: widget.pageId,
+            fieldId: widget.fieldId,
+            value: '${_date!.day}/${_date!.month}/${_date!.year}');
         formFieldState.didChange(_date);
         // String date = '${_date.day}/${_date.month}/${_date.year}';
         // widget.onChange(date);
@@ -83,6 +93,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
               _date == null) {
             return 'Please select a date';
           }
+
           return null;
         },
         builder: (formState) {
@@ -121,10 +132,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: IconButton(
-                        onPressed: () => setState(() {
-                          _date = null;
+                        onPressed: () {
+                          setState(() {
+                            _date = null;
+                          });
+
                           formState.didChange(_date);
-                        }),
+                        },
                         icon: const Icon(
                           Icons.clear,
                           color: Colors.redAccent,

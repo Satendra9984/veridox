@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const ToggleButton({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -84,6 +90,12 @@ class _ToggleButtonState extends State<ToggleButton> {
                       icon: _currentIcon,
                       onPressed: () {
                         _setCheckIcon();
+
+                        widget.provider.updateData(
+                          pageId: widget.pageId,
+                          fieldId: widget.fieldId,
+                          value: status,
+                        );
                         formState.didChange(status);
                       },
                     ),
