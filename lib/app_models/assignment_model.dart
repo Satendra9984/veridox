@@ -9,13 +9,9 @@ class Assignment {
   final String phone;
   final String name;
 
-  /// todo: add form id
-  final String? formId;
-
   Map<String, dynamic> toJson() {
     return {
       'caseId': caseId,
-      'formId': formId,
       'document_type': type,
       'address': address,
       'status': status,
@@ -27,10 +23,9 @@ class Assignment {
   factory Assignment.fromJson(Map<String, dynamic> jsonData, String caseId) {
     return Assignment(
       caseId: caseId,
-      formId: jsonData['formId'],
-      phone: jsonData['phone'],
-      name: jsonData['name'],
-      address: jsonData['address'],
+      phone: jsonData['applicant_phone'],
+      name: jsonData['applicant_name'],
+      address: jsonData['applicant_address'],
       assignedDate: jsonData['assigned_at'],
       type: jsonData['document_type'],
       status: jsonData['status'],
@@ -40,7 +35,6 @@ class Assignment {
   Assignment({
     required this.address,
     required this.caseId,
-    required this.formId,
     required this.type,
     required this.status,
     required this.assignedDate,
