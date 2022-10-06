@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class DropdownMenu extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  // final Function(dynamic val) onChange;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const DropdownMenu({
     Key? key,
-    // required this.onChange,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -19,10 +23,11 @@ class DropdownMenu extends StatefulWidget {
 class _DropdownMenuState extends State<DropdownMenu> {
   late final List<dynamic> items;
   dynamic currentValue;
-  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     _initializeOptionList();
+    currentValue = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     super.initState();
   }
 
@@ -137,10 +142,16 @@ class _DropdownMenuState extends State<DropdownMenu> {
                           );
                         },
                       ).toList(),
-                      onChanged: (value) => setState(() {
-                        currentValue = value;
+                      onChanged: (value) {
+                        setState(() {
+                          currentValue = value;
+                        });
+                        widget.provider.updateData(
+                            pageId: widget.pageId,
+                            fieldId: widget.fieldId,
+                            value: value);
                         formState.didChange(currentValue);
-                      }),
+                      },
                       isExpanded: true,
                     ),
                   ),

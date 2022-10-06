@@ -1,35 +1,57 @@
 import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../app_providers/form_provider.dart';
+import '../app_services/database/uploader.dart';
 import '../app_utils/app_constants.dart';
 import 'image_upload.dart';
 
-class ImageInput extends StatefulWidget {
+class FormImageInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  const ImageInput({
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  const FormImageInput({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
   @override
-  State<ImageInput> createState() => _ImageInputState();
+  State<FormImageInput> createState() => _FormImageInputState();
 }
 
-class _ImageInputState extends State<ImageInput>
+class _FormImageInputState extends State<FormImageInput>
     with AutomaticKeepAliveClientMixin {
   final List<Uint8List> _imageFileList = [];
+  final List<String> _imageFileListPaths = [];
   String appBarTitle = " length ";
 
   Future<void> _addImageToList(List<Uint8List> image) async {
-    // int leng = 3 - _imageFileList.length;
-    // image.removeRange(leng, image.length);
     int j = 0;
     for (int i = _imageFileList.length; i < 3 && j < image.length; i++) {
       _imageFileList.add(image[j++]);
+
+      _addImage(image[j], i);
     }
-    setState(() {
-      _imageFileList;
-    });
+  }
+
+  Future<void> _addImage(Uint8List image, int index) async {
+    String _dbPath =
+        '${widget.provider.assignmentId}/${widget.pageId}/${widget.fieldId}/${index}';
+    UploadTask? task =
+        await FileUploader.uploadFile(dbPath: _dbPath, fileData: image);
+
+    if (task != null) {
+      _imageFileListPaths.add(_dbPath);
+      widget.provider.updateData(
+          pageId: widget.pageId,
+          fieldId: widget.fieldId,
+          value: _imageFileListPaths);
+    }
   }
 
   void setAppBarTitle(String path) {

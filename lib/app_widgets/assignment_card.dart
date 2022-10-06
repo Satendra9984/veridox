@@ -27,8 +27,7 @@ class AssignmentCard extends StatelessWidget {
         onTap: navigate,
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kBRad)
-          ),
+              borderRadius: BorderRadius.circular(kBRad)),
           elevation: 4,
           child: Padding(
             padding: const EdgeInsets.all(17.0),
@@ -68,8 +67,8 @@ class AssignmentCard extends StatelessWidget {
                         heading: 'phone',
                         value: Text(
                           assignment.phone,
-                          style:
-                              TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                          style: TextStyle(
+                              fontSize: 13, color: Colors.grey.shade600),
                         ),
                       ),
                       DetailTextStylesWidget(
@@ -98,36 +97,46 @@ class AssignmentCard extends StatelessWidget {
                         value: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  assignment.type,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey.shade500,
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: [
+                                  // Icon(
+                                  //   FontAwesomeIcons.fileLines,
+                                  //   color: Colors.grey.shade500,
+                                  //   size: 18,
+                                  // ),
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    assignment.type,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey.shade500,
+                                    ),
                                   ),
-                                ),
-                                // const SizedBox(width: 30),
-                              ],
+                                ],
+                              ),
                             ),
-
                             // const SizedBox(width: 8),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.date_range,
-                                  color: Colors.grey.shade500,
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  assignment.assignedDate,
-                                  style: TextStyle(
-                                    fontSize: 13,
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.date_range,
                                     color: Colors.grey.shade500,
+                                    size: 18,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    assignment.assignedDate,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -135,27 +144,28 @@ class AssignmentCard extends StatelessWidget {
                       const SizedBox(
                         height: 5,
                       ),
-                      DetailTextStylesWidget(
-                        heading: 'Address',
-                        value: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: Colors.lightBlue,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 3),
-                            Text(
-                              assignment.address,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.lightBlue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // DetailTextStylesWidget(
+                      //   heading: 'Address',
+                      //   value: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       const Icon(
+                      //         Icons.location_on,
+                      //         color: Colors.lightBlue,
+                      //         size: 18,
+                      //       ),
+                      //       const SizedBox(width: 3),
+                      //       Text(
+                      //         assignment.address,
+                      //         style: const TextStyle(
+                      //           fontSize: 13,
+                      //           color: Colors.lightBlue,
+                      //         ),
+                      //         softWrap: true,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

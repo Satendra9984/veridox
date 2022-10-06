@@ -7,7 +7,9 @@ import 'package:signature/signature.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 
 class GetSignature extends StatefulWidget {
-  const GetSignature({Key? key}) : super(key: key);
+  const GetSignature({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<GetSignature> createState() => _GetSignatureState();

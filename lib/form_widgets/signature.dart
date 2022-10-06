@@ -1,16 +1,26 @@
 import 'dart:typed_data';
-
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../app_providers/form_provider.dart';
+import '../app_services/database/uploader.dart';
 import '../app_utils/app_constants.dart';
+import '../app_utils/pick_file/pick_file.dart';
 import 'get_signature.dart';
 
 class FormSignature extends StatefulWidget {
-  const FormSignature({Key? key}) : super(key: key);
-
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
+  const FormSignature({
+    Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
+  }) : super(key: key);
   @override
   State<FormSignature> createState() => _FormSignatureState();
 }
@@ -21,20 +31,44 @@ class _FormSignatureState extends State<FormSignature> {
   Future<void> _getImageFromGallery(FormFieldState formState) async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    // await ImagePicker.platform.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
+      debugPrint('image is not null\n\n');
       _signatureImage = await image.readAsBytes();
-      // setState(() {
-      //   _signatureImage;
       formState.didChange(_signatureImage);
-      // });
+      if (_signatureImage != null) {
+        debugPrint('image.bytes is not null\n\n');
+        await _addImage(_signatureImage!);
+      }
+    }
+  }
+
+  Future<void> _addImage(var image) async {
+    // _signatureImage = await image.readAsBytes();
+    String _dbPath =
+        '${widget.provider.assignmentId}/${widget.pageId}/${widget.fieldId}';
+    UploadTask? task = await FileUploader.uploadFile(
+        dbPath: _dbPath, fileData: _signatureImage!);
+
+    if (task != null) {
+      widget.provider.updateData(
+          pageId: widget.pageId, fieldId: widget.fieldId, value: _dbPath);
+    }
+  }
+
+  Future<void> _deleteFromDatabase() async {
+    String _dbPath =
+        '${widget.provider.assignmentId}/${widget.pageId}/${widget.fieldId}';
+    if (_signatureImage != null) {
+      // todo: delete from database
+      await FileUploader.deleteFile(dbPath: _dbPath);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(5.0),
       decoration: containerElevationDecoration,
       child: FormField(
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -68,11 +102,12 @@ class _FormSignatureState extends State<FormSignature> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // setState(() {
                           _signatureImage = null;
-                          formState.didChange(_signatureImage);
                           // });
+                          await _deleteFromDatabase();
+                          formState.didChange(_signatureImage);
                         },
                         tooltip: 'Clear',
                         icon: const Icon(
@@ -92,13 +127,14 @@ class _FormSignatureState extends State<FormSignature> {
                                   builder: (context) => const GetSignature(),
                                 ),
                               )
-                                  .then((value) {
-                                if (value != null) {
-                                  // setState(() {
-                                  _signatureImage = value;
-                                  formState.didChange(_signatureImage);
-                                  // });
+                                  .then((image) async {
+                                if (image != null) {
+                                  debugPrint(
+                                      'signature runtimetype --> ${image.runtimeType}\n\n');
+                                  _signatureImage = image;
+                                  await _addImage(image);
                                 }
+                                formState.didChange(_signatureImage);
                               });
                             },
                             icon: const FaIcon(

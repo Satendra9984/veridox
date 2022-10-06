@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         //   ),
         // ),
         routes: {
-          '/': (context) => const EnablePermissionPage(),
+          '/': (context) => const OnBoardingScreen(),
         },
       ),
     );

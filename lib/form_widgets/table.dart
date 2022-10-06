@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/form_widgets/table_form_input.dart';
 
+import '../app_providers/form_provider.dart';
+
 class FormTableInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const FormTableInput({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -103,12 +110,17 @@ class _FormTableInputState extends State<FormTableInput> {
                       children: _columnLabels.map(
                         (col) {
                           return FormTableTextInput(
-                            widgetData: {
+                            widgetJson: {
                               "id": col['id'],
                               "label": col['label'],
                               "required": _isRequired,
                               "widget": "text-input"
                             },
+                            pageId: widget.pageId,
+                            fieldId: widget.fieldId,
+                            provider: widget.provider,
+                            colId: col['id'].toString(),
+                            rowId: row['id'].toString(),
                           );
                         },
                       ).toList(),

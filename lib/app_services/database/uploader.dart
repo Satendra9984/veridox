@@ -27,4 +27,21 @@ class FileUploader {
       return null;
     }
   }
+
+  static Future<UploadTask?> uploadFile(
+      {required String dbPath, required Uint8List fileData}) async {
+    try {
+      return FirebaseStorage.instance.ref(dbPath).putData(fileData);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<void> deleteFile({required String dbPath}) async {
+    try {
+      return FirebaseStorage.instance.ref(dbPath).delete();
+    } catch (e) {
+      return;
+    }
+  }
 }

@@ -1,30 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../app_providers/form_provider.dart';
+import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
-class FormTableTextInput extends StatefulWidget {
+class FormEmailTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
   final String pageId;
   final String fieldId;
-  final String colId, rowId;
-  const FormTableTextInput({
+  const FormEmailTextInput({
     Key? key,
     required this.pageId,
     required this.fieldId,
     required this.provider,
     required this.widgetJson,
-    required this.colId,
-    required this.rowId,
   }) : super(key: key);
 
   @override
-  State<FormTableTextInput> createState() => _FormTableTextInputState();
+  State<FormEmailTextInput> createState() => _FormEmailTextInputState();
 }
 
-class _FormTableTextInputState extends State<FormTableTextInput> {
-  late final TextEditingController _textEditingController;
+class _FormEmailTextInputState extends State<FormEmailTextInput> {
+  late TextEditingController _textEditingController;
   bool _isRequired = false;
 
   @override
@@ -64,17 +61,21 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
     return Container(
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
+      decoration: containerElevationDecoration,
       child: FormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: _textEditingController,
         validator: (val) {
-          if (widget.widgetJson['required'] == true &&
-              _textEditingController.text.isEmpty) {
-            return 'Please enter a value';
+          String? value = _textEditingController.text;
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true
+              ) {
+            if(value.isEmpty)
+            return 'Please write some text';
+
+            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+            if(!emailValid)
+              return 'Please enter a valid email';
           }
           return null;
         },
@@ -82,45 +83,49 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(
+                height: 10,
+              ),
               Text(
                 _getLabel(),
                 style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 25,
               ),
               TextField(
+                // focusNode: FocusNode(),
+
                 controller: _textEditingController,
-                onChanged: (text) {
-                  widget.provider.updateData(
-                    pageId: widget.pageId,
-                    fieldId: widget.fieldId,
-                    columnId: widget.colId,
-                    rowId: widget.rowId,
-                    value: _textEditingController.text.toString(),
-                  );
+                onChanged: (val) {
+                  // _textEditingController.text = val;
+                  widget.provider.updateData(pageId: widget.pageId,
+                      fieldId: widget.fieldId, value: _textEditingController.text);
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
-                maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
-                maxLength: widget.widgetJson['length'],
-                // keyboardType: _getKeyboardType(),
-                decoration: const InputDecoration(
+                maxLines: 1,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  //   border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  //   enabledBorder: InputBorder.none,
+                  //   errorBorder: InputBorder.none,
+                  //   disabledBorder: InputBorder.none,
                   hintText: 'Your Answer',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                  ),
+                  hintStyle: kHintTextStyle,
+
                   isDense: true, // Added this
-                  // contentPadding: EdgeInsets.all(0),
+                  // contentPadding: EdgeInsets.all(-10),
                 ),
               ),
               if (formState.hasError)
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     children: [
                       const Icon(
@@ -146,33 +151,3 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
     );
   }
 }
-
-// if (widget.widgetData['required'] &&
-//     (value == null || value.isEmpty)) {
-//   return 'Please enter some text';
-// }
-// if (value != null && value.length > widget.widgetData['length']) {
-//   return 'Enter text is exceeding the size';
-// }
-// if (value != null && widget.widgetData['type'] == 'phone') {
-//   bool phone = RegExp(
-//           r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
-//       .hasMatch(value ?? '');
-//   if (!phone) {
-//     return 'Please enter a valid phone number';
-//   }
-// }
-// if (value != null &&
-//     widget.widgetData['type'] == 'number' &&
-//     int.tryParse(value) == null) {
-//   return 'Please enter a valid number';
-// }
-// if (value != null && widget.widgetData['type'] == 'email') {
-//   bool email = RegExp(
-//           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-//       .hasMatch(value ?? '');
-//   if (!email) {
-//     return 'Please enter a valid email';
-//   }
-// }
-// return null;

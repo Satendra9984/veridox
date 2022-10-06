@@ -46,13 +46,17 @@ class _FormSubmitPageState extends State<FormSubmitPage>
             key: _formKey,
             child: Column(
               children: [
-                const FormSignature(),
+                FormSignature(
+                  pageId: widget.currentPage.toString(),
+                  fieldId: '0',
+                  provider: widget.provider,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
                 FormTextInput(
                   widgetJson: {
-                    "id": 15,
+                    "id": 2,
                     "label": "Final Report",
                     "length": 300,
                     "required": true,
@@ -70,6 +74,9 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                     'widget': 'geolocation',
                     'required': true,
                   },
+                  pageId: widget.currentPage.toString(),
+                  fieldId: '2',
+                  provider: widget.provider,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
