@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 
 class FormProvider extends ChangeNotifier {
   Map<String, dynamic> _result = {};
@@ -32,5 +34,30 @@ class FormProvider extends ChangeNotifier {
 
   clearResult() {
     _result = {};
+  }
+
+  Future<void> initializeResponse() async {
+    final snap = await FirebaseFirestore.instance
+        .collection('assignment')
+        .doc(_assignmentId)
+        .collection('form_data')
+        .doc('response')
+        .get();
+
+    if (snap.exists) {
+      Map<String, dynamic>? data = snap.data();
+      if (data != null && data.isNotEmpty) {
+        _result = data;
+      }
+    }
+  }
+
+  Future<void> saveDraftData() async {
+    await FirebaseFirestore.instance
+        .collection('assignment')
+        .doc(assignmentId)
+        .collection('form_data')
+        .doc('response')
+        .set(_result);
   }
 }
