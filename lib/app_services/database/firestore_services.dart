@@ -9,8 +9,10 @@ class FirestoreServices {
   static Stream<List<Assignment>> getAssignments() {
     final _auth = FirebaseAuth.instance;
     final uid = _auth.currentUser!.uid;
+
     debugPrint('uid --> ${uid}');
     debugPrint('getAssignments called again\n');
+
     return _firestore
         .collection('field_verifier')
         .doc(uid)
@@ -29,7 +31,8 @@ class FirestoreServices {
   /// Below two functions are used for getting complete assignment from firebase
   static Future<Map<String, dynamic>?> getAssignmentById(String id) async {
     final snapshot = await _firestore.collection('assignments').doc(id).get();
-    debugPrint('Assignment-$id: ${snapshot.data()}');
+    debugPrint(
+        'Assignment got from assignmen collection -- > $id: \n${snapshot.data()}\n\n');
     return snapshot.data();
   }
 

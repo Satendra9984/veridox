@@ -119,8 +119,8 @@ class _FormTableInputState extends State<FormTableInput> {
                             pageId: widget.pageId,
                             fieldId: widget.fieldId,
                             provider: widget.provider,
-                            colId: col['id'],
-                            rowId: row['id'],
+                            colId: col['id'].toString(),
+                            rowId: row['id'].toString(),
                           );
                         },
                       ).toList(),

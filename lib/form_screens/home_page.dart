@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/app_api_collection.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 
 import 'initial_form_page.dart';
 
 class FormHomePage extends StatefulWidget {
-  final String formId;
+  final String caseId;
   const FormHomePage({
-    required this.formId,
+    required this.caseId,
     Key? key,
   }) : super(key: key);
 
@@ -38,7 +39,7 @@ class _FormHomePageState extends State<FormHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: AppApiCollection.getForm('31'),
+        future: FirestoreServices.getFormDataById(widget.caseId),
         builder: (context, AsyncSnapshot<Map<String, dynamic>?> form) {
           var snapshot = form.data;
           // print(snapshot);
@@ -49,9 +50,9 @@ class _FormHomePageState extends State<FormHomePage> {
           } else if (form.hasData && snapshot != null) {
             final data = Map<String, dynamic>.from(snapshot);
 
-            debugPrint('new data --> ${data.toString()}');
+            debugPrint('form data --> ${data.toString()}');
 
-            return InitialFormPageView(pagesData: data);
+            return InitialFormPageView(caseId: widget.caseId, pagesData: data);
           } else if (snapshot == null) {
             return const Center(
               child: Text('Form will be displayed here'),

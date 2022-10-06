@@ -53,16 +53,17 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
     if (!await location.serviceEnabled()) {
       if (!await location.requestService()) {}
     }
-    var permission = await location.hasPermission();
+    PermissionStatus permission = await location.hasPermission();
+    debugPrint('permission ${permission}\n\n');
 
-    if (permission == PermissionStatus.denied) {
+    if (permission == PermissionStatus.granted) {
+      Navigator.of(context)
+          .push(CupertinoPageRoute(builder: (context) => OnBoardingScreen()));
+    } else if (permission == PermissionStatus.denied) {
       debugPrint('permission denied\n\n');
 
       if (Navigator.canPop(context)) {
         debugPrint('can pop\n\n');
-        setState(() {
-          _isLocationPermissionEnabled = true;
-        });
         Navigator.popUntil(context, ModalRoute.withName("/"));
       }
       permission = await location.requestPermission();
@@ -105,7 +106,7 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
             ),
             const SizedBox(height: 15),
             Text(
-              'can pop--> ${_isLocationPermissionEnabled} Location Services are not enabled for this app !\n'
+              'Location Services are not enabled for this app !\n'
               'Please enable it to use the app.',
               style: TextStyle(
                 fontSize: 16,

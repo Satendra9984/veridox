@@ -8,14 +8,14 @@ import '../app_utils/pick_file/pick_file.dart';
 
 class FormFileInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  // final FormProvider provider;
-  // final String pageId;
-  // final String fieldId;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const FormFileInput({
     Key? key,
-    // required this.pageId,
-    // required this.fieldId,
-    // required this.provider,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -47,6 +47,12 @@ class _FormFileInputState extends State<FormFileInput>
       label += '*';
     }
     return label;
+  }
+
+  /// function for adding/updating file to database
+  void _addData() {
+    widget.provider.updateData(
+        pageId: widget.pageId, fieldId: widget.fieldId, value: _filesList);
   }
 
   @override
@@ -135,6 +141,9 @@ class _FormFileInputState extends State<FormFileInput>
                                           _filesList.removeAt(index);
                                           _canAdd = true;
                                         });
+
+                                        /// adding data in the database
+                                        _addData();
                                       },
                                       icon: const Icon(Icons.cancel)),
                                 ),
@@ -209,6 +218,9 @@ class _FormFileInputState extends State<FormFileInput>
                             formState.didChange(_canAdd);
                           });
                         }
+
+                        /// updating database/ adding in database
+                        _addData();
                       }
                     },
                   ),

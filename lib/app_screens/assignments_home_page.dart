@@ -96,10 +96,9 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     return MultiProvider(
       providers: [
         StreamProvider<List<Assignment>>(
-            create: (context) => FirestoreServices.getAssignments(),
-            initialData: const []),
-        // ChangeNotifierProvider<SavedAssignmentProvider>(
-        //     create: (context) => SavedAssignmentProvider()),
+          create: (context) => FirestoreServices.getAssignments(),
+          initialData: const [],
+        ),
       ],
       child: Scaffold(
         body: _isLoading

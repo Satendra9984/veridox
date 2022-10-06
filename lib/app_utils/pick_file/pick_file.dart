@@ -21,7 +21,7 @@ class PickFile {
   static Future<PlatformFile?> pickAndGetFileAsBytes(
       {List<String>? fileExtensions}) async {
     FilePickerResult? file = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['pdf', 'jpg', 'png'],
+      allowedExtensions: fileExtensions,
       type: FileType.custom,
     );
 

@@ -81,7 +81,7 @@ class SavedAssignmentCard extends StatelessWidget {
                       ),
                       heading: 'Name',
                       value: Text(
-                        assignment.name,
+                        assignment.applicant_name,
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -93,7 +93,7 @@ class SavedAssignmentCard extends StatelessWidget {
                       ),
                       heading: 'phone',
                       value: Text(
-                        assignment.phone,
+                        assignment.applicant_phone,
                         style: const TextStyle(fontSize: 17),
                       )),
                   DetailTextStylesWidget(
@@ -142,27 +142,27 @@ class SavedAssignmentCard extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  DetailTextStylesWidget(
-                    heading: 'Address',
-                    value: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: Colors.lightBlue,
-                          size: 18,
-                        ),
-                        const SizedBox(width: 3),
-                        Text(
-                          assignment.address,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.lightBlue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // DetailTextStylesWidget(
+                  //   heading: 'Address',
+                  //   value: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       const Icon(
+                  //         Icons.location_on,
+                  //         color: Colors.lightBlue,
+                  //         size: 18,
+                  //       ),
+                  //       const SizedBox(width: 3),
+                  //       Text(
+                  //         assignment.applicant_address,
+                  //         style: const TextStyle(
+                  //           fontSize: 15,
+                  //           color: Colors.lightBlue,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

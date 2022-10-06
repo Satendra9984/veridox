@@ -6,11 +6,18 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 import 'package:veridox/form_widgets/show_map.dart';
+import '../app_providers/form_provider.dart';
 
 class GetUserLocation extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
+  final FormProvider provider;
+  final String pageId;
+  final String fieldId;
   const GetUserLocation({
     Key? key,
+    required this.pageId,
+    required this.fieldId,
+    required this.provider,
     required this.widgetJson,
   }) : super(key: key);
 
@@ -32,6 +39,15 @@ class _GetUserLocationState extends State<GetUserLocation> {
       debugPrint('$label \n\n');
     }
     return label;
+  }
+
+  void _addData() {
+    if (_currentLocation != null) {
+      String coordinates =
+          '${_currentLocation!.latitude},${_currentLocation!.longitude}';
+      widget.provider.updateData(
+          pageId: widget.pageId, fieldId: widget.fieldId, value: coordinates);
+    }
   }
 
   @override
@@ -88,8 +104,8 @@ class _GetUserLocationState extends State<GetUserLocation> {
                                   double? lat = _currentLocation!.latitude;
                                   double? long = _currentLocation!.longitude;
                                   return ShowMapScreen(
-                                    lat: lat!,
-                                    longi: long!,
+                                    lat: lat,
+                                    longi: long,
                                   );
                                 },
                               ),
@@ -139,6 +155,7 @@ class _GetUserLocationState extends State<GetUserLocation> {
                                   _address = value;
                                   _gettingLocation = false;
                                 });
+                                _addData();
                                 formState.didChange(_currentLocation);
                               });
                             });

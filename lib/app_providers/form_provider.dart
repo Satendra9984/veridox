@@ -2,8 +2,14 @@ import 'package:flutter/cupertino.dart';
 
 class FormProvider extends ChangeNotifier {
   Map<String, dynamic> _result = {};
-
   get getResult => _result;
+
+  /// for the assignment id
+  String _assignmentId = '';
+  String get assignmentId => _assignmentId;
+  void set setAssignmentId(String id) {
+    this._assignmentId = id;
+  }
 
   updateData(
       {required String pageId,

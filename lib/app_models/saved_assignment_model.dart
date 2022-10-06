@@ -1,33 +1,37 @@
+import 'package:flutter/cupertino.dart';
+
 class SavedAssignment {
   final String caseId;
   final String type;
-  final String address;
+  final String applicant_address;
   String status;
   final String assignedDate;
-  final String phone;
-  final String name;
+  final String applicant_phone;
+  final String applicant_name;
   final Map<String, dynamic>? formData;
 
   Map<String, dynamic> toJson() {
     return {
       'caseId': caseId,
       'document_type': type,
-      'address': address,
+      'applicant_address': applicant_address,
       'status': status,
       'assigned_at': assignedDate,
-      'name': name,
-      'phone': phone,
+      'applicant_name': applicant_name,
+      'applicant_phone': applicant_phone,
       'report_data': formData
     };
   }
 
   factory SavedAssignment.fromJson(Map<String, dynamic> jsonData,
       Map<String, dynamic>? formData, String caseId) {
+    debugPrint('received saved assignment --> ${jsonData}\n\n');
+
     return SavedAssignment(
       caseId: caseId,
-      phone: jsonData['phone'] ?? '',
-      name: jsonData['name'] ?? '',
-      address: jsonData['address'] ?? '',
+      applicant_phone: jsonData['applicant_phone'] ?? '',
+      applicant_name: jsonData['applicant_name'] ?? '',
+      applicant_address: jsonData['applicant_address'] ?? '',
       assignedDate: jsonData['assigned_at'] ?? '',
       type: jsonData['document_type'] ?? '',
       status: jsonData['status'] ?? 'working',
@@ -36,13 +40,13 @@ class SavedAssignment {
   }
 
   SavedAssignment({
-    required this.address,
+    required this.applicant_address,
     required this.caseId,
     required this.type,
     required this.status,
     required this.assignedDate,
-    required this.phone,
-    required this.name,
+    required this.applicant_phone,
+    required this.applicant_name,
     required this.formData,
   });
 }

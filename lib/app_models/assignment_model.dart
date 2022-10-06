@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 
 /// Assignment Model for the basic details of the assignment
 class Assignment {
@@ -21,6 +22,7 @@ class Assignment {
   }
 
   factory Assignment.fromJson(Map<String, dynamic> jsonData, String caseId) {
+    debugPrint('received assignment --> ${jsonData}\n\n');
     return Assignment(
       caseId: caseId,
       phone: jsonData['applicant_phone'],

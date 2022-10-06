@@ -34,11 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
       final user = snap.docs
           .firstWhere((element) => element.id == _auth.currentUser!.uid)
           .data();
-
-      // setState(() {
-      _name = user['email'];
-      // });
-
+      debugPrint('user data--> ${user}');
+      _email = user['email'];
+      debugPrint('email --> ${_email}');
     } catch (e) {
       _email = 'No Registered Email';
     }
@@ -53,10 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
           .firstWhere((element) => element.id == _auth.currentUser!.uid)
           .data();
 
-      // setState(() {
       _name = user['name'];
-      // });/
-
+      debugPrint('name --> ${_name}');
     } catch (e) {
       _name = 'No Registered User';
       return;

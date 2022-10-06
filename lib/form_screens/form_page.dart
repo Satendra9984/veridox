@@ -123,11 +123,17 @@ class _FormPageState extends State<FormPage>
                               field[index]['widget'] == 'file') {
                             return FormFileInput(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'image') {
-                            return ImageInput(
+                            return FormImageInput(
                               widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'table') {

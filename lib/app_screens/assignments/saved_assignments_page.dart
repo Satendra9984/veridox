@@ -59,7 +59,9 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
                             context,
                             MaterialPageRoute(builder: (ctx) {
                               debugPrint('Entering from Home page');
-                              return FormHomePage(formId: '31');
+                              return FormHomePage(
+                                caseId: saveAssignment.caseId,
+                              );
                             }),
                           );
                         },
