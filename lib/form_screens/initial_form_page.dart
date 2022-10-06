@@ -20,10 +20,17 @@ class InitialFormPageView extends StatefulWidget {
 
 class _InitialFormPageViewState extends State<InitialFormPageView> {
   late final PageController _pageController;
-  late final FormProvider _formProvider;
+
+  late FormProvider _formProvider = Provider.of(context);
+
+  void initialize() async {
+    _formProvider.setAssignmentId = widget.caseId;
+    await _formProvider.initializeResponse();
+  }
 
   @override
   void initState() {
+    initialize();
     super.initState();
     _pageController = PageController();
   }
@@ -70,9 +77,6 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   Widget build(BuildContext context) {
-    _formProvider = Provider.of<FormProvider>(context);
-    _formProvider.setAssignmentId = widget.caseId;
-
     return PageView(
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),

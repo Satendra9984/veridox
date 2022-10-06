@@ -62,28 +62,6 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
     super.didChangeDependencies();
   }
 
-  // Future _initLocationService() async {
-  //   var location = Location();
-  //
-  //   if (!await location.serviceEnabled()) {
-  //     if (!await location.requestService()) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   var permission = await location.hasPermission();
-  //
-  //   while (permission == PermissionStatus.denied) {
-  //     permission = await location.requestPermission();
-  //     // if (permission != PermissionStatus.granted) {
-  //     //   return;
-  //     // }
-  //   }
-  //
-  //   var loc = await location.getLocation();
-  //   print("${loc.latitude} ${loc.longitude}");
-  // }
-
   @override
   void dispose() {
     debugPrint('Pagecontroller is disposed\n');

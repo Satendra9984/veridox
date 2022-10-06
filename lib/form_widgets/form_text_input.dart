@@ -28,6 +28,8 @@ class _FormTextInputState extends State<FormTextInput> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
+    _textEditingController.text =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'] ?? '';
     // debugPrint('form text input data --> ${widget.widgetData}');
     super.initState();
   }

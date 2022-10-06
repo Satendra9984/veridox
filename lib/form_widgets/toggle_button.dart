@@ -33,6 +33,7 @@ class _ToggleButtonState extends State<ToggleButton> {
 
   @override
   void initState() {
+    status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     super.initState();
   }
 

@@ -29,16 +29,17 @@ class _FormSignatureState extends State<FormSignature> {
   Uint8List? _signatureImage;
 
   Future<void> _getImageFromGallery(FormFieldState formState) async {
-    var image = await PickFile.pickAndGetFileAsBytes(
-        fileExtensions: ['jpeg', 'jpg', 'pdf', 'png']);
+    var image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     // await ImagePicker.platform.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      _signatureImage = image.bytes;
-      if (image.bytes != null) {
+      debugPrint('image is not null\n\n');
+      _signatureImage = await image.readAsBytes();
+      formState.didChange(_signatureImage);
+      if (_signatureImage != null) {
         debugPrint('image.bytes is not null\n\n');
         await _addImage(_signatureImage!);
-        formState.didChange(_signatureImage);
       }
     }
   }

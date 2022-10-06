@@ -24,10 +24,10 @@ class _DropdownMenuState extends State<DropdownMenu> {
   late final List<dynamic> items;
   dynamic currentValue;
 
-  final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
     _initializeOptionList();
+    currentValue = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     super.initState();
   }
 
