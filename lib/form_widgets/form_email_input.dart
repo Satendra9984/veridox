@@ -27,7 +27,13 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    // debugPrint('form text input data --> ${widget.widgetData}');
+
+    String? data =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+
+    if (data != null) {
+      _textEditingController.text = data;
+    }
     super.initState();
   }
 
@@ -68,14 +74,13 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
         validator: (val) {
           String? value = _textEditingController.text;
           if (widget.widgetJson.containsKey('required') &&
-              widget.widgetJson['required'] == true
-              ) {
-            if(value.isEmpty)
-            return 'Please write some text';
+              widget.widgetJson['required'] == true) {
+            if (value.isEmpty) return 'Please write some text';
 
-            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-            if(!emailValid)
-              return 'Please enter a valid email';
+            bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(value);
+            if (!emailValid) return 'Please enter a valid email';
           }
           return null;
         },
@@ -102,9 +107,13 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
-                  widget.provider.updateData(pageId: widget.pageId,
-                      fieldId: widget.fieldId, value: _textEditingController.text);
-                  formState.didChange(_textEditingController);
+                  widget.provider.updateData(
+                      pageId: widget.pageId,
+                      fieldId: widget.fieldId,
+                      value: _textEditingController.text);
+                  formState.didChange(
+                    _textEditingController,
+                  );
                 },
                 minLines: 1,
                 maxLines: 1,
@@ -125,7 +134,7 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
               if (formState.hasError)
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     children: [
                       const Icon(

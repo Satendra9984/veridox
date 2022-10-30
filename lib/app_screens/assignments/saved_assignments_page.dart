@@ -33,7 +33,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: const Text(
-          'Saved Assignment',
+          'InProgress Assignments',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -49,27 +49,31 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
               ],
             );
           } else {
-            return Column(
-              children: [
-                ...data.savedAssignments
-                    .map(
-                      (saveAssignment) => SavedAssignmentCard(
-                        navigate: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (ctx) {
-                              debugPrint('Entering from Home page');
-                              return FormHomePage(
-                                caseId: saveAssignment.caseId,
-                              );
-                            }),
-                          );
-                        },
-                        assignment: saveAssignment,
-                      ),
-                    )
-                    .toList()
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...data.savedAssignments
+                      .map(
+                        (saveAssignment) => SavedAssignmentCard(
+                          navigate: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) {
+                                  // debugPrint('Entering from Home page');
+                                  return FormHomePage(
+                                    caseId: saveAssignment.caseId,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          assignment: saveAssignment,
+                        ),
+                      )
+                      .toList()
+                ],
+              ),
             );
           }
         },

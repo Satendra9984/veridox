@@ -38,7 +38,7 @@ class FormProvider extends ChangeNotifier {
 
   Future<void> initializeResponse() async {
     final snap = await FirebaseFirestore.instance
-        .collection('assignment')
+        .collection('assignments')
         .doc(_assignmentId)
         .collection('form_data')
         .doc('response')
@@ -48,16 +48,27 @@ class FormProvider extends ChangeNotifier {
       Map<String, dynamic>? data = snap.data();
       if (data != null && data.isNotEmpty) {
         _result = data;
+        // debugPrint
       }
     }
   }
 
+  void deleteData(String keyG) {
+    _result.removeWhere((key, value) => key == keyG);
+    notifyListeners();
+  }
+
   Future<void> saveDraftData() async {
-    await FirebaseFirestore.instance
-        .collection('assignment')
-        .doc(assignmentId)
-        .collection('form_data')
-        .doc('response')
-        .set(_result);
+    try {
+      debugPrint('saving draft data: assignment id --> ${assignmentId}, \n\n');
+      await FirebaseFirestore.instance
+          .collection('assignments')
+          .doc(assignmentId)
+          .collection('form_data')
+          .doc('response')
+          .set(_result);
+    } catch (e) {
+      return;
+    }
   }
 }

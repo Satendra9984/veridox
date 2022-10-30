@@ -27,7 +27,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   @override
   void initState() {
     _initializeOptionList();
-    currentValue = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    // currentValue = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     super.initState();
   }
 

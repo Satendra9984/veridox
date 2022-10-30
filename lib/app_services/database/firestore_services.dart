@@ -9,10 +9,7 @@ class FirestoreServices {
   static Stream<List<Assignment>> getAssignments() {
     final _auth = FirebaseAuth.instance;
     final uid = _auth.currentUser!.uid;
-
-    debugPrint('uid --> ${uid}');
-    debugPrint('getAssignments called again\n');
-
+    // debugPrint('uid --> $uid\n\n');
     return _firestore
         .collection('field_verifier')
         .doc(uid)
@@ -21,7 +18,6 @@ class FirestoreServices {
         .map(
           (snapshot) => snapshot.docs.map(
             (doc) {
-              debugPrint('ass id --> ${doc.id}');
               return Assignment.fromJson(doc.data(), doc.id);
             },
           ).toList(),
@@ -31,8 +27,8 @@ class FirestoreServices {
   /// Below two functions are used for getting complete assignment from firebase
   static Future<Map<String, dynamic>?> getAssignmentById(String id) async {
     final snapshot = await _firestore.collection('assignments').doc(id).get();
-    debugPrint(
-        'Assignment got from assignmen collection -- > $id: \n${snapshot.data()}\n\n');
+    // debugPrint(
+    //     'Assignment got from assignmen collection -- > $id: \n${snapshot.data()}\n\n');
     return snapshot.data();
   }
 
@@ -60,7 +56,7 @@ class FirestoreServices {
     return snapshot.data();
   }
 
-  static Future<void> updateStatus(
+  static Future<void> updateAssignmentStatus(
       {required String caseId, required String status}) async {
     try {
       final _auth = FirebaseAuth.instance;
@@ -94,22 +90,11 @@ class FirestoreServices {
     }).toList();
   }
 
-  static Future<List<Map<String, dynamic>>> getAgencyDemo() async {
+  static Future<Map<String, dynamic>> getAgency(String agencyId) async {
     final DocumentSnapshot<Map<String, dynamic>> fList =
-        await _firestore.collection('agency').doc('sBPZoR1xfEQtYlHk2riF').get();
+        await _firestore.collection('agency').doc(agencyId).get();
 
-    List<Map<String, dynamic>> agencyList = [];
-    debugPrint(fList.data()!.toString());
-
-    agencyList.add(
-      fList.data() ??
-          {
-            "address": " Tollygunge, Kolkata",
-            "agency_name": "XPert Investigation",
-          },
-    );
-    agencyList[0]['id'] = fList.id;
-    return agencyList;
+    return fList.data()!;
   }
 
   static Future<void> sendJoinRequest(
@@ -126,6 +111,28 @@ class FirestoreServices {
         'status': 'requested',
       });
     });
+  }
+
+  static Future<void> updateDatabase(
+      {required Map<String, dynamic> data,
+      required String collection,
+      required String docId}) async {
+    try {
+      await _firestore.collection(collection).doc(docId).update(data);
+    } catch (e) {
+      return;
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getFieldVerifierData(
+      {required String userId}) async {
+    try {
+      DocumentSnapshot user =
+          await _firestore.collection('field_verifier').doc(userId).get();
+      return user.data() as Map<String, dynamic>;
+    } catch (e) {
+      return null;
+    }
   }
 }
 

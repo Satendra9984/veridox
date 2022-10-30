@@ -92,7 +92,9 @@ class _FormSubmitPageState extends State<FormSubmitPage>
                     ),
                     const SizedBox(width: 15),
                     ElevatedButton(
-                      onPressed: () => _validateSubmitPage(),
+                      onPressed: () async {
+                        await _validateSubmitPage();
+                      },
                       child: const Center(
                         child: Text('Submit'),
                       ),
@@ -107,13 +109,14 @@ class _FormSubmitPageState extends State<FormSubmitPage>
     );
   }
 
-  void _validateSubmitPage() {
+  Future<void> _validateSubmitPage() async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Submitting form'),
         ),
       );
+      await widget.provider.saveDraftData();
       Navigator.pop(context);
     }
   }

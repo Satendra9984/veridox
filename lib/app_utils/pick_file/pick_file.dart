@@ -22,7 +22,7 @@ class PickFile {
       {List<String>? fileExtensions}) async {
     FilePickerResult? file = await FilePicker.platform.pickFiles(
       allowedExtensions: fileExtensions,
-      type: FileType.custom,
+      type: FileType.any,
     );
 
     if (file != null) {

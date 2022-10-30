@@ -20,16 +20,13 @@ class _GetSignatureState extends State<GetSignature> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    _signatureController = SignatureController(
-      penStrokeWidth: 4.0,
-    );
+    _signatureController = SignatureController(penStrokeWidth: 4.0);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _signatureController.dispose();
     super.dispose();
   }
@@ -39,7 +36,6 @@ class _GetSignatureState extends State<GetSignature> {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
-        // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(

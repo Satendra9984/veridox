@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:veridox/app_providers/form_provider.dart';
+import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
 import 'package:veridox/form_widgets/toggle_button.dart';
@@ -88,13 +89,21 @@ class _FormPageState extends State<FormPage>
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'text-input') {
                             return FormTextInput(
-                              pageId: current.toString(),
+                              pageId: widget.currentPage.toString(),
                               fieldId: index.toString(),
                               widgetJson: field[index],
                               provider: provider,
                             );
                           } else if (field[index] != null &&
-                              field[index]['widget'] == 'toggle-button') {
+                              field[index]['widget'] == 'address') {
+                            return GetUserLocation(
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              widgetJson: field[index],
+                              provider: provider,
+                            );
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'toggle-input') {
                             return ToggleButton(
                               widgetJson: field[index],
                               pageId: widget.currentPage.toString(),
@@ -111,8 +120,6 @@ class _FormPageState extends State<FormPage>
                             );
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'date-time') {
-                            // print('date time');
-
                             return DateTimePicker(
                               widgetJson: field[index],
                               pageId: widget.currentPage.toString(),
@@ -197,8 +204,8 @@ class _FormPageState extends State<FormPage>
                           const SizedBox(width: 15),
                           widget.currentPage < widget.totalPages - 1
                               ? ElevatedButton(
-                                  onPressed: () {
-                                    _validateForm(context);
+                                  onPressed: () async {
+                                    await _validateForm(context);
                                   },
                                   child: const Center(
                                     child: Text('Next'),
@@ -219,7 +226,7 @@ class _FormPageState extends State<FormPage>
     );
   }
 
-  void _validateForm(BuildContext cont) {
+  Future<void> _validateForm(BuildContext cont) async {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(cont).showSnackBar(
         const SnackBar(
@@ -228,6 +235,7 @@ class _FormPageState extends State<FormPage>
       );
       widget.pageController.jumpToPage(widget.currentPage + 1);
     }
+    await widget.provider.saveDraftData();
   }
 
   @override

@@ -1,32 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/profile/profile_page.dart';
-import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
-import 'package:veridox/app_providers/assignment_provider.dart';
 import '../app_models/assignment_model.dart';
-import 'package:location/location.dart';
 import '../app_services/database/firestore_services.dart';
 import 'assignments/assignment_list.dart';
-import 'assignments/completed_assignments_page.dart';
+import 'assignments/field_verifier_dashboard.dart';
 
-enum FilterOptions {
-  oldest,
-  all,
-}
-
-class AssignmentsHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static String assignmentsHomePage = 'assignmentHomePage';
   final int? pageIndex;
-  const AssignmentsHomePage({
+  const HomePage({
     Key? key,
     this.pageIndex,
   }) : super(key: key);
 
   @override
-  State<AssignmentsHomePage> createState() => _AssignmentsHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
+class _HomePageState extends State<HomePage> {
   bool oldestFilter = false;
 
   // this variable will be used to control the hiding of the bottomNavigationBar
@@ -48,9 +40,10 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
     debugPrint('mew home page has made');
     screens = [
-      AssignmentList(),
-      SavedAssignmentsPage(),
-      CompletedAssignmentsPage(),
+      FieldVerifierDashboard(),
+      // AssignmentList(),
+      // SavedAssignmentsPage(),
+      // CompletedAssignmentsPage(),
       ProfilePage(),
     ];
     super.initState();
@@ -64,7 +57,7 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
 
   @override
   void dispose() {
-    debugPrint('Pagecontroller is disposed\n');
+    // debugPrint('Pagecontroller is disposed\n');
     _pageController.dispose();
     super.dispose();
   }
@@ -115,20 +108,20 @@ class _AssignmentsHomePageState extends State<AssignmentsHomePage> {
                     icon: Icon(
                       Icons.home,
                     ),
-                    label: 'Home',
+                    label: 'Dashboard',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.save_alt,
-                    ),
-                    label: 'Saved',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.send,
-                    ),
-                    label: 'Completed',
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(
+                  //     Icons.save_alt,
+                  //   ),
+                  //   label: 'Saved',
+                  // ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(
+                  //     Icons.send,
+                  //   ),
+                  //   label: 'Completed',
+                  // ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.person,

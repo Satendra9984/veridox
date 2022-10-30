@@ -9,7 +9,7 @@ import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
-import '../assignments_home_page.dart';
+import '../home_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -92,7 +92,7 @@ class _OTPPageState extends State<OTPPage> {
                   ),
                 )
               : SubmitButton(
-                  text: "Enter OTP",
+                  text: "Verify OTP",
                   onPress: () async {
                     _provider.setOTP(_pinputController.text);
                     await _provider
@@ -106,8 +106,7 @@ class _OTPPageState extends State<OTPPage> {
                         await FirestoreServices.checkIfFvExists(uid)
                             .then((value) async {
                           if (value) {
-                            navigatePushRemoveUntil(
-                                context, AssignmentsHomePage());
+                            navigatePushRemoveUntil(context, HomePage());
                           } else {
                             // check if requested
                             bool reqStatus =
@@ -115,7 +114,7 @@ class _OTPPageState extends State<OTPPage> {
 
                             if (reqStatus) {
                               navigatePushRemoveUntil(
-                                  context, const AssignmentsHomePage());
+                                  context, const HomePage());
                             } else {
                               navigatePushRemoveUntil(
                                 context,
@@ -200,6 +199,7 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 30, width: 742),
                   TextButton(

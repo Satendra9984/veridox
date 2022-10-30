@@ -46,7 +46,7 @@ class SavedAssignmentProvider with ChangeNotifier {
   }
 
   Future<void> updateStatus(SavedAssignment savedAssignment) async {
-    await FirestoreServices.updateStatus(
+    await FirestoreServices.updateAssignmentStatus(
         status: 'working', caseId: savedAssignment.caseId);
   }
 
@@ -97,7 +97,7 @@ class SavedAssignmentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeFromSaveAssignments(String caseId) async {
+  Future<void> removeFromSaveAssignments(String caseId) async {
     isLoading = true;
     String userId = FirebaseAuth.instance.currentUser!.uid;
     // remove object from savedAssignments list
@@ -110,6 +110,8 @@ class SavedAssignmentProvider with ChangeNotifier {
 
     try {
       await _spServices.removeSavedAssignment('$userId$caseId');
+      await FirestoreServices.updateAssignmentStatus(
+          status: 'assigned', caseId: caseId);
     } catch (error) {
       debugPrint(error.toString());
     }

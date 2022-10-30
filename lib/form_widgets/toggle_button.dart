@@ -33,8 +33,31 @@ class _ToggleButtonState extends State<ToggleButton> {
 
   @override
   void initState() {
-    status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    _setInitialData();
     super.initState();
+  }
+
+  void _setInitialData() {
+    status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+
+    if (status == null) {
+      _currentIcon = const Icon(
+        Icons.check_box_outline_blank,
+        size: 28,
+      );
+    } else if (status == true) {
+      _currentIcon = const Icon(
+        FontAwesomeIcons.check,
+        color: CupertinoColors.systemGreen,
+        size: 28,
+      );
+    } else {
+      _currentIcon = const Icon(
+        FontAwesomeIcons.xmark,
+        color: CupertinoColors.destructiveRed,
+        size: 28,
+      );
+    }
   }
 
   String _getLabel() {

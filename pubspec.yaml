@@ -64,6 +64,8 @@ dependencies:
   geocode: 1.0.1
   geolocator: ^9.0.1
   google_maps_flutter: ^2.2.0
+#  flutter_filereader: ^3.0.0
+  syncfusion_flutter_pdfviewer: ^20.3.50
 
 
 dev_dependencies:

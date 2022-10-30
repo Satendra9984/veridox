@@ -31,7 +31,6 @@ class _FormSignatureState extends State<FormSignature> {
   Future<void> _getImageFromGallery(FormFieldState formState) async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    // await ImagePicker.platform.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       debugPrint('image is not null\n\n');
@@ -45,7 +44,6 @@ class _FormSignatureState extends State<FormSignature> {
   }
 
   Future<void> _addImage(var image) async {
-    // _signatureImage = await image.readAsBytes();
     String _dbPath =
         '${widget.provider.assignmentId}/${widget.pageId}/${widget.fieldId}';
     UploadTask? task = await FileUploader.uploadFile(
@@ -61,8 +59,19 @@ class _FormSignatureState extends State<FormSignature> {
     String _dbPath =
         '${widget.provider.assignmentId}/${widget.pageId}/${widget.fieldId}';
     if (_signatureImage != null) {
-      // todo: delete from database
       await FileUploader.deleteFile(dbPath: _dbPath);
+      widget.provider.deleteData(_dbPath);
+    }
+  }
+
+  Future<void> _initializeSignatureFromDatabase() async {
+    String? path =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    if (path != null) {
+      Uint8List? image = await FirebaseStorage.instance.ref(path).getData();
+      if (image != null) {
+        _signatureImage = image;
+      }
     }
   }
 
@@ -70,119 +79,133 @@ class _FormSignatureState extends State<FormSignature> {
   Widget build(BuildContext context) {
     return Container(
       decoration: containerElevationDecoration,
-      child: FormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          initialValue: _signatureImage,
-          validator: (signature) {
-            if (_signatureImage == null) {
-              return 'Please add your signature';
-            }
-            return null;
-          },
-          builder: (formState) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width - 30,
-                  child: _signatureImage != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.memory(
-                            _signatureImage!,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : const Text(''),
-                ),
-                const Divider(thickness: 1.5),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          // setState(() {
-                          _signatureImage = null;
-                          // });
-                          await _deleteFromDatabase();
-                          formState.didChange(_signatureImage);
-                        },
-                        tooltip: 'Clear',
-                        icon: const Icon(
-                          Icons.close,
-                          size: 30,
-                          color: CupertinoColors.destructiveRed,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              await Navigator.of(context)
-                                  .push(
-                                MaterialPageRoute(
-                                  builder: (context) => const GetSignature(),
-                                ),
-                              )
-                                  .then((image) async {
-                                if (image != null) {
-                                  debugPrint(
-                                      'signature runtimetype --> ${image.runtimeType}\n\n');
-                                  _signatureImage = image;
-                                  await _addImage(image);
-                                }
-                                formState.didChange(_signatureImage);
-                              });
-                            },
-                            icon: const FaIcon(
-                              FontAwesomeIcons.pencil,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await _getImageFromGallery(formState);
-                            },
-                            icon: const FaIcon(
-                              FontAwesomeIcons.image,
-                              size: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                if (formState.hasError)
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Row(
+      child: FutureBuilder(
+          future: _initializeSignatureFromDatabase(),
+          builder: (context, AsyncSnapshot<void> form) {
+            if (form.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return FormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: _signatureImage,
+                  validator: (signature) {
+                    if (_signatureImage == null) {
+                      return 'Please add your signature';
+                    }
+                    return null;
+                  },
+                  builder: (formState) {
+                    return Column(
                       children: [
-                        const Icon(
-                          Icons.error_outline,
-                          color: CupertinoColors.systemRed,
+                        SizedBox(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width - 30,
+                          child: _signatureImage != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.memory(
+                                    _signatureImage!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : const Text(''),
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          formState.errorText!,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: CupertinoColors.systemRed,
+                        const Divider(thickness: 1.5),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  /// first delete from database
+                                  await _deleteFromDatabase();
+
+                                  /// then delete from local ram
+                                  _signatureImage = null;
+
+                                  /// update formstate
+                                  formState.didChange(_signatureImage);
+                                },
+                                tooltip: 'Clear',
+                                icon: const Icon(
+                                  Icons.close,
+                                  size: 30,
+                                  color: CupertinoColors.destructiveRed,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      await Navigator.of(context)
+                                          .push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const GetSignature(),
+                                        ),
+                                      )
+                                          .then((image) async {
+                                        if (image != null) {
+                                          debugPrint(
+                                              'signature runtimetype --> ${image.runtimeType}\n\n');
+                                          _signatureImage = image;
+                                          await _addImage(image);
+                                        }
+                                        formState.didChange(_signatureImage);
+                                      });
+                                    },
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.pencil,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      await _getImageFromGallery(formState);
+                                    },
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.image,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.start,
                         ),
+                        if (formState.hasError)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  color: CupertinoColors.systemRed,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  formState.errorText!,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: CupertinoColors.systemRed,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
-                    ),
-                  ),
-              ],
-            );
+                    );
+                  });
+            }
           }),
     );
   }

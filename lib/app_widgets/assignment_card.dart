@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:veridox/app_models/assignment_model.dart';
 import 'package:veridox/app_utils/app_constants.dart';
+import 'package:veridox/app_utils/app_functions.dart';
 import 'package:veridox/app_widgets/modal_bottom_sheet.dart';
 import 'detail_text.dart';
 
@@ -9,35 +10,42 @@ class AssignmentCard extends StatelessWidget {
   final Offset distance = const Offset(5.5, 6.5);
   final double blur = 8.0;
 
-  final Widget popUpMenu;
+  // final Widget popUpMenu;
   final Assignment assignment;
   final Function() navigate;
+
   const AssignmentCard(
       {Key? key,
       required this.navigate,
-      required this.popUpMenu,
+      // required this.popUpMenu,
       required this.assignment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint('card assignment --> ${assignment.caseId}\n');
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+      margin: const EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(kBRad + 5)),
+        border: Border.all(
+          color: Colors.grey.shade200,
+          width: 1.8,
+        ),
+      ),
       child: GestureDetector(
         onTap: navigate,
         child: Card(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(kBRad)),
-          elevation: 4,
+            borderRadius: BorderRadius.circular(kBRad),
+          ),
+          elevation: 8,
           child: Padding(
             padding: const EdgeInsets.all(17.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  width: 10,
-                ),
                 Expanded(
                   flex: 5,
                   child: Column(
@@ -46,15 +54,30 @@ class AssignmentCard extends StatelessWidget {
                     children: [
                       DetailTextStylesWidget(
                         icon: const Icon(
-                          FontAwesomeIcons.userTie,
-                          color: Colors.black,
-                          size: 16,
+                          Icons.numbers,
+                          color: Colors.orangeAccent,
+                          size: 18,
+                        ),
+                        heading: 'Id',
+                        value: Text(
+                          assignment.caseId,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                      DetailTextStylesWidget(
+                        icon: const Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                          // size: 16,
                         ),
                         heading: 'Name',
                         value: Text(
                           assignment.name,
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             // color: Colors.
                           ),
                         ),
@@ -68,21 +91,8 @@ class AssignmentCard extends StatelessWidget {
                         value: Text(
                           assignment.phone,
                           style: TextStyle(
-                              fontSize: 13, color: Colors.grey.shade600),
-                        ),
-                      ),
-                      DetailTextStylesWidget(
-                        icon: const Icon(
-                          Icons.info_outline,
-                          color: Colors.orangeAccent,
-                          size: 18,
-                        ),
-                        heading: 'Id',
-                        value: Text(
-                          assignment.caseId,
-                          style: const TextStyle(
                             fontSize: 13,
-                            fontStyle: FontStyle.italic,
+                            color: Colors.grey.shade600,
                           ),
                         ),
                       ),
@@ -101,11 +111,6 @@ class AssignmentCard extends StatelessWidget {
                               flex: 1,
                               child: Row(
                                 children: [
-                                  // Icon(
-                                  //   FontAwesomeIcons.fileLines,
-                                  //   color: Colors.grey.shade500,
-                                  //   size: 18,
-                                  // ),
                                   const SizedBox(width: 3),
                                   Text(
                                     assignment.type,
@@ -117,7 +122,6 @@ class AssignmentCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // const SizedBox(width: 8),
                             Expanded(
                               flex: 1,
                               child: Row(
@@ -141,48 +145,31 @@ class AssignmentCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      // DetailTextStylesWidget(
-                      //   heading: 'Address',
-                      //   value: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       const Icon(
-                      //         Icons.location_on,
-                      //         color: Colors.lightBlue,
-                      //         size: 18,
-                      //       ),
-                      //       const SizedBox(width: 3),
-                      //       Text(
-                      //         assignment.address,
-                      //         style: const TextStyle(
-                      //           fontSize: 13,
-                      //           color: Colors.lightBlue,
-                      //         ),
-                      //         softWrap: true,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (ctx) => const CustomBottomSheet(),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
-                      );
-                    },
-                    icon: const Icon(Icons.more_vert),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: getStatusColour(assignment.status),
+                        radius: 9.0,
+                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     showModalBottomSheet(
+                      //       context: context,
+                      //       builder: (ctx) => const CustomBottomSheet(),
+                      //       shape: const RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.only(
+                      //               topLeft: Radius.circular(20),
+                      //               topRight: Radius.circular(20))),
+                      //     );
+                      //   },
+                      //   icon: const Icon(Icons.more_vert),
+                      // ),
+                    ],
                   ),
                 ),
               ],

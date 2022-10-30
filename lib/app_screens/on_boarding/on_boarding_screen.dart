@@ -6,7 +6,7 @@ import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../form_screens/home_page.dart';
-import '../assignments_home_page.dart';
+import '../home_page.dart';
 import '../login/login_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -29,12 +29,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await FirestoreServices.checkIfFvExists(uid).then((value) async {
         if (value) {
           debugPrint('checking values in checkIffvexists');
-          navigatePushReplacement(context, const AssignmentsHomePage());
+          navigatePushReplacement(context, const HomePage());
         } else {
           bool reqStatus = await FirestoreServices.checkIfRequested(uid);
           debugPrint('checking values in checkIfrequestedexists');
           if (reqStatus) {
-            navigatePushReplacement(context, const AssignmentsHomePage());
+            navigatePushReplacement(context, const HomePage());
           } else {
             navigatePushReplacement(
               context,
@@ -62,7 +62,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         children: const [
           Center(
             child: Text(
-              'Veridox',
+              'Veridocs',
               style: TextStyle(fontSize: 60.0),
             ),
           ),

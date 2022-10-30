@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/form_screens/home_page.dart';
 import '../../app_services/database/shared_pref_services.dart';
 import '../../app_utils/app_functions.dart';
 
@@ -24,15 +25,42 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   /// already exist in the local_database
   Future<bool> checkSaved() async {
     String _userId = FirebaseAuth.instance.currentUser!.uid;
-    debugPrint('Checking for ${_userId}${widget.caseId}\n');
+    // debugPrint('Checking for ${_userId}${widget.caseId}\n');
     return await SPServices().checkIfExists('${_userId}${widget.caseId}');
   }
 
   /// getting data to display in detailsPage
   Future<Map<String, dynamic>> _getAssignment() async {
     final res = await FirestoreServices.getAssignmentById(widget.caseId);
-    debugPrint('res type in ass details page --> ${res.runtimeType}\n\n');
-    return Map<String, dynamic>.from(res!);
+
+    Map<String, dynamic> data = Map<String, dynamic>.from(res!);
+    Map<String, dynamic> modifiedData = _getModifiedData(data);
+
+    // set agency name
+    final agency = await FirestoreServices.getAgency(modifiedData['Agency']);
+    modifiedData['Agency'] = agency['agency_name'];
+
+    return modifiedData;
+  }
+
+  /// modifying keys of assignment in Proper Notation for display purpose
+  Map<String, dynamic> _getModifiedData(Map<String, dynamic> data) {
+    Map<String, dynamic> modifiedData = {
+      'Case Number': widget.caseId,
+      'Applicant Name': data['applicant_name'],
+      'Applicant Phone': data['applicant_phone'],
+      'Applicant Address': data['applicant_address'],
+      'CoApplicant Name': data['coapplicant_name'],
+      'CoApplicant Phone': data['coapplicant_phone'],
+      'CoApplicant Address': data['coapplicant_address'],
+      'Agency': data['agency'],
+      'Assigned Date': data['assigned_at'],
+      'Status': data['status'],
+      'Verification Type': data['document_type'],
+    };
+    // debugPrint('modified data --> $modifiedData\n\n');
+
+    return modifiedData;
   }
 
   @override
@@ -46,7 +74,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Assignment details page'),
+        title: const Text('Assignment Details'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -71,25 +99,27 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                         .map(
                           (value) => Container(
                             margin: const EdgeInsets.all(2),
+                            padding: const EdgeInsets.symmetric(vertical: 2),
                             child: Row(
                               children: [
                                 Expanded(
                                   flex: 3,
                                   child: Text(
-                                    value.toString(),
+                                    value,
                                     style: const TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   flex: 4,
                                   child: Text(
                                     snapshot.data![value].toString(),
                                     style: const TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -124,20 +154,20 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       onPressed: () async {
                         /// adding assignment in savedAssignmentList/local database
 
+                        await FirestoreServices.updateAssignmentStatus(
+                            status: 'working', caseId: widget.caseId);
                         await _savedAssignmentProvider
                             .addSavedAssignment(widget.caseId)
                             .then((value) {
-                          debugPrint('Now navigating to Saved Assignment Page');
+                          // debugPrint('Now navigating to Saved Assignment Page');
                           navigatePushReplacement(
                             context,
-                            const SavedAssignmentsPage(),
+                            FormHomePage(caseId: widget.caseId),
                           );
                         });
-                        // navigatePushReplacement(
-                        //     context, const SavedAssignmentsPage());
                       },
                       child: const Text(
-                        'Verify',
+                        'Proceed for Verification',
                         style: TextStyle(
                           fontSize: 18,
                         ),
@@ -151,7 +181,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       ),
                       onPressed: () {
                         navigatePushReplacement(
-                            context, const SavedAssignmentsPage());
+                          context,
+                          const SavedAssignmentsPage(),
+                        );
                       },
                       child: const Text(
                         'Already added',

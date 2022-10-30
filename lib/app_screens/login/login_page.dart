@@ -128,7 +128,14 @@ class _LogInPageState extends State<LogInPage> {
                         text: "Phone Number",
                         keyboardType: TextInputType.number,
                         password: false,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter mobile number';
+                          } else if (value.length < 10 || value.length > 10) {
+                            return 'Number should be of 10 digits';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),

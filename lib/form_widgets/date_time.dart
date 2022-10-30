@@ -22,15 +22,23 @@ class DateTimePicker extends StatefulWidget {
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
-  // Text
   DateTime? _date;
   DateTime _firstDate = DateTime.now();
   DateTime _lastDate = DateTime(2100);
 
   @override
   void initState() {
-    _date = widget.provider.getResult['${widget.fieldId},${widget.pageId}'];
+    _initializeValueFromData();
     super.initState();
+  }
+
+  void _initializeValueFromData() {
+    String? date =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    if (date != null) {
+      DateTime initialDateFromDatabase = DateFormat("dd/mm/yyyy").parse(date);
+      _date = initialDateFromDatabase;
+    }
   }
 
   @override
@@ -38,7 +46,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.didChangeDependencies();
     try {
       setState(() {
-        _date = DateFormat('dd/mm/yyyy').parse(widget.widgetJson['value']);
         _firstDate =
             DateFormat('dd/mm/yyyy').parse(widget.widgetJson['first-date']);
         _lastDate =
@@ -142,6 +149,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                             _date = null;
                           });
 
+                          /// deleting date from _result
+                          widget.provider
+                              .deleteData('${widget.pageId},${widget.fieldId}');
                           formState.didChange(_date);
                         },
                         icon: const Icon(

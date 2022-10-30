@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/uploader.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 
+import '../app_screens/pdfviewer.dart';
+import '../app_utils/app_functions.dart';
+
 class FileUploadButton extends StatefulWidget {
   final TextEditingController cntrl;
   const FileUploadButton({
@@ -23,20 +26,23 @@ class FileUploadButton extends StatefulWidget {
 class _FileUploadButtonState extends State<FileUploadButton> {
   int progress = 0;
   bool isLoading = false;
-  bool isDone = false;
+  bool isDone = false, showPdfViewer = false;
   String storageRef = '';
+  // String fileName = '';
 
   chooseAndUploadFile() async {
     try {
-      final UploadTask? task =
-          await FileUploader.uploadSingleFileToFirebase(widget.location);
+      final UploadTask? task = await FileUploader.uploadSingleFileToFirebase(
+        widget.location,
+        fileExtensions: ['pdf'],
+      );
       if (task != null) {
         setState(() {
           isDone = false;
           isLoading = true;
         });
 
-        task.snapshotEvents.listen((event) {
+        task.snapshotEvents.listen((event) async {
           setState(() {
             progress =
                 (event.bytesTransferred / event.totalBytes * 100).floor();
@@ -44,13 +50,14 @@ class _FileUploadButtonState extends State<FileUploadButton> {
             if (event.state == TaskState.success) {
               setState(() {
                 widget.cntrl.text = widget.location;
-                storageRef = widget.location;
                 isLoading = false;
+                debugPrint('file full path --> $storageRef\n\n');
                 isDone = true;
               });
             }
             debugPrint(progress.toString());
           });
+          storageRef = await task.snapshot.ref.getDownloadURL();
         });
       } else {
         setState(() {
@@ -78,42 +85,76 @@ class _FileUploadButtonState extends State<FileUploadButton> {
           ),
         ),
         onPressed: () {
+          /// choosing and uploading file
           chooseAndUploadFile();
         },
         child: Builder(
           builder: (context) {
-            return isDone
-                ? Text(
-                    '${widget.text} Uploaded',
-                    style: const TextStyle(color: CupertinoColors.activeGreen),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      !isLoading
-                          ? Text(
-                              'Upload ${widget.text}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
-                            )
-                          : Text('Uploading $progress%'),
-                      const SizedBox(
-                        width: 17,
-                      ),
-                      !isLoading
-                          ? const Icon(
-                              Icons.upload,
-                              size: 20.0,
-                            )
-                          : const SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(
-                                  color: Colors.lightBlue),
-                            )
-                    ],
-                  );
+            if (isDone) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 9,
+                    child: Text(
+                      '${widget.text} Uploaded',
+                      style:
+                          const TextStyle(color: CupertinoColors.activeGreen),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PdfViewerPage(
+                                storageRef: storageRef,
+                                hintText: widget.text,
+                              );
+                            },
+                          ),
+                        ).then((value) {
+                          // debugPrint(
+                          //     'returned to send request screen from pdfviewer page\n\n');
+                        });
+                      },
+                      child: Icon(Icons.visibility),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  !isLoading
+                      ? Text(
+                          'Upload ${widget.text}',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        )
+                      : Text('Uploading $progress%'),
+                  const SizedBox(
+                    width: 17,
+                  ),
+                  !isLoading
+                      ? const Icon(
+                          Icons.upload,
+                          size: 20.0,
+                        )
+                      : const SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                              color: Colors.lightBlue),
+                        ),
+
+                  // SfPdfViewer.network(storageRef),
+                ],
+              );
+            }
           },
         ),
       ),

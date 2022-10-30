@@ -54,5 +54,11 @@
     <string>Used to capture audio for image picker plugin</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app needs to access your location</string>
+    <key>io.flutter.embedded_views_preview</key><true/>
+
+    // internet permission
+    <key>com.apple.security.network.client</key>
+    <true/>
+
 </dict>
 </plist>

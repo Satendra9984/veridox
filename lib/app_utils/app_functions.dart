@@ -11,8 +11,10 @@ navigatePushReplacement(BuildContext context, Widget widget) {
 }
 
 navigatePushRemoveUntil(BuildContext context, Widget widget) {
-  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget),
-          (Route<dynamic> route) => false);
+  Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => widget),
+      (Route<dynamic> route) => false);
 }
 
 navigatePushReplacementNamed(BuildContext context, String routeName) {
@@ -26,14 +28,15 @@ navigatePop(
 }
 
 Color getStatusColour(String status) {
-  if (status == 'pending') {
-    return CupertinoColors.activeBlue;
+  // debugPrint('status --> $status\n\n');
+  if (status == 'pending_verification') {
+    return Colors.brown;
   } else if (status == 'working') {
-    return Colors.orange;
-  } else if (status == 'verified') {
+    return Colors.blue;
+  } else if (status == 'completed') {
     return CupertinoColors.activeGreen;
   } else if (status == 'assigned') {
-    return Colors.red;
+    return Colors.redAccent.shade200;
   }
-  return Colors.red;
+  return Colors.redAccent.shade700;
 }

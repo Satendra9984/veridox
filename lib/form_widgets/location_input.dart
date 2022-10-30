@@ -50,166 +50,197 @@ class _GetUserLocationState extends State<GetUserLocation> {
     }
   }
 
+  Future<void> _initializeSignatureFromDatabase() async {
+    String? coordinates =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+
+    if (coordinates != null) {
+      List<String> loca = coordinates.split(',');
+      _currentLocation = Position(
+        longitude: double.parse(loca[1]),
+        latitude: double.parse(loca[0]),
+        timestamp: null,
+        accuracy: 0.0,
+        altitude: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: containerElevationDecoration,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       margin: const EdgeInsets.only(bottom: 15),
-      child: FormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        initialValue: _currentLocation,
-        validator: (val) {
-          if (widget.widgetJson.containsKey('required') &&
-              widget.widgetJson['required'] &&
-              _currentLocation == null) {
-            return 'Please enter address';
-          }
-          return null;
-        },
-        builder: (formState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                _getLabel(),
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (_gettingLocation)
-                    const Expanded(
-                      flex: 8,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  if (_currentLocation != null && !_gettingLocation)
-                    Expanded(
-                      flex: 8,
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (_currentLocation != null) {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (context) {
-                                  double? lat = _currentLocation!.latitude;
-                                  double? long = _currentLocation!.longitude;
-                                  return ShowMapScreen(
-                                    lat: lat,
-                                    longi: long,
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            Text(
-                              "Location: ${_currentLocation?.latitude}, ${_currentLocation?.longitude}",
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Address: $_address",
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (_currentLocation == null)
-                    Expanded(
-                      flex: 2,
-                      child: Center(
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.location_on,
-                            size: 38,
-                            color: CupertinoColors.systemGreen,
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              _gettingLocation = true;
-                            });
-                            await _getLocation().then((value) async {
-                              Position? location = value;
-                              await _getAddress(
-                                      location?.latitude, location?.longitude)
-                                  .then((value) {
-                                setState(() {
-                                  _currentLocation = location;
-                                  _address = value;
-                                  _gettingLocation = false;
-                                });
-                                _addData();
-                                formState.didChange(_currentLocation);
-                              });
-                            });
-                          },
-                          color: Colors.purple,
-                        ),
-                      ),
-                    ),
-                  if (_currentLocation != null)
-                    Expanded(
-                      flex: 2,
-                      child: Center(
-                        child: IconButton(
-                          icon: const Icon(
-                            FontAwesomeIcons.xmark,
-                            size: 38,
-                            color: CupertinoColors.destructiveRed,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _currentLocation = null;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              if (formState.hasError)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        color: CupertinoColors.systemRed,
-                      ),
-                      const SizedBox(width: 10),
+      child: FutureBuilder(
+          future: _initializeSignatureFromDatabase(),
+          builder: (context, AsyncSnapshot<void> form) {
+            if (form.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return FormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                initialValue: _currentLocation,
+                validator: (val) {
+                  if (widget.widgetJson.containsKey('required') &&
+                      widget.widgetJson['required'] &&
+                      _currentLocation == null) {
+                    return 'Please enter address';
+                  }
+                  return null;
+                },
+                builder: (formState) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Text(
-                        formState.errorText!,
+                        _getLabel(),
                         style: const TextStyle(
-                          fontSize: 16,
-                          color: CupertinoColors.systemRed,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
                         ),
-                        textAlign: TextAlign.start,
                       ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (_gettingLocation)
+                            const Expanded(
+                              flex: 8,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          if (_currentLocation != null && !_gettingLocation)
+                            Expanded(
+                              flex: 8,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (_currentLocation != null) {
+                                    Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                        builder: (context) {
+                                          double? lat =
+                                              _currentLocation!.latitude;
+                                          double? long =
+                                              _currentLocation!.longitude;
+                                          return ShowMapScreen(
+                                            lat: lat,
+                                            longi: long,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Location: ${_currentLocation?.latitude}, ${_currentLocation?.longitude}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "Address: $_address",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (_currentLocation == null)
+                            Expanded(
+                              flex: 2,
+                              child: Center(
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.location_on,
+                                    size: 38,
+                                    color: CupertinoColors.systemGreen,
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      _gettingLocation = true;
+                                    });
+                                    await _getLocation().then((value) async {
+                                      Position? location = value;
+                                      await _getAddress(location?.latitude,
+                                              location?.longitude)
+                                          .then((value) {
+                                        setState(() {
+                                          _currentLocation = location;
+                                          _address = value;
+                                          _gettingLocation = false;
+                                        });
+                                        _addData();
+                                        formState.didChange(_currentLocation);
+                                      });
+                                    });
+                                  },
+                                  color: Colors.purple,
+                                ),
+                              ),
+                            ),
+                          if (_currentLocation != null)
+                            Expanded(
+                              flex: 2,
+                              child: Center(
+                                child: IconButton(
+                                  icon: const Icon(
+                                    FontAwesomeIcons.xmark,
+                                    size: 38,
+                                    color: CupertinoColors.destructiveRed,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _currentLocation = null;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      if (formState.hasError)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                color: CupertinoColors.systemRed,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                formState.errorText!,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: CupertinoColors.systemRed,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
-                  ),
-                ),
-            ],
-          );
-        },
-      ),
+                  );
+                },
+              );
+            }
+          }),
     );
   }
 

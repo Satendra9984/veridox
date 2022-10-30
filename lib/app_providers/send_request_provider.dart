@@ -8,7 +8,7 @@ class SendRequestProvider extends ChangeNotifier {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final String _dropDown = 'Select your agency';
+  String dropDown = 'Select your agency';
   String agencyUid = '';
   final TextEditingController _aadharRef = TextEditingController();
   final TextEditingController _panRef = TextEditingController();
@@ -17,7 +17,7 @@ class SendRequestProvider extends ChangeNotifier {
   get getNameCtrl => _nameController;
   get getPhoneCtrl => _phoneController;
   get getEmailCtrl => _emailController;
-  get getDropDown => _dropDown;
+  get getDropDown => dropDown;
   get getAadharRef => _aadharRef;
   get getPanRef => _panRef;
 
@@ -29,23 +29,21 @@ class SendRequestProvider extends ChangeNotifier {
   get panLinkValidator {}
 
   Future<void> submit(BuildContext context) async {
-    if (_key.currentState != null && _key.currentState!.validate()) {
-      _phoneController.text =
-          FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-      Map<String, dynamic> data = {
-        'name': _nameController.text,
-        'phone': _phoneController.text,
-        'email': _emailController.text,
-        'aadharRef': _aadharRef.text,
-        'panRef': _panRef.text
-      };
+    _phoneController.text =
+        FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    Map<String, dynamic> data = {
+      'name': _nameController.text,
+      'phone': _phoneController.text,
+      'email': _emailController.text,
+      'aadharRef': _aadharRef.text,
+      'panRef': _panRef.text,
+      'agency_name': dropDown,
+    };
 
-      await FirestoreServices.sendJoinRequest(
-        data,
-        FirebaseAuth.instance.currentUser!.uid,
-        // agencyUid,
-        'nZF37kTBVTMbAP452OUQ9ZKxIk32',
-      );
-    }
+    await FirestoreServices.sendJoinRequest(
+      data,
+      FirebaseAuth.instance.currentUser!.uid,
+      agencyUid,
+    );
   }
 }

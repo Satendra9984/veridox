@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/form_provider.dart';
@@ -21,18 +20,25 @@ class InitialFormPageView extends StatefulWidget {
 class _InitialFormPageViewState extends State<InitialFormPageView> {
   late final PageController _pageController;
 
-  late FormProvider _formProvider = Provider.of(context);
+  late FormProvider _formProvider;
 
   void initialize() async {
-    _formProvider.setAssignmentId = widget.caseId;
     await _formProvider.initializeResponse();
   }
 
   @override
   void initState() {
-    initialize();
     super.initState();
     _pageController = PageController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    _formProvider = Provider.of(context);
+    _formProvider.setAssignmentId = widget.caseId;
+    initialize();
+    super.didChangeDependencies();
   }
 
   @override
@@ -54,6 +60,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
       return screen;
     }
     for (int i = 0; i < pageData.length; i++) {
+      debugPrint('pageNumber --> ${i}\n');
       screen.add(
         FormPage(
           provider: _formProvider,
@@ -77,13 +84,26 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      physics: const NeverScrollableScrollPhysics(),
-      controller: _pageController,
-      children: _getFormPages(widget.pagesData),
-      onPageChanged: (currentPage) {
-        debugPrint('page changed --> $currentPage}');
+    // _formProvider.setAssignmentId = widget.caseId;
+
+    return FutureBuilder(
+      future: _formProvider.initializeResponse(),
+      builder: (context, AsyncSnapshot<void> snap) {
+        if (snap.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return PageView(
+            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: _getFormPages(widget.pagesData),
+            onPageChanged: (currentPage) {
+              debugPrint('page changed --> $currentPage}');
+            },
+          );
+        }
       },
     );
   }

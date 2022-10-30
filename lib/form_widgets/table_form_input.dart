@@ -25,12 +25,16 @@ class FormTableTextInput extends StatefulWidget {
 
 class _FormTableTextInputState extends State<FormTableTextInput> {
   late final TextEditingController _textEditingController;
-  bool _isRequired = false;
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    // debugPrint('form text input data --> ${widget.widgetData}');
+    String? data = widget.provider.getResult[
+        '${widget.pageId},${widget.fieldId},${widget.rowId},${widget.colId}'];
+
+    if (data != null) {
+      _textEditingController.text = data;
+    }
     super.initState();
   }
 
@@ -54,7 +58,6 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
     if (widget.widgetJson.containsKey('required') &&
         widget.widgetJson['required'] == true) {
       label += '*';
-      _isRequired = true;
     }
     return label;
   }
@@ -98,8 +101,8 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
                   widget.provider.updateData(
                     pageId: widget.pageId,
                     fieldId: widget.fieldId,
-                    columnId: widget.colId,
                     rowId: widget.rowId,
+                    columnId: widget.colId,
                     value: _textEditingController.text.toString(),
                   );
                   formState.didChange(_textEditingController);

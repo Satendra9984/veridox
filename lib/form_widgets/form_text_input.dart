@@ -23,14 +23,17 @@ class FormTextInput extends StatefulWidget {
 
 class _FormTextInputState extends State<FormTextInput> {
   late TextEditingController _textEditingController;
-  bool _isRequired = false;
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    _textEditingController.text =
-        widget.provider.getResult['${widget.pageId},${widget.fieldId}'] ?? '';
-    // debugPrint('form text input data --> ${widget.widgetData}');
+    String? data =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+
+    if (data != null) {
+      _textEditingController.text = data;
+    }
+
     super.initState();
   }
 
@@ -54,7 +57,6 @@ class _FormTextInputState extends State<FormTextInput> {
     if (widget.widgetJson.containsKey('required') &&
         widget.widgetJson['required'] == true) {
       label += '*';
-      _isRequired = true;
     }
     return label;
   }
@@ -100,6 +102,7 @@ class _FormTextInputState extends State<FormTextInput> {
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
+                  debugPrint('form text input pageId --> ${widget.pageId}\n\n');
                   widget.provider.updateData(
                       pageId: widget.pageId,
                       fieldId: widget.fieldId,

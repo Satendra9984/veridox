@@ -46,14 +46,12 @@ class SavedAssignmentCard extends StatelessWidget {
             ),
           ],
         ),
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 6),
+        padding: const EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              width: 10,
-            ),
             Expanded(
               flex: 5,
               child: Column(
@@ -61,41 +59,46 @@ class SavedAssignmentCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.info,
-                        color: Colors.orange,
-                        size: 18,
+                    icon: const Icon(
+                      Icons.numbers,
+                      color: Colors.orangeAccent,
+                      size: 18,
+                    ),
+                    heading: 'Id',
+                    value: Text(
+                      assignment.caseId,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
                       ),
-                      heading: 'Id',
-                      value: Text(
-                        assignment.caseId,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.person,
-                        color: Colors.black,
+                    icon: const Icon(
+                      Icons.person,
+                      color: Colors.blue,
+                    ),
+                    heading: 'Name',
+                    value: Text(
+                      assignment.applicant_name,
+                      style: const TextStyle(
+                        fontSize: 15,
                       ),
-                      heading: 'Name',
-                      value: Text(
-                        assignment.applicant_name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.phone,
-                        color: Colors.greenAccent,
+                    icon: const Icon(
+                      Icons.phone,
+                      color: Colors.greenAccent,
+                    ),
+                    heading: 'phone',
+                    value: Text(
+                      assignment.applicant_phone,
+                      style: const TextStyle(
+                        fontSize: 14,
                       ),
-                      heading: 'phone',
-                      value: Text(
-                        assignment.applicant_phone,
-                        style: const TextStyle(fontSize: 17),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
                       icon: Icon(
                         Icons.list_alt,
@@ -142,41 +145,23 @@ class SavedAssignmentCard extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  // DetailTextStylesWidget(
-                  //   heading: 'Address',
-                  //   value: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       const Icon(
-                  //         Icons.location_on,
-                  //         color: Colors.lightBlue,
-                  //         size: 18,
-                  //       ),
-                  //       const SizedBox(width: 3),
-                  //       Text(
-                  //         assignment.applicant_address,
-                  //         style: const TextStyle(
-                  //           fontSize: 15,
-                  //           color: Colors.lightBlue,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  CircleAvatar(
+                    radius: 9,
+                    backgroundColor: getStatusColour(assignment.status),
+                  ),
                   PopupMenuButton(
                     itemBuilder: (_) => [
                       PopupMenuItem(
                         value: 0,
-                        onTap: () {
-                          // TODO: DeletingSavedAssignments
+                        onTap: () async {
+                          /// DeletingSavedAssignments
                           debugPrint(
                               'deleting caseId --> ${assignment.caseId}\n\n');
                           Provider.of<SavedAssignmentProvider>(context,
@@ -186,10 +171,6 @@ class SavedAssignmentCard extends StatelessWidget {
                         child: const Text('Delete Task'),
                       ),
                     ],
-                  ),
-                  CircleAvatar(
-                    radius: 8,
-                    backgroundColor: getStatusColour(assignment.status),
                   ),
                 ],
               ),

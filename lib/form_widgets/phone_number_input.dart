@@ -27,7 +27,10 @@ class _FormPhoneNumberInputState extends State<FormPhoneNumberInput> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    // debugPrint('form text input data --> ${widget.widgetData}');
+
+    _textEditingController.text =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'] ?? '';
+
     super.initState();
   }
 
@@ -54,14 +57,12 @@ class _FormPhoneNumberInputState extends State<FormPhoneNumberInput> {
         validator: (val) {
           String? value = _textEditingController.text;
           if (widget.widgetJson.containsKey('required') &&
-              widget.widgetJson['required'] == true
-              ) {
-            if((value.isEmpty))
-            return 'Please enter phone number';
+              widget.widgetJson['required'] == true) {
+            if ((value.isEmpty)) return 'Please enter phone number';
 
-            bool phoneValid = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(value);
-            if(!phoneValid)
-              return 'Please enter a valid phone number';
+            bool phoneValid =
+                RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(value);
+            if (!phoneValid) return 'Please enter a valid phone number';
           }
           return null;
         },
@@ -86,8 +87,10 @@ class _FormPhoneNumberInputState extends State<FormPhoneNumberInput> {
                 controller: _textEditingController,
                 onChanged: (val) {
                   // _textEditingController.text = val;
-                  widget.provider.updateData(pageId: widget.pageId,
-                      fieldId: widget.fieldId, value: _textEditingController.text);
+                  widget.provider.updateData(
+                      pageId: widget.pageId,
+                      fieldId: widget.fieldId,
+                      value: _textEditingController.text);
                   formState.didChange(_textEditingController);
                 },
                 minLines: 1,
@@ -110,7 +113,7 @@ class _FormPhoneNumberInputState extends State<FormPhoneNumberInput> {
               if (formState.hasError)
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     children: [
                       const Icon(
