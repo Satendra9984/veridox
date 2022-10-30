@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -186,17 +187,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         //     ),
                         //   ),
                         // ),
-
                         const SizedBox(height: 10),
                         ProfileOptions(
                           onPress: () async {
+                            String ref = await FirebaseStorage.instance
+                                .ref()
+                                .child(
+                                    'aadhar/${FirebaseAuth.instance.currentUser!.uid}')
+                                .getDownloadURL();
+                            debugPrint('ref full path --> $ref\n');
                             await Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {
                                   return PdfViewerPage(
-                                    storageRef:
-                                        'aadhar/${FirebaseAuth.instance.currentUser!.uid}',
-                                    hintText: 'Pan Card',
+                                    storageRef: ref,
+                                    hintText: 'Aadhar Card',
                                   );
                                 },
                               ),
@@ -210,12 +215,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ),
                         ProfileOptions(
                           onPress: () async {
+                            String ref = await FirebaseStorage.instance
+                                .ref()
+                                .child(
+                                    'pan_card/${FirebaseAuth.instance.currentUser!.uid}')
+                                .getDownloadURL();
+
                             await Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {
                                   return PdfViewerPage(
-                                    storageRef:
-                                        'pan_card/${FirebaseAuth.instance.currentUser!.uid}',
+                                    storageRef: ref,
                                     hintText: 'Pan Card',
                                   );
                                 },
