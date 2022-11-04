@@ -108,7 +108,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                     value,
                                     style: const TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -119,7 +119,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                     snapshot.data![value].toString(),
                                     style: const TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w100,
                                     ),
                                   ),
                                 ),

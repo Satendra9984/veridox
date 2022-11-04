@@ -30,15 +30,15 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: const Text(
-          'InProgress Assignments',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.orange,
+      //   title: const Text(
+      //     'InProgress Assignments',
+      //     style: TextStyle(
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
       body: Consumer<SavedAssignmentProvider>(
         builder: (ctx, data, child) {
           if (data.isLoading) {
@@ -52,6 +52,7 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(height: 15),
                   ...data.savedAssignments
                       .map(
                         (saveAssignment) => SavedAssignmentCard(

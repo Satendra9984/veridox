@@ -27,7 +27,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   @override
   void initState() {
     _initializeOptionList();
-    // currentValue = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    initializeData();
     super.initState();
   }
 
@@ -42,6 +42,21 @@ class _DropdownMenuState extends State<DropdownMenu> {
       items.addAll(widget.widgetJson['options']);
     }
     currentValue = items[0];
+  }
+
+  void initializeData() {
+    dynamic init =
+        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    if (init != null) {
+      for (var item in items) {
+        if (init['value'] == item['value'] && init['id'] == item['id']) {
+          currentValue = item;
+        }
+      }
+
+      debugPrint('initial dropdown value --> $init\n');
+    }
+    debugPrint('optionList --> $items\n');
   }
 
   String _getLabel() {
@@ -118,13 +133,13 @@ class _DropdownMenuState extends State<DropdownMenu> {
                           var optionMap = option;
                           var value = optionMap['value'];
 
-                          debugPrint(
-                              'value data type --> ${value.runtimeType}');
+                          // debugPrint(
+                          //     'value data type --> ${value.runtimeType}');
                           if (value.toString().isEmpty) {
                             value = 'choose';
                           }
 
-                          debugPrint(option.toString());
+                          // debugPrint(option.toString());
                           return DropdownMenuItem(
                             value: option,
                             onTap: () => setState(() {

@@ -30,13 +30,16 @@ navigatePop(
 Color getStatusColour(String status) {
   // debugPrint('status --> $status\n\n');
   if (status == 'pending_verification') {
-    return Colors.brown;
+    return Colors.pinkAccent;
   } else if (status == 'working') {
-    return Colors.blue;
+    return Colors.orange;
   } else if (status == 'completed') {
     return CupertinoColors.activeGreen;
   } else if (status == 'assigned') {
-    return Colors.redAccent.shade200;
+    return Colors.yellow;
+  } else if (status == 'rejected') {
+    // TODO: rejected case
+    return Colors.red;
   }
   return Colors.redAccent.shade700;
 }

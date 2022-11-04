@@ -253,7 +253,7 @@ class _ProfilePageState extends State<ProfilePage>
                           }));
                         },
                         child: const Text(
-                          'Edit',
+                          'Detail',
                           style: TextStyle(
                             color: Colors.blue,
                           ),

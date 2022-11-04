@@ -77,22 +77,22 @@ class _AssignmentListState extends State<AssignmentList> {
         builder: (context, list, widget) {
           // debugPrint('loading for the first time\n');
           _setFilteredList(list);
-          return Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Assignments',
-                    style: TextStyle(
-                      color: Color(0XFF0e4a86),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      Text(
+                        'Assignments',
+                        style: TextStyle(
+                          color: Color(0XFF0e4a86),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                       PopupMenuButton<AssignmentFilters>(
                         initialValue: _currentFilter,
                         onSelected: (filter) {
@@ -124,47 +124,51 @@ class _AssignmentListState extends State<AssignmentList> {
                           ];
                         },
                         icon: Icon(Icons.more_horiz),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 15,
                       ),
                     ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              if (_filteredList.length == 0)
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(15),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'You do not have any assignments yet,'
-                    '\ncontact your agency for more details',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
+                ),
+                const SizedBox(height: 10),
+                if (_filteredList.length == 0)
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(15),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'You do not have any assignments yet,'
+                      '\ncontact your agency for more details',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-              if (_filteredList.length > 0)
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: _filteredList.length,
-                  itemBuilder: (context, index) {
-                    return AssignmentCard(
-                      navigate: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AssignmentDetailPage(
-                                caseId: _filteredList[index].caseId),
-                          ),
-                        );
-                      },
-                      assignment: _filteredList[index],
-                    );
-                  },
-                ),
-            ],
+                if (_filteredList.length > 0)
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _filteredList.length,
+                    itemBuilder: (context, index) {
+                      return AssignmentCard(
+                        navigate: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AssignmentDetailPage(
+                                  caseId: _filteredList[index].caseId),
+                            ),
+                          );
+                        },
+                        assignment: _filteredList[index],
+                      );
+                    },
+                  ),
+              ],
+            ),
           );
         },
       ),

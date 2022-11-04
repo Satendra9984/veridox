@@ -28,11 +28,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     if (uid != null && token != null) {
       await FirestoreServices.checkIfFvExists(uid).then((value) async {
         if (value) {
-          debugPrint('checking values in checkIffvexists');
+          // debugPrint('checking values in checkIffvexists');
           navigatePushReplacement(context, const HomePage());
         } else {
           bool reqStatus = await FirestoreServices.checkIfRequested(uid);
-          debugPrint('checking values in checkIfrequestedexists');
+          // debugPrint('checking values in checkIfrequestedexists');
           if (reqStatus) {
             navigatePushReplacement(context, const HomePage());
           } else {

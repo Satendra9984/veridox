@@ -1,19 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:veridox/app_providers/send_request_provider.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import 'package:veridox/app_widgets/basic_details.dart';
-import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/default_text.dart';
-import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/profile_options.dart';
-import 'package:veridox/app_widgets/text_input.dart';
-import 'package:veridox/app_widgets/submit_button.dart';
 import '../../app_utils/app_functions.dart';
-import '../home_page.dart';
 import '../login/login_page.dart';
 import '../pdfviewer.dart';
 
@@ -26,7 +17,6 @@ class UpdateProfileScreen extends StatefulWidget {
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   late FirebaseAuth _auth;
-  late SendRequestProvider _provider;
   String dropDown = 'Select your agency';
 
   Map<String, dynamic>? _fieldVerifierDetails;
@@ -35,7 +25,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   void initState() {
     super.initState();
     _auth = FirebaseAuth.instance;
-    _provider = SendRequestProvider();
   }
 
   Future<Map<String, dynamic>?> _setFieldVerifierDetailsDetails() async {
@@ -154,40 +143,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         const SizedBox(
                           height: 30,
                         ),
+
+                        /// FV name
                         CustomDefaultText(text: data['name'], password: false),
                         const SizedBox(height: 10),
+
+                        /// FV email
                         CustomDefaultText(text: data['email'], password: false),
                         const SizedBox(height: 10),
+
+                        /// agency name
                         CustomDefaultText(
                             text: data['agency_name'] ?? 'agency',
                             password: false),
                         const SizedBox(height: 10),
 
-                        /// TODO: SHOW AADHAR BUTTON
-                        // ElevatedButton(
-                        //   onPressed: () async {
-                        //     await Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) {
-                        //           return PdfViewerPage(
-                        //             storageRef:
-                        //                 'aadhar/${FirebaseAuth.instance.currentUser!.uid}',
-                        //             hintText: 'Aadhar Card',
-                        //           );
-                        //         },
-                        //       ),
-                        //     );
-                        //   },
-                        //   child: Center(
-                        //     child: Text('Aadhar'),
-                        //   ),
-                        //   style: ElevatedButton.styleFrom(
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //   ),
-                        // ),
                         const SizedBox(height: 10),
+
+                        /// show aadhar card
                         ProfileOptions(
                           onPress: () async {
                             String ref = await FirebaseStorage.instance
@@ -213,6 +186,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             color: Colors.green.shade900,
                           ),
                         ),
+
+                        /// show pan card
                         ProfileOptions(
                           onPress: () async {
                             String ref = await FirebaseStorage.instance

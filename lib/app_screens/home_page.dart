@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage> {
                 // we have made it a variable so that selected item will be highlighted otherwise no means to notify
                 selectedItemColor: Colors.green,
                 unselectedItemColor: Colors.black,
+                elevation: 15,
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(
