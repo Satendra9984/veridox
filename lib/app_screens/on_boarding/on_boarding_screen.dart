@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -33,13 +34,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           navigatePushReplacement(context, const HomePage());
         } else {
           /// Or checking if it had sent a request to join any agency
-          Map<String, dynamic> reqStatus =
+          bool requested =
               await FirestoreServices.checkIfRequested(uid);
-
-          if (reqStatus['status'] == 'requested' ||
-              reqStatus['status'] == 'accepted') {
-            // TODO: DELETE REQUEST
-            navigatePushReplacement(context, const HomePage());
+          if (requested) {
+            navigatePushReplacement(context, StatusScreen(uid: uid));
           } else {
             navigatePushReplacement(
               context,
