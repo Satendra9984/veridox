@@ -24,7 +24,7 @@ class _AssignmentListState extends State<AssignmentList> {
   }
 
   void _setFilteredList(List<Assignment> list) {
-    debugPrint('current filter -> $_currentFilter\n');
+    // debugPrint('current filter -> $_currentFilter\n');
     final List<Assignment> _filtList = list;
     if (_currentFilter == AssignmentFilters.NewestToOldest) {
       _filtList.sort((first, second) {
@@ -75,59 +75,106 @@ class _AssignmentListState extends State<AssignmentList> {
       ),
       child: Consumer<List<Assignment>>(
         builder: (context, list, widget) {
-          // debugPrint('loading for the first time\n');
           _setFilteredList(list);
           return SingleChildScrollView(
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.only(right: 15, left: 25),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Assignments',
-                        style: TextStyle(
-                          color: Color(0XFF0e4a86),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
+                      Expanded(
+                        flex: 8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Assignments',
+                              style: TextStyle(
+                                color: Colors.blue.shade500,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: 45),
+                          ],
                         ),
                       ),
-                      PopupMenuButton<AssignmentFilters>(
-                        initialValue: _currentFilter,
-                        onSelected: (filter) {
-                          setState(() {
-                            _currentFilter = filter;
-                            _setFilteredList(list);
-                          });
-                        },
-                        itemBuilder: (context) {
-                          return <PopupMenuEntry<AssignmentFilters>>[
-                            PopupMenuItem(
-                                child: Text('Newest First'),
-                                value: AssignmentFilters.NewestToOldest),
-                            PopupMenuItem(
-                                child: Text('Oldest First'),
-                                value: AssignmentFilters.OldestToNewest),
-                            PopupMenuItem(
-                                child: Text('InProgress'),
-                                value: AssignmentFilters.InProgress),
-                            PopupMenuItem(
-                                child: Text('Active Only'),
-                                value: AssignmentFilters.NewAssignments),
-                            PopupMenuItem(
-                                child: Text('Completed Only'),
-                                value: AssignmentFilters.CompletedAssignments),
-                            PopupMenuItem(
-                                child: Text('All'),
-                                value: AssignmentFilters.All),
-                          ];
-                        },
-                        icon: Icon(Icons.more_horiz),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            PopupMenuButton<AssignmentFilters>(
+                              initialValue: _currentFilter,
+                              onSelected: (filter) {
+                                setState(() {
+                                  _currentFilter = filter;
+                                  _setFilteredList(list);
+                                });
+                              },
+                              itemBuilder: (context) {
+                                return <PopupMenuEntry<AssignmentFilters>>[
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Newest First',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters.NewestToOldest),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Oldest First',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters.OldestToNewest),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'InProgress',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters.InProgress),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Active Only',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters.NewAssignments),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Completed Only',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters
+                                          .CompletedAssignments),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'All',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value: AssignmentFilters.All),
+                                ];
+                              },
+                              icon: Icon(Icons.more_horiz),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 15,
+                            ),
+                          ],
                         ),
-                        elevation: 15,
                       ),
                     ],
                   ),
@@ -159,7 +206,8 @@ class _AssignmentListState extends State<AssignmentList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => AssignmentDetailPage(
-                                  caseId: _filteredList[index].caseId),
+                                caseId: _filteredList[index].caseId,
+                              ),
                             ),
                           );
                         },

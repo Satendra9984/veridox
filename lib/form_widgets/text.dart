@@ -33,7 +33,7 @@ class _TextTitleState extends State<TextTitle> {
         border: Border.all(
           color: Colors.grey.shade300,
         ),
-        color: Colors.white,
+        color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(

@@ -30,15 +30,6 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.orange,
-      //   title: const Text(
-      //     'InProgress Assignments',
-      //     style: TextStyle(
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      // ),
       body: Consumer<SavedAssignmentProvider>(
         builder: (ctx, data, child) {
           if (data.isLoading) {

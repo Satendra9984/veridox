@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:veridox/app_screens/assignments/my_assignments.dart';
+import 'package:veridox/app_screens/notifications_page.dart';
 import 'package:veridox/app_screens/profile/profile_page.dart';
 import '../app_models/assignment_model.dart';
 import '../app_services/database/firestore_services.dart';
-import 'assignments/assignment_list.dart';
 import 'assignments/field_verifier_dashboard.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,12 +40,11 @@ class _HomePageState extends State<HomePage> {
     // we can not initialize firebase data here because it will not refresh until app is active
     // now initializing the screen when the home_screen created can't initialize before because we need _controller to be passed
 
-    debugPrint('mew home page has made');
+    // debugPrint('mew home page has made');
     screens = [
       FieldVerifierDashboard(),
-      // AssignmentList(),
-      // SavedAssignmentsPage(),
-      // CompletedAssignmentsPage(),
+      MyAssignments(),
+      NotificationPage(),
       ProfilePage(),
     ];
     super.initState();
@@ -51,7 +52,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    // _initLocationService();
     super.didChangeDependencies();
   }
 
@@ -72,6 +72,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
       child: Scaffold(
+        // backgroundColor: Colors.orange,
+        extendBody: true,
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -88,56 +90,63 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            color: Colors.red,
+          decoration: BoxDecoration(
+            // color: Colors.red,
+            border: Border.all(
+              color: Colors.blue.shade100,
+              width: 1.9,
+            ),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
           ),
-          height: 50,
-          child: Wrap(
-            children: [
-              BottomNavigationBar(
-                currentIndex: currentItemSelected,
-                // we have made it a variable so that selected item will be highlighted otherwise no means to notify
-                selectedItemColor: Colors.green,
-                unselectedItemColor: Colors.black,
-                elevation: 15,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    label: 'Dashboard',
+          child: ClipRRect(
+            // height: 50,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+            child: BottomNavigationBar(
+              currentIndex: currentItemSelected,
+              // we have made it a variable so that selected item will be highlighted otherwise no means to notify
+              selectedItemColor: Colors.green,
+              unselectedItemColor: Colors.black,
+              // backgroundColor: Colors.red,
+              elevation: 15,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(
-                  //     Icons.save_alt,
-                  //   ),
-                  //   label: 'Saved',
-                  // ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(
-                  //     Icons.send,
-                  //   ),
-                  //   label: 'Completed',
-                  // ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.person,
-                    ),
-                    // backgroundColor: Colors.purple,
-                    label: 'Profile',
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    FontAwesomeIcons.list,
                   ),
-                ],
-                onTap: (screen) {
-                  setState(() {
-                    _pageController.jumpToPage(screen);
-                  });
-                },
-              ),
-            ],
+                  label: 'MyAssignment',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.notifications_none_outlined,
+                  ),
+                  label: 'Notification',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                  // backgroundColor: Colors.purple,
+                  label: 'Profile',
+                ),
+              ],
+              onTap: (screen) {
+                setState(() {
+                  _pageController.jumpToPage(screen);
+                });
+              },
+            ),
           ),
         ),
       ),

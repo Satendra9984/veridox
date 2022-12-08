@@ -97,11 +97,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                     flex: 8,
                     child: Text(
                       _getLabel(),
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        // color: Colors.black,
-                      ),
+                      style: kFormWidgetLabelStyle,
                     ),
                   ),
                   const SizedBox(

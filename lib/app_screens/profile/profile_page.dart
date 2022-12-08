@@ -135,184 +135,200 @@ class _ProfilePageState extends State<ProfilePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-        child: FutureBuilder(
-          future: _setDetails(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+        children: [
+          SizedBox(height: 15),
+          Container(
+            alignment: Alignment.topLeft,
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 5, bottom: 0),
+            child: Image.asset(
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+              fit: BoxFit.contain,
+              height: 50,
+              width: 150,
+            ),
+          ),
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+            child: FutureBuilder(
+              future: _setDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return Column(
                     children: [
-                      _isLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                ClipOval(
-                                  child: Image.memory(
-                                    _profilePicture,
-                                    height: 150,
-                                    width: 150,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 5,
-                                  right: 5,
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.lightBlue,
-                                    child: IconButton(
-                                      onPressed: () async {
-                                        /// upload profile photo
-                                        await _uploadProfilePicture()
-                                            .then((value) {});
-                                      },
-                                      icon: Icon(
-                                        Icons.add_a_photo,
-                                        size: 22,
-                                        color: Colors.white,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    ClipOval(
+                                      child: Image.memory(
+                                        _profilePicture,
+                                        height: 150,
+                                        width: 150,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      bottom: 5,
+                                      right: 5,
+                                      child: CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: Colors.lightBlue,
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            /// upload profile photo
+                                            await _uploadProfilePicture()
+                                                .then((value) {});
+                                          },
+                                          icon: Icon(
+                                            Icons.add_a_photo,
+                                            size: 22,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                      const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                      /// name
-                      Text(
-                        _name,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-
-                      /// email
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.email,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          const SizedBox(width: 5),
+                          /// name
                           Text(
-                            _email,
+                            _name,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          /// email
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.email,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                _email,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+                          /// phone
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.phone,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                FirebaseAuth.instance.currentUser!.phoneNumber
+                                    .toString(),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          /// edit profile button
+                          TextButton(
+                            onPressed: () {
+                              /// navigate to the edit profile screen
+                              Navigator.of(context)
+                                  .push(CupertinoPageRoute(builder: (context) {
+                                return UpdateProfileScreen();
+                                // return SendRequestScreen();
+                              }));
+                            },
+                            child: const Text(
+                              'Detail',
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
-
-                      /// phone
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.phone,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            FirebaseAuth.instance.currentUser!.phoneNumber
-                                .toString(),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 15,
                       ),
-
-                      /// edit profile button
-                      TextButton(
-                        onPressed: () {
-                          /// navigate to the edit profile screen
-                          Navigator.of(context)
-                              .push(CupertinoPageRoute(builder: (context) {
-                            return UpdateProfileScreen();
-                            // return SendRequestScreen();
-                          }));
-                        },
-                        child: const Text(
-                          'Detail',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  _loggingOut
-                      ? Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(
+                      _loggingOut
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: Colors.redAccent,
+                                  ),
+                                  const SizedBox(width: 25),
+                                  Text(
+                                    'Logging out',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ProfileOptions(
+                              option: 'Log Out',
+                              onPress: () async {
+                                setState(() {
+                                  _loggingOut = true;
+                                });
+                                await _auth.signOut().then((value) {
+                                  setState(() {
+                                    _loggingOut = false;
+                                  });
+                                  navigatePushRemoveUntil(
+                                      context, const LogInPage());
+                                });
+                              },
+                              valueIcon: Icon(
+                                Icons.logout,
                                 color: Colors.redAccent,
                               ),
-                              const SizedBox(width: 25),
-                              Text(
-                                'Logging out',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ProfileOptions(
-                          option: 'Log Out',
-                          onPress: () async {
-                            setState(() {
-                              _loggingOut = true;
-                            });
-                            await _auth.signOut().then((value) {
-                              setState(() {
-                                _loggingOut = false;
-                              });
-                              navigatePushRemoveUntil(
-                                  context, const LogInPage());
-                            });
-                          },
-                          valueIcon: Icon(
-                            Icons.logout,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                ],
-              );
-            }
-          },
-        ),
+                            ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

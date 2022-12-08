@@ -26,14 +26,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     final String? token = await _spServices.getToken();
 
     if (uid != null && token != null) {
+      /// checking if field verifier already exists
       await FirestoreServices.checkIfFvExists(uid).then((value) async {
         if (value) {
-          // debugPrint('checking values in checkIffvexists');
+          /// if field verifier exists then navigate it to HomePage
           navigatePushReplacement(context, const HomePage());
         } else {
-          bool reqStatus = await FirestoreServices.checkIfRequested(uid);
-          // debugPrint('checking values in checkIfrequestedexists');
-          if (reqStatus) {
+          /// Or checking if it had sent a request to join any agency
+          Map<String, dynamic> reqStatus =
+              await FirestoreServices.checkIfRequested(uid);
+
+          if (reqStatus['status'] == 'requested' ||
+              reqStatus['status'] == 'accepted') {
+            // TODO: DELETE REQUEST
             navigatePushReplacement(context, const HomePage());
           } else {
             navigatePushReplacement(

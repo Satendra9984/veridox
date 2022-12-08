@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veridox/app_utils/app_constants.dart';
 import 'package:veridox/form_widgets/table_form_input.dart';
 
 import '../app_providers/form_provider.dart';
@@ -36,9 +37,9 @@ class _FormTableInputState extends State<FormTableInput> {
       _isRequired = true;
     }
 
-    debugPrint(
-        'rows --> ${_rowLabels.toString()}\n and type --> ${_columnLabels.runtimeType}');
-    debugPrint('columns --> ${_columnLabels.toString()}');
+    // debugPrint(
+    //     'rows --> ${_rowLabels.toString()}\n and type --> ${_columnLabels.runtimeType}');
+    // debugPrint('columns --> ${_columnLabels.toString()}');
   }
 
   String _getLabel() {
@@ -54,10 +55,11 @@ class _FormTableInputState extends State<FormTableInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
+      // decoration: BoxDecoration(
+      //   color: Colors.white,
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
+      decoration: containerElevationDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -66,10 +68,7 @@ class _FormTableInputState extends State<FormTableInput> {
             margin: const EdgeInsets.only(left: 15, top: 25),
             child: Text(
               _getLabel(),
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-              ),
+              style: kFormWidgetLabelStyle,
             ),
           ),
           const SizedBox(

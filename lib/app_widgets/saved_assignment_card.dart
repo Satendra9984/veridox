@@ -59,9 +59,9 @@ class SavedAssignmentCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DetailTextStylesWidget(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.numbers,
-                      color: Colors.orangeAccent,
+                      color: Colors.orange.shade300,
                       size: 18,
                     ),
                     heading: 'Id',
@@ -69,14 +69,13 @@ class SavedAssignmentCard extends StatelessWidget {
                       assignment.caseId,
                       style: const TextStyle(
                         fontSize: 16,
-                        fontStyle: FontStyle.italic,
                       ),
                     ),
                   ),
                   DetailTextStylesWidget(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.person,
-                      color: Colors.blue,
+                      color: Colors.blue.shade300,
                     ),
                     heading: 'Name',
                     value: Text(
@@ -87,9 +86,9 @@ class SavedAssignmentCard extends StatelessWidget {
                     ),
                   ),
                   DetailTextStylesWidget(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.phone,
-                      color: Colors.greenAccent,
+                      color: Colors.green.shade300,
                     ),
                     heading: 'phone',
                     value: Text(
@@ -162,15 +161,27 @@ class SavedAssignmentCard extends StatelessWidget {
                         value: 0,
                         onTap: () async {
                           /// DeletingSavedAssignments
-                          debugPrint(
-                              'deleting caseId --> ${assignment.caseId}\n\n');
+                          // debugPrint(
+                          //     'deleting caseId --> ${assignment.caseId}\n\n');
                           Provider.of<SavedAssignmentProvider>(context,
                                   listen: false)
                               .removeFromSaveAssignments(assignment.caseId);
                         },
-                        child: const Text('Delete Task'),
+                        child: const Text(
+                          'Delete Task',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    // padding: const EdgeInsets.all(5),
+                    color: Colors.red.shade100,
                   ),
                 ],
               ),

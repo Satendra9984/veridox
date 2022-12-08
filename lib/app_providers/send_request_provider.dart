@@ -31,6 +31,7 @@ class SendRequestProvider extends ChangeNotifier {
   Future<void> submit(BuildContext context) async {
     _phoneController.text =
         FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+
     Map<String, dynamic> data = {
       'name': _nameController.text,
       'phone': _phoneController.text,
@@ -39,7 +40,7 @@ class SendRequestProvider extends ChangeNotifier {
       'panRef': _panRef.text,
       'agency_name': dropDown,
     };
-
+    // http://veridocs.pythonanywhere.com/api/user/uid
     await FirestoreServices.sendJoinRequest(
       data,
       FirebaseAuth.instance.currentUser!.uid,

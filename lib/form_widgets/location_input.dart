@@ -101,16 +101,13 @@ class _GetUserLocationState extends State<GetUserLocation> {
                     children: <Widget>[
                       Text(
                         _getLabel(),
-                        style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: kFormWidgetLabelStyle,
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           if (_gettingLocation)
                             const Expanded(

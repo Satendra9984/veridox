@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/permissions_page.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
@@ -109,14 +108,16 @@ class _OTPPageState extends State<OTPPage> {
                             navigatePushRemoveUntil(context, HomePage());
                           } else {
                             // check if requested
-                            bool reqStatus =
+                            Map<String, dynamic> reqStatus =
                                 await FirestoreServices.checkIfRequested(uid);
 
-                            if (reqStatus) {
-                              navigatePushRemoveUntil(
+                            if (reqStatus['status'] == 'requested' ||
+                                reqStatus['status'] == 'accepted') {
+                              // TODO: DELETE REQUEST
+                              navigatePushReplacement(
                                   context, const HomePage());
                             } else {
-                              navigatePushRemoveUntil(
+                              navigatePushReplacement(
                                 context,
                                 const SendRequestScreen(),
                               );

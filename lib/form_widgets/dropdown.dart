@@ -81,10 +81,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
           Text(
             _getLabel(),
             softWrap: true,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-            ),
+            style: kFormWidgetLabelStyle,
           ),
           const SizedBox(
             height: 10,

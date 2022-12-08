@@ -115,11 +115,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             children: [
               Text(
                 _getLabel(),
-                style: const TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: kFormWidgetLabelStyle,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

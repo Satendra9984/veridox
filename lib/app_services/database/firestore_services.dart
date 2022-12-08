@@ -40,10 +40,9 @@ class FirestoreServices {
         .isNotEmpty;
   }
 
-  static Future<bool> checkIfRequested(String uid) async {
+  static Future<Map<String, dynamic>> checkIfRequested(String uid) async {
     final snap = await _firestore.collection('add_requests').get();
-
-    return snap.docs.where((element) => element.id == uid).toList().isNotEmpty;
+    return snap.docs.firstWhere((element) => element.id == uid).data();
   }
 
   static Future<Map<String, dynamic>?> getFormDataById(String id) async {
@@ -112,6 +111,12 @@ class FirestoreServices {
       });
     });
   }
+
+  // static Future<void> deleteRequest(String agencyUid, String requestUid) async {
+  //
+  //   await _firestore.collection('add_request').doc(agencyUid).collection()
+  //
+  // }
 
   static Future<void> updateDatabase(
       {required Map<String, dynamic> data,

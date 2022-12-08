@@ -44,3 +44,8 @@ TextStyle kHintTextStyle = TextStyle(
   fontSize: 14,
   color: Colors.grey.shade600,
 );
+
+TextStyle kFormWidgetLabelStyle = const TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);

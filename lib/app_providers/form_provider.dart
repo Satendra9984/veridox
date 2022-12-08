@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:veridox/app_services/database/firestore_services.dart';
 
 class FormProvider extends ChangeNotifier {
   Map<String, dynamic> _result = {};
@@ -60,7 +59,7 @@ class FormProvider extends ChangeNotifier {
 
   Future<void> saveDraftData() async {
     try {
-      debugPrint('saving draft data: assignment id --> ${assignmentId}, \n\n');
+      // debugPrint('saving draft data: assignment id --> ${assignmentId}, \n\n');
       await FirebaseFirestore.instance
           .collection('assignments')
           .doc(assignmentId)

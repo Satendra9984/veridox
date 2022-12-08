@@ -9,6 +9,8 @@ import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_screens/permissions_page.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart'
+    show FirebaseAuthPlatform;
 
 List<CameraDescription> cameras = [];
 
@@ -45,12 +47,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Veridox',
         theme: ThemeData(
-            // fontFamily: 'Roboto',
-            primaryColor: Colors.lightBlue,
-            primarySwatch: Colors.blue,
-            textTheme: const TextTheme()
-            // fontFamily:
-            ),
+          // fontFamily: 'Roboto',
+          primaryColor: Colors.lightBlue,
+          primarySwatch: Colors.blue,
+          // textTheme: const TextTheme(),
+          fontFamily: 'Ubuntu',
+        ),
         // home: const Scaffold(
         //   body: GetUserLocation(
         //     widgetJson: {

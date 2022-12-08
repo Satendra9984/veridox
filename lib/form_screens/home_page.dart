@@ -32,6 +32,7 @@ class _FormHomePageState extends State<FormHomePage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -50,7 +51,7 @@ class _FormHomePageState extends State<FormHomePage> {
           } else if (form.hasData && snapshot != null) {
             final data = Map<String, dynamic>.from(snapshot);
 
-            debugPrint('form data --> ${data.toString()}');
+            // debugPrint('form data --> ${data.toString()}');
 
             return InitialFormPageView(caseId: widget.caseId, pagesData: data);
           } else if (snapshot == null) {

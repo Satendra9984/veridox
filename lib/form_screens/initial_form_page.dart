@@ -35,7 +35,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    _formProvider = Provider.of(context);
+    _formProvider = Provider.of<FormProvider>(context);
     _formProvider.setAssignmentId = widget.caseId;
     initialize();
     super.didChangeDependencies();
@@ -60,7 +60,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
       return screen;
     }
     for (int i = 0; i < pageData.length; i++) {
-      debugPrint('pageNumber --> ${i}\n');
+      // debugPrint('pageNumber --> ${i}\n');
       screen.add(
         FormPage(
           provider: _formProvider,
@@ -84,8 +84,6 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   Widget build(BuildContext context) {
-    // _formProvider.setAssignmentId = widget.caseId;
-
     return FutureBuilder(
       future: _formProvider.initializeResponse(),
       builder: (context, AsyncSnapshot<void> snap) {
@@ -100,7 +98,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
             controller: _pageController,
             children: _getFormPages(widget.pagesData),
             onPageChanged: (currentPage) {
-              debugPrint('page changed --> $currentPage}');
+              // debugPrint('page changed --> $currentPage}');
             },
           );
         }

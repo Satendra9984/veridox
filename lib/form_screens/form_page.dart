@@ -60,7 +60,7 @@ class _FormPageState extends State<FormPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      // backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
         title: const Text('Customer Verification Form'),
       ),

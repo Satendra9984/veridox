@@ -88,21 +88,21 @@ class _FormFileInputState extends State<FormFileInput>
   }
 
   Future<void> _setInitialFilesData() async {
-    debugPrint('FormImageInputIscalledinitialData --> \n');
+    // debugPrint('FormImageInputIscalledinitialData --> \n');
     dynamic listOfImagesFromDatabase =
         widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
 
-    debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase} 0\n');
+    // debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase} 0\n');
 
     if (listOfImagesFromDatabase != null &&
         listOfImagesFromDatabase.isNotEmpty) {
       // todo: check the length of the list if it 3 or more
-      debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase}\n');
+      // debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase}\n');
       for (String stref in listOfImagesFromDatabase) {
         _filesList.add(stref);
-        debugPrint('listOfImagesfromfirebasestorage --> $stref\n');
+        // debugPrint('listOfImagesfromfirebasestorage --> $stref\n');
       }
-      debugPrint('_imagefilelist --> ${_filesList}\n');
+      // debugPrint('_imagefilelist --> ${_filesList}\n');
       // for (String path in _filesList) {
       //   var image = await FirebaseStorage.instance.ref(path).getData();
       //   if (image != null) {
@@ -147,11 +147,7 @@ class _FormFileInputState extends State<FormFileInput>
                     Text(
                       _getLabel(),
                       softWrap: true,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        // color: Colors.black,
-                      ),
+                      style: kFormWidgetLabelStyle,
                     ),
                     const SizedBox(
                       height: 15,

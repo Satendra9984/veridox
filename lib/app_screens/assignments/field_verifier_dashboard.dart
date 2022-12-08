@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:veridox/app_screens/assignments/assignment_list.dart';
 import 'package:veridox/app_screens/assignments/completed_assignments_page.dart';
+import 'package:veridox/app_screens/assignments/my_assignments.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 
 class FieldVerifierDashboard extends StatefulWidget {
@@ -14,6 +14,8 @@ class FieldVerifierDashboard extends StatefulWidget {
 
 class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final Offset distance = const Offset(3.5, 3.5);
+  final double blur = 5.0;
   late TabController _tabController;
   int _currentTabNumber = 0;
 
@@ -39,30 +41,30 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(right: 8.0, left: 0, top: 4, bottom: 4),
-          child: Image.asset(
-            'assets/launcher_icons/veridocs_launcher_icon.jpeg',
-            fit: BoxFit.contain,
-            height: 84,
-            width: 124,
-          ),
-        ),
-        leadingWidth: 134,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 25),
+          Container(
+            alignment: Alignment.topLeft,
+            margin:
+                const EdgeInsets.only(right: 8.0, left: 15, top: 5, bottom: 10),
+            child: Image.asset(
+              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+              fit: BoxFit.contain,
+              height: 50,
+              width: 150,
+            ),
+          ),
+          Divider(
+            thickness: 2.0,
+          ),
           Card(
             margin:
-                const EdgeInsets.only(left: 15, right: 15, bottom: 0, top: 0),
-            elevation: 0,
+                const EdgeInsets.only(left: 15, right: 15, bottom: 5, top: 0),
+            elevation: 0.0,
             child: TabBar(
               controller: _tabController,
               onTap: (currentTab) {
@@ -71,19 +73,24 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
                 });
               },
               unselectedLabelColor: Colors.grey.shade700,
-              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorSize: TabBarIndicatorSize.label,
+              labelPadding: EdgeInsets.symmetric(horizontal: 5),
+              indicatorPadding: EdgeInsets.symmetric(vertical: 5),
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.white,
                 gradient: LinearGradient(
-                    colors: [Colors.blueAccent, Colors.lightBlueAccent]),
+                  colors: [Colors.lightBlue, Colors.lightBlueAccent],
+                ),
               ),
+              padding: EdgeInsets.only(bottom: 5, left: 15, right: 15, top: 5),
               tabs: [
                 Tab(
                   child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      // border: Border.all(color: Colors.blueAccent, width: 1.5)
+                      borderRadius: BorderRadius.circular(50),
                       color: _currentTabNumber != 0
                           ? Colors.grey.shade300
                           : Colors.transparent,
@@ -104,10 +111,10 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
                 ),
                 Tab(
                   child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      // color: Colors.grey,
-                      // border: Border.all(color: Colors.blueAccent, width: 1.5),
+                      borderRadius: BorderRadius.circular(50),
                       color: _currentTabNumber != 1
                           ? Colors.grey.shade300
                           : Colors.transparent,
@@ -128,14 +135,27 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
                 ),
                 Tab(
                   child: Container(
-                    // margin: EdgeInsets.all(5),
-                    // padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      // border: Border.all(color: Colors.blueAccent, width: 1.5),
+                      borderRadius: BorderRadius.circular(50),
                       color: _currentTabNumber != 2
                           ? Colors.grey.shade300
                           : Colors.transparent,
+                      // boxShadow: [
+                      // BoxShadow(
+                      //   blurRadius: blur,
+                      //   offset: -distance,
+                      //   color: Colors.black,
+                      //   // inset: isPressed,
+                      // ),
+                      // BoxShadow(
+                      //   blurRadius: blur,
+                      //   offset: distance,
+                      //   // color: const Color(0xFFA7A9AF),
+                      //   color: Colors.black,
+                      // ),
+                      // ],
                     ),
                     child: Align(
                       alignment: Alignment.center,
@@ -152,12 +172,12 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
                   ),
                 ),
               ],
-              padding: EdgeInsets.only(bottom: 5, left: 15, right: 15, top: 5),
             ),
           ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 AssignmentList(),
                 SavedAssignmentsPage(),

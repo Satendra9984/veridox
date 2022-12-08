@@ -25,7 +25,7 @@ class AssignmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // debugPrint('card assignment --> ${assignment.caseId}\n');
     return Container(
-      margin: const EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 6),
+      margin: const EdgeInsets.only(top: 3, bottom: 3, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(kBRad + 5)),
         border: Border.all(
@@ -53,24 +53,25 @@ class AssignmentCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       DetailTextStylesWidget(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.numbers,
-                          color: Colors.orangeAccent,
+                          color: Colors.orange.shade300,
                           size: 18,
                         ),
                         heading: 'Id',
                         value: Text(
                           assignment.caseId,
                           style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
+                            fontSize: 14,
+                            fontStyle: FontStyle.normal,
+                            // fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                       DetailTextStylesWidget(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.person,
-                          color: Colors.blue,
+                          color: Colors.blue.shade300,
                           // size: 16,
                         ),
                         heading: 'Name',
