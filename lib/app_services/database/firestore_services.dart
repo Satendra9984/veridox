@@ -40,9 +40,14 @@ class FirestoreServices {
         .isNotEmpty;
   }
 
-  static Future<Map<String, dynamic>> checkIfRequested(String uid) async {
+  static Future<bool> checkIfRequested(String uid) async {
     final snap = await _firestore.collection('add_requests').get();
-    return snap.docs.firstWhere((element) => element.id == uid).data();
+    return snap.docs.where((element) => element.id == uid).toList().isNotEmpty;
+  }
+
+  static Future<Map<String, dynamic>?> getRequestStatus(String uid) async {
+    final snap = await _firestore.collection('add_requests').doc(uid).get();
+    return snap.data();
   }
 
   static Future<Map<String, dynamic>?> getFormDataById(String id) async {

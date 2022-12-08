@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:veridox/app_providers/send_request_provider.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/custom_drop_down.dart';
 import 'package:veridox/app_widgets/file_upload_button.dart';
@@ -263,7 +264,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
               Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
                   builder: (context) {
-                    return HomePage();
+                    return StatusScreen(uid: FirebaseAuth.instance.currentUser!.uid);
                   },
                 ),
               ),

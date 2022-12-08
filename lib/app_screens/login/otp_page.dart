@@ -4,6 +4,7 @@ import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
@@ -107,21 +108,13 @@ class _OTPPageState extends State<OTPPage> {
                           if (value) {
                             navigatePushRemoveUntil(context, HomePage());
                           } else {
-                            // check if requested
-                            Map<String, dynamic> reqStatus =
-                                await FirestoreServices.checkIfRequested(uid);
-
-                            if (reqStatus['status'] == 'requested' ||
-                                reqStatus['status'] == 'accepted') {
-                              // TODO: DELETE REQUEST
-                              navigatePushReplacement(
-                                  context, const HomePage());
-                            } else {
-                              navigatePushReplacement(
-                                context,
-                                const SendRequestScreen(),
-                              );
-                            }
+                            await FirestoreServices.checkIfRequested(uid).then((requested) {
+                              if (requested) {
+                                navigatePushRemoveUntil(context, StatusScreen(uid: uid));
+                              } else {
+                                navigatePushRemoveUntil(context, SendRequestScreen());
+                              }
+                            });
                           }
                         });
                       }

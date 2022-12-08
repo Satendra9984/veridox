@@ -27,8 +27,6 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
 
   @override
   void dispose() {
-    // TODO: implement dispose]
-    _tabController.removeListener(() {});
     _tabController.dispose();
     super.dispose();
   }
