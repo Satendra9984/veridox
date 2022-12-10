@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/default_text.dart';
 import 'package:veridox/app_widgets/profile_options.dart';
@@ -27,11 +28,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _auth = FirebaseAuth.instance;
   }
 
-  Future<Map<String, dynamic>?> _setFieldVerifierDetailsDetails() async {
+  Future<Map<String, dynamic>?> _setFieldVerifierDetails() async {
     try {
       _fieldVerifierDetails = await FirestoreServices.getFieldVerifierData(
           userId: _auth.currentUser!.uid);
-      debugPrint('field_verifier --> $_fieldVerifierDetails\n');
+      // debugPrint('field_verifier --> $_fieldVerifierDetails\n');
       return _fieldVerifierDetails;
     } catch (e) {
       return null;
@@ -103,7 +104,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
       backgroundColor: const Color(0XFFf0f5ff),
       body: FutureBuilder(
-          future: _setFieldVerifierDetailsDetails(),
+          future: _setFieldVerifierDetails(),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
               return Center(
@@ -126,37 +127,39 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Profile Details',
                             style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.lightBlue),
+                              fontSize: 28,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.lightBlue,
+                            ),
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
 
                         /// FV name
+                        HeadingWidgetForTextDisplay(heading: 'Name'),
                         CustomDefaultText(text: data['name'], password: false),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 25),
 
                         /// FV email
+                        HeadingWidgetForTextDisplay(heading: 'Email Address'),
                         CustomDefaultText(text: data['email'], password: false),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 25),
 
                         /// agency name
+                        HeadingWidgetForTextDisplay(heading: 'Agency Name'),
                         CustomDefaultText(
                             text: data['agency_name'] ?? 'agency',
                             password: false),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
 
                         const SizedBox(height: 10),
 
@@ -168,7 +171,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 .child(
                                     'aadhar/${FirebaseAuth.instance.currentUser!.uid}')
                                 .getDownloadURL();
-                            debugPrint('ref full path --> $ref\n');
+                            // debugPrint('ref full path --> $ref\n');
                             await Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {

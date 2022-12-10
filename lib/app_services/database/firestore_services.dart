@@ -117,11 +117,11 @@ class FirestoreServices {
     });
   }
 
-  // static Future<void> deleteRequest(String agencyUid, String requestUid) async {
-  //
-  //   await _firestore.collection('add_request').doc(agencyUid).collection()
-  //
-  // }
+  static Future<void> deleteRequest(String uid) async {
+
+    await _firestore.collection('add_request').doc(uid).delete();
+
+  }
 
   static Future<void> updateDatabase(
       {required Map<String, dynamic> data,

@@ -20,7 +20,7 @@ class _ProfileOptionsState extends State<ProfileOptions> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
