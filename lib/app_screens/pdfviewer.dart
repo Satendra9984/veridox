@@ -20,9 +20,8 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    debugPrint('pdf path --> ${widget.storageRef}\n');
+    // debugPrint('pdf path --> ${widget.storageRef}\n');
   }
 
   @override

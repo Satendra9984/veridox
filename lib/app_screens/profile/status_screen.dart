@@ -18,7 +18,8 @@ class StatusScreen extends StatefulWidget {
   State<StatusScreen> createState() => _StatusScreenState();
 }
 
-class _StatusScreenState extends State<StatusScreen> {
+class _StatusScreenState extends State<StatusScreen>
+    with AutomaticKeepAliveClientMixin {
   String s = 'requested';
 
   @override
@@ -42,17 +43,28 @@ class _StatusScreenState extends State<StatusScreen> {
       s = s.toUpperCase();
 
       /// now get request details from agency to showcase
+      if (s != 'ACCEPTED') {
+        DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
+            await FirebaseFirestore.instance
+                .collection('agency')
+                .doc(req['agency'])
+                .collection('add_requests')
+                .doc(widget.uid)
+                .get();
 
+        Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
+        debugPrint('fullDetails1 --> $fullRequestDetails');
+
+        return fullRequestDetails;
+      }
       DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
           await FirebaseFirestore.instance
-              .collection('agency')
-              .doc(req['agency'])
-              .collection('add_requests')
+              .collection('field_verifier')
               .doc(widget.uid)
               .get();
 
       Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
-
+      debugPrint('fullDetails --> $fullRequestDetails');
       return fullRequestDetails;
     }
     return null;
@@ -81,6 +93,7 @@ class _StatusScreenState extends State<StatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -136,35 +149,63 @@ class _StatusScreenState extends State<StatusScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  s,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      s,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
+                                    _getStatusIcon(),
+                                  ],
                                 ),
-                                const SizedBox(width: 15),
-                                _getStatusIcon(),
+                                if (s == 'ACCEPTED')
+                                  TextButton(
+                                    onPressed: () async {
+                                      /// delete request
+                                      await FirebaseFirestore.instance
+                                          .collection('add_requests')
+                                          .doc(widget.uid)
+                                          .delete()
+                                          .then((value) {
+                                        /// now navigate to HomePage
+                                        navigatePushReplacement(
+                                            context, HomePage());
+                                      });
+                                    },
+                                    child: Text(
+                                      'Dashboard',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                                 if (s == 'REJECTED')
                                   TextButton(
                                     onPressed: () async {
                                       /// delete request
-                                      //   debugPrint('s == accepted\n');
                                       await FirebaseFirestore.instance
-                                          .collection('add_request')
+                                          .collection('add_requests')
                                           .doc(widget.uid)
                                           .delete()
                                           .then((value) {
-                                        // debugPrint('request deleted');
                                         navigatePushReplacement(
-                                            context, HomePage());
+                                            context, SendRequestScreen());
                                       });
-
-                                      navigatePushReplacement(
-                                          context, SendRequestScreen());
                                     },
-                                    child: Text('BACK'),
+                                    child: Text(
+                                      'BACK',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
                               ],
                             ),
@@ -287,6 +328,9 @@ class _StatusScreenState extends State<StatusScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class HeadingWidgetForTextDisplay extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/default_text.dart';
@@ -93,6 +94,36 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     navigatePushReplacement(context, const LogInPage());
                   },
                 ),
+                // PopupMenuItem(
+                //   value: Text(
+                //     'Leave Agency',
+                //     style: TextStyle(
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         'Leave Agency',
+                //         style: TextStyle(
+                //           color: Colors.black,
+                //         ),
+                //       ),
+                //       const SizedBox(
+                //         width: 10,
+                //       ),
+                //       Icon(
+                //         Icons.change_circle,
+                //         color: Colors.black,
+                //       ),
+                //     ],
+                //   ),
+                //   onTap: () {
+                //     // await _auth.signOut();
+                //     navigatePushReplacement(context, const SendRequestScreen());
+                //   },
+                // ),
               ];
             },
             shape:

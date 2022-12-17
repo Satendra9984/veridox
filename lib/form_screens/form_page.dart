@@ -9,9 +9,13 @@ import 'package:veridox/form_widgets/toggle_button.dart';
 import '../app_utils/app_constants.dart';
 import '../form_widgets/date_time.dart';
 import '../form_widgets/dropdown.dart';
+import '../form_widgets/form_aadhar_number_input.dart';
+import '../form_widgets/form_email_input.dart';
 import '../form_widgets/form_file_input.dart';
+import '../form_widgets/form_pan_number_input.dart';
 import '../form_widgets/form_text_input.dart';
 import '../form_widgets/image_input.dart';
+import '../form_widgets/phone_number_input.dart';
 
 class FormPage extends StatefulWidget {
   var singlePageData;
@@ -33,8 +37,7 @@ class FormPage extends StatefulWidget {
   State<FormPage> createState() => _FormPageState();
 }
 
-class _FormPageState extends State<FormPage>
-    with AutomaticKeepAliveClientMixin {
+class _FormPageState extends State<FormPage> {
   final _formKey = GlobalKey<FormState>();
   late var _pageData;
 
@@ -43,8 +46,15 @@ class _FormPageState extends State<FormPage>
   @override
   void initState() {
     super.initState();
+    debugPrint('form page has been initialized page ${widget.currentPage}');
     provider = widget.provider;
     _initializePageData();
+  }
+
+  @override
+  void dispose() {
+    debugPrint('form page has been disposed page ${widget.currentPage}');
+    super.dispose();
   }
 
   void _initializePageData() {
@@ -58,7 +68,7 @@ class _FormPageState extends State<FormPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    // super.build(context);
     return Scaffold(
       // backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
@@ -145,6 +155,38 @@ class _FormPageState extends State<FormPage>
                           } else if (field[index] != null &&
                               field[index]['widget'] == 'table') {
                             return FormTableInput(
+                              widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
+                            );
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'email') {
+                            return FormEmailTextInput(
+                              widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
+                            );
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'phone') {
+                            return FormPhoneNumberInput(
+                              widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
+                            );
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'pan') {
+                            return FormPanNumberInput(
+                              widgetJson: field[index],
+                              pageId: widget.currentPage.toString(),
+                              fieldId: index.toString(),
+                              provider: widget.provider,
+                            );
+                          } else if (field[index] != null &&
+                              field[index]['widget'] == 'aadhar') {
+                            return FormAadharNumberInput(
                               widgetJson: field[index],
                               pageId: widget.currentPage.toString(),
                               fieldId: index.toString(),
@@ -238,7 +280,7 @@ class _FormPageState extends State<FormPage>
     await widget.provider.saveDraftData();
   }
 
-  @override
+  // @override
   // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // bool get wantKeepAlive => true;
 }

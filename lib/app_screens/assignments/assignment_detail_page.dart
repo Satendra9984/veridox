@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/app_widgets/row_detail_text.dart';
 import 'package:veridox/form_screens/home_page.dart';
 import '../../app_services/database/shared_pref_services.dart';
 import '../../app_utils/app_functions.dart';
@@ -21,46 +22,63 @@ class AssignmentDetailPage extends StatefulWidget {
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   late SavedAssignmentProvider _savedAssignmentProvider;
 
-  /// Function for checking if the given assignment with the caseId
-  /// already exist in the local_database
+  /// for the application details segregation
+  Map<String, dynamic> _applicantDetails = {},
+      _coapplicantDetails = {},
+      _otherDetails = {};
+
+  /// Function for checking if the given assignment with the caseId already exist in the local_database
   Future<bool> checkSaved() async {
     String _userId = FirebaseAuth.instance.currentUser!.uid;
-    // debugPrint('Checking for ${_userId}${widget.caseId}\n');
     return await SPServices().checkIfExists('${_userId}${widget.caseId}');
   }
 
   /// getting data to display in detailsPage
-  Future<Map<String, dynamic>> _getAssignment() async {
+  Future<void> _setAssignmentDetails() async {
     final res = await FirestoreServices.getAssignmentById(widget.caseId);
 
     Map<String, dynamic> data = Map<String, dynamic>.from(res!);
-    Map<String, dynamic> modifiedData = _getModifiedData(data);
+    _setModifiedData(data);
 
     // set agency name
-    final agency = await FirestoreServices.getAgency(modifiedData['Agency']);
-    modifiedData['Agency'] = agency['agency_name'];
-
-    return modifiedData;
+    final agency = await FirestoreServices.getAgency(_otherDetails['Agency']);
+    _otherDetails['Agency'] = agency['agency_name'];
   }
 
   /// modifying keys of assignment in Proper Notation for display purpose
-  Map<String, dynamic> _getModifiedData(Map<String, dynamic> data) {
-    Map<String, dynamic> modifiedData = {
+  void _setModifiedData(Map<String, dynamic> data) {
+    // setting applicant data details
+    Map<String, dynamic> modifiedDataApplicant = {
       'Case Number': widget.caseId,
-      'Applicant Name': data['applicant_name'],
-      'Applicant Phone': data['applicant_phone'],
-      'Applicant Address': data['applicant_address'],
-      'CoApplicant Name': data['coapplicant_name'],
-      'CoApplicant Phone': data['coapplicant_phone'],
-      'CoApplicant Address': data['coapplicant_address'],
-      'Agency': data['agency'],
+      'Name': data['applicant_name'],
+      'Phone': data['applicant_phone'],
+      'City': data['applicant_city'],
+      'PinCode': data['applicant_pincode'],
+      'PostOffice': data['applicant_post_office'],
+      'State': data['applicant_state'],
+    };
+    _applicantDetails = modifiedDataApplicant;
+
+    // setting coapplicant data details
+    Map<String, dynamic> modifiedDataCoApplicant = {
+      'Name': data['coapplicant_name'],
+      'Phone': data['coapplicant_phone'],
+      'City': data['coapplicant_city'],
+      'PinCode': data['coapplicant_pincode'],
+      'PostOffice': data['coapplicant_post_office'],
+      'State': data['coapplicant_state'],
+    };
+    _coapplicantDetails = modifiedDataCoApplicant;
+
+    // setting other details
+    Map<String, dynamic> modifiedOtherDetails = {
       'Assigned Date': data['assigned_at'],
+      'Application Type': data['document_type'],
       'Status': data['status'],
-      'Verification Type': data['document_type'],
+      'Agency': data['agency'],
     };
     // debugPrint('modified data --> $modifiedData\n\n');
-
-    return modifiedData;
+    _otherDetails = modifiedOtherDetails;
   }
 
   @override
@@ -80,8 +98,8 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: FutureBuilder(
-            future: _getAssignment(),
-            builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            future: _setAssignmentDetails(),
+            builder: (context, AsyncSnapshot<void> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -92,38 +110,85 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                   ],
                 );
               } else {
+                /// data is available to display
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...snapshot.data!.keys
+                    /// Applicant Details
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Applicant Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ..._applicantDetails.keys
                         .map(
                           (value) => Container(
-                            margin: const EdgeInsets.all(2),
+                            margin: const EdgeInsets.only(left: 20),
                             padding: const EdgeInsets.symmetric(vertical: 2),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    snapshot.data![value].toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            child: RowDetailsText(
+                              heading: value,
+                              value: _applicantDetails[value].toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    const SizedBox(height: 20),
+
+                    /// Co-Applicant Details
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Co-Applicant Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ..._coapplicantDetails.keys
+                        .map(
+                          (value) => Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 2.5),
+                            child: RowDetailsText(
+                              heading: value,
+                              value: _coapplicantDetails[value].toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    const SizedBox(height: 20),
+
+                    /// other details
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Other Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ..._otherDetails.keys
+                        .map(
+                          (value) => Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: RowDetailsText(
+                              heading: value,
+                              value: _otherDetails[value].toString(),
                             ),
                           ),
                         )

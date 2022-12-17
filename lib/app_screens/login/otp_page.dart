@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
+import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
@@ -103,20 +104,7 @@ class _OTPPageState extends State<OTPPage> {
                       if (uid == null) {
                         navigatePushRemoveUntil(context, LogInPage());
                       } else {
-                        await FirestoreServices.checkIfFvExists(uid)
-                            .then((value) async {
-                          if (value) {
-                            navigatePushRemoveUntil(context, HomePage());
-                          } else {
-                            await FirestoreServices.checkIfRequested(uid).then((requested) {
-                              if (requested) {
-                                navigatePushRemoveUntil(context, StatusScreen(uid: uid));
-                              } else {
-                                navigatePushRemoveUntil(context, SendRequestScreen());
-                              }
-                            });
-                          }
-                        });
+                        navigatePushRemoveUntil(context, OnBoardingScreen());
                       }
                     }).catchError((error) {
                       SnackBar snackBar = const SnackBar(

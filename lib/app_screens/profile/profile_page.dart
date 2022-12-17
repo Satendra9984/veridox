@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -94,13 +95,13 @@ class _ProfilePageState extends State<ProfilePage>
             Uint8List imageData = await fileImage.readAsBytes();
             // debugPrint('we got imageData\n\n');
             await FileUploader.uploadFile(
-                dbPath: '$userId/profile_picture', fileData: imageData);
+                dbPath: 'profile_picture/$userId', fileData: imageData);
 
             // update in field_verifier
             await FirestoreServices.updateDatabase(data: {
-              'profile_picture': '$userId/profile_picture',
+              'profile_picture': 'profile_picture/$userId',
             }, collection: 'field_verifier', docId: userId);
-            await SPServices.setData('$userId/profile_picture', imageData).then(
+            await SPServices.setData('profile_picture/$userId', imageData).then(
               (value) async {
                 await _setProfilePicture().then((value) {});
               },
@@ -119,15 +120,31 @@ class _ProfilePageState extends State<ProfilePage>
     String userId = _auth.currentUser!.uid;
 
     /// setting profile picture from local storage if present
-    await SPServices.getData('$userId/profile_picture').then((image) async {
+    await SPServices.getData('profile_picture/$userId').then((image) async {
       if (image != null) {
         _profilePicture = image;
       } else {
-        ByteData byteData =
-            await rootBundle.load('assets/images/doc_image.png');
-        _profilePicture = byteData.buffer.asUint8List();
+        // check if photo is present in firebase storage but not in local storage(app uninstalled)
+        await FirebaseStorage.instance
+            .ref()
+            .child('profile_picture/$userId')
+            .getData()
+            .then((photo) async {
+          if (photo != null) {
+            // debugPrint('photo is not null\n');
+            _profilePicture = photo;
+
+            // set image in local storage
+            await SPServices.setData(
+                'profile_picture/$userId', _profilePicture);
+          } else {
+            // image in neither in local storage or cloud storage
+            ByteData byteData =
+                await rootBundle.load('assets/images/doc_image.png');
+            _profilePicture = byteData.buffer.asUint8List();
+          }
+        });
       }
-      // debugPrint('profile photo changed -->\n\n');
     });
   }
 

@@ -74,6 +74,10 @@ dependencies:
 
  # local storage
   shared_preferences: ^2.0.15
+  url_launcher: ^6.1.7
+  open_file_plus: ^3.3.0
+  flutter_inappwebview: ^5.7.2+3
+  future_progress_dialog: ^0.2.1
 
 
 dev_dependencies:

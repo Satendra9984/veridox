@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
-class FormEmailTextInput extends StatefulWidget {
+class FormAadharNumberInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
   final String pageId;
   final String fieldId;
-  const FormEmailTextInput({
+  const FormAadharNumberInput({
     Key? key,
     required this.pageId,
     required this.fieldId,
@@ -17,10 +17,10 @@ class FormEmailTextInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FormEmailTextInput> createState() => _FormEmailTextInputState();
+  State<FormAadharNumberInput> createState() => _FormAadharNumberInputState();
 }
 
-class _FormEmailTextInputState extends State<FormEmailTextInput> {
+class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
   late TextEditingController _textEditingController;
   bool _isRequired = false;
 
@@ -75,12 +75,12 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
           String? value = _textEditingController.text;
           if (widget.widgetJson.containsKey('required') &&
               widget.widgetJson['required'] == true) {
-            if (value.isEmpty) return 'Please write some text';
+            if (value.isEmpty) return 'This field can\'t be empty';
 
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(value);
-            if (!emailValid) return 'Please enter a valid email';
+            bool emailValid =
+                RegExp(r"^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$")
+                    .hasMatch(value);
+            if (!emailValid) return 'Please enter a valid aadhar number';
           }
           return null;
         },

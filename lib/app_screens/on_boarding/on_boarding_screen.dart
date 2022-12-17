@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
-import '../../form_screens/home_page.dart';
 import '../home_page.dart';
 import '../login/login_page.dart';
 
@@ -28,22 +26,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     if (uid != null && token != null) {
       /// checking if field verifier already exists
-      await FirestoreServices.checkIfFvExists(uid).then((value) async {
+      await FirestoreServices.checkIfRequested(uid).then((value) async {
         if (value) {
-          /// if field verifier exists then navigate it to HomePage
-          navigatePushReplacement(context, const HomePage());
+          /// requested
+          debugPrint('requested\n');
+          navigatePushReplacement(context, StatusScreen(uid: uid));
         } else {
-          /// Or checking if it had sent a request to join any agency
-          bool requested =
-              await FirestoreServices.checkIfRequested(uid);
-          if (requested) {
-            navigatePushReplacement(context, StatusScreen(uid: uid));
-          } else {
-            navigatePushReplacement(
-              context,
-              const SendRequestScreen(),
-            );
-          }
+          /// not requested
+          debugPrint('not requested requested\n');
+
+          await FirestoreServices.checkIfFvExists(uid).then((value) {
+            if (value) {
+              /// field verifier exists
+              debugPrint('field verifier existes\n');
+
+              navigatePushReplacement(context, HomePage());
+            } else {
+              /// nor exists neither requested(fresh case)
+              debugPrint('fresh new case\n');
+              navigatePushReplacement(context, SendRequestScreen());
+            }
+          });
         }
       });
     } else {

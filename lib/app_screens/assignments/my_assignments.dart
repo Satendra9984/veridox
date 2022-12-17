@@ -9,9 +9,9 @@ class MyAssignments extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: 25),
           Row(
             children: [
-              SizedBox(height: 25),
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(

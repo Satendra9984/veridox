@@ -10,7 +10,6 @@ import 'package:veridox/app_widgets/file_upload_button.dart';
 import 'package:veridox/app_widgets/text_input.dart';
 import 'package:veridox/app_widgets/submit_button.dart';
 import '../../app_utils/app_functions.dart';
-import '../home_page.dart';
 import '../login/login_page.dart';
 
 class SendRequestScreen extends StatefulWidget {
@@ -264,7 +263,8 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
               Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
                   builder: (context) {
-                    return StatusScreen(uid: FirebaseAuth.instance.currentUser!.uid);
+                    return StatusScreen(
+                        uid: FirebaseAuth.instance.currentUser!.uid);
                   },
                 ),
               ),

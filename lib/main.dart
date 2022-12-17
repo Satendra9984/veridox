@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:veridox/app_providers/auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,8 +17,11 @@ import 'package:firebase_auth_platform_interface/firebase_auth_platform_interfac
 
 List<CameraDescription> cameras = [];
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // if (Platform.isAndroid) {
+  //   await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  // }
   try {
     // WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
@@ -53,14 +59,7 @@ class MyApp extends StatelessWidget {
           // textTheme: const TextTheme(),
           fontFamily: 'Ubuntu',
         ),
-        // home: const Scaffold(
-        //   body: GetUserLocation(
-        //     widgetJson: {
-        //       'label': 'enter location',
-        //       "required": true,
-        //     },
-        //   ),
-        // ),
+        // home: FileViewerWidget(),
         routes: {
           '/': (context) => const OnBoardingScreen(),
         },

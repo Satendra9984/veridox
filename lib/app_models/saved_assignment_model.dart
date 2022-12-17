@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class SavedAssignment {
   final String caseId;
   final String type;
-  final String applicant_address;
+  // final String applicant_address;
   String status;
   final String assignedDate;
   final String applicant_phone;
@@ -14,7 +14,7 @@ class SavedAssignment {
     return {
       'caseId': caseId,
       'document_type': type,
-      'applicant_address': applicant_address,
+      // 'applicant_address': applicant_address,
       'status': status,
       'assigned_at': assignedDate,
       'applicant_name': applicant_name,
@@ -31,7 +31,7 @@ class SavedAssignment {
       caseId: caseId,
       applicant_phone: jsonData['applicant_phone'] ?? '',
       applicant_name: jsonData['applicant_name'] ?? '',
-      applicant_address: jsonData['applicant_address'] ?? '',
+      // applicant_address: jsonData['applicant_address'] ?? '',
       assignedDate: jsonData['assigned_at'] ?? '',
       type: jsonData['document_type'] ?? '',
       status: jsonData['status'] ?? 'working',
@@ -40,7 +40,7 @@ class SavedAssignment {
   }
 
   SavedAssignment({
-    required this.applicant_address,
+    // required this.applicant_address,
     required this.caseId,
     required this.type,
     required this.status,

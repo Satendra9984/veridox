@@ -16,23 +16,18 @@ class FormHomePage extends StatefulWidget {
 }
 
 class _FormHomePageState extends State<FormHomePage> {
-  late final PageController _pageController;
-
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
   }
 
   @override
   void deactivate() {
-    _pageController.dispose();
     super.deactivate();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
     super.dispose();
   }
 
@@ -43,15 +38,12 @@ class _FormHomePageState extends State<FormHomePage> {
         future: FirestoreServices.getFormDataById(widget.caseId),
         builder: (context, AsyncSnapshot<Map<String, dynamic>?> form) {
           var snapshot = form.data;
-          // print(snapshot);
           if (form.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (form.hasData && snapshot != null) {
             final data = Map<String, dynamic>.from(snapshot);
-
-            // debugPrint('form data --> ${data.toString()}');
 
             return InitialFormPageView(caseId: widget.caseId, pagesData: data);
           } else if (snapshot == null) {

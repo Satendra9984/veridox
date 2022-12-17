@@ -28,7 +28,7 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
 
   @override
   void didChangeDependencies() {
-    debugPrint('dependency has changed\n\n');
+    // debugPrint('dependency has changed\n\n');
     _initLocationService();
     super.didChangeDependencies();
   }
@@ -36,13 +36,13 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState lifecycleState) async {
     if (lifecycleState == AppLifecycleState.detached) {
-      debugPrint('Applifecyclestate is detached');
+      // debugPrint('Applifecyclestate is detached');
     } else if (lifecycleState == AppLifecycleState.inactive) {
-      debugPrint('Applifecyclestate is inactive');
+      // debugPrint('Applifecyclestate is inactive');
     } else if (lifecycleState == AppLifecycleState.paused) {
-      debugPrint('Applifecyclestate is paused');
+      // debugPrint('Applifecyclestate is paused');
     } else if (lifecycleState == AppLifecycleState.resumed) {
-      debugPrint('Applifecyclestate is resumed');
+      // debugPrint('Applifecyclestate is resumed');
       await _initLocationService();
     }
   }
@@ -54,16 +54,16 @@ class _EnablePermissionPageState extends State<EnablePermissionPage>
       if (!await location.requestService()) {}
     }
     PermissionStatus permission = await location.hasPermission();
-    debugPrint('permission ${permission}\n\n');
+    // debugPrint('permission ${permission}\n\n');
 
     if (permission == PermissionStatus.granted) {
       Navigator.of(context)
           .push(CupertinoPageRoute(builder: (context) => OnBoardingScreen()));
     } else if (permission == PermissionStatus.denied) {
-      debugPrint('permission denied\n\n');
+      // debugPrint('permission denied\n\n');
 
       if (Navigator.canPop(context)) {
-        debugPrint('can pop\n\n');
+        // debugPrint('can pop\n\n');
         Navigator.popUntil(context, ModalRoute.withName("/"));
       }
       permission = await location.requestPermission();

@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file_plus/open_file_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import '../app_providers/form_provider.dart';
 import '../app_services/database/uploader.dart';
 import '../app_utils/app_constants.dart';
-import '../app_utils/pick_file/pick_file.dart';
 
 class FormFileInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -27,10 +29,19 @@ class FormFileInput extends StatefulWidget {
   State<FormFileInput> createState() => _FormFileInputState();
 }
 
-class _FormFileInputState extends State<FormFileInput>
-    with AutomaticKeepAliveClientMixin {
+class _FormFileInputState extends State<FormFileInput> {
   final List<String> _filesList = [];
-  bool _canAdd = true;
+
+  /// Because after taking photo build is called again so images are added already on top of existing images
+  bool _isListsInitializedAlready = false;
+
+  /// to take count of lengths index of images
+  int _fileIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   int _getCrossAxisCount() {
     Size size = MediaQuery.of(context).size;
@@ -38,8 +49,8 @@ class _FormFileInputState extends State<FormFileInput>
     double width = size.width;
 
     int wid = width.toInt();
-    int count = (wid) ~/ 200;
-    debugPrint('count --> $count');
+    int count = (wid) ~/ 150;
+    // debugPrint('count --> $count');
     return count;
   }
 
@@ -55,67 +66,187 @@ class _FormFileInputState extends State<FormFileInput>
 
   /// function for adding/updating file to database
   Future<void> _addData() async {
+    // debugPrint('adding files but filesLength - ${_filesList.length}');
     FilePickerResult? fileGet = await FilePicker.platform.pickFiles();
 
     if (fileGet != null) {
-      PlatformFile? file = fileGet.files.first;
-      debugPrint('fileGetPath --> ${file.path}\n');
-      if (file != null) {
-        Uint8List? fileBytes = await File(file.path!).readAsBytes();
-        if (fileBytes != null) {
-          String _dbPath =
-              '${widget.provider.assignmentId}/${widget.pageId},${widget.fieldId}/${file.path}';
-          UploadTask? task = await FileUploader.uploadFile(
-              dbPath: _dbPath, fileData: fileBytes);
+      PlatformFile file = fileGet.files.first;
+      // debugPrint('adding file of extension ${file!.extension}');
+      Uint8List? fileBytes = await File(file.path!).readAsBytes();
+      String _dbPath =
+          '${widget.provider.assignmentId}/${widget.pageId},${widget.fieldId}/${_fileIndex}';
 
-          if (task != null) {
-            setState(() {
-              _filesList.add(file.path!);
-            });
-          }
-        }
-      }
+      // debugPrint('uploading file at ${_dbPath}');
+
+      showDialog(
+        context: context,
+        builder: (context) => FutureProgressDialog(
+          FileUploader.uploadFile(dbPath: _dbPath, fileData: fileBytes)
+              .then((task) async {
+            if (task != null) {
+              setState(() {
+                _filesList.add(_dbPath);
+              });
+              _fileIndex++;
+              await _updateData();
+            }
+          }),
+          message: Center(
+            child: Text(
+              'Adding File',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // await FileUploader.uploadFile(dbPath: _dbPath, fileData: fileBytes)
+      //     .then((task) async {
+      //   if (task != null) {
+      //     setState(() {
+      //       _filesList.add(_dbPath);
+      //     });
+      //     _fileIndex++;
+      //     await _updateData();
+      //   }
+      // });
     }
-    _updateData();
   }
 
-  void _updateData() {
+  /// update field data in database
+  Future<void> _updateData() async {
     widget.provider.updateData(
       pageId: widget.pageId,
       fieldId: widget.fieldId,
       value: _filesList,
     );
+    await widget.provider.saveDraftData();
+  }
+
+  /// for deleting a file
+  Future<void> _deleteFile(int index) async {
+    await FirebaseStorage.instance
+        .ref()
+        .child(_filesList[index])
+        .delete()
+        .then((value) async {
+      setState(() {
+        _filesList.removeAt(index);
+      });
+      await _updateData();
+    }).catchError(
+      (e) {
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.circular(15),
+        //     ),
+        //     content: Row(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         Expanded(
+        //           flex: 2,
+        //           child: Icon(
+        //             Icons.error_outline,
+        //             size: 32,
+        //             color: Colors.redAccent,
+        //           ),
+        //         ),
+        //         SizedBox(width: 10),
+        //         Expanded(
+        //           flex: 8,
+        //           child: Text(
+        //             'File ${index + 1} not deleted, try after some time',
+        //             style: TextStyle(
+        //               // color: Colors.redAccent,
+        //               fontWeight: FontWeight.w500,
+        //               fontSize: 18,
+        //             ),
+        //             softWrap: true,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //     actions: [
+        //       ElevatedButton(
+        //         onPressed: () {
+        //           Navigator.of(context).pop();
+        //         },
+        //         style: ElevatedButton.styleFrom(
+        //           // backgroundColor: Colors.redAccent.shade200,
+        //           elevation: 5,
+        //         ),
+        //         child: Text('OK'),
+        //       ),
+        //     ],
+        //   ),
+        // );
+        return;
+      },
+    );
+  }
+
+  Widget _showDeleteFileAlertDialog(int index) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      content: Text(
+        'Delete File ${index + 1} ?',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.pop(context, true);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent.shade200,
+            elevation: 5,
+          ),
+          child: Text('Yes'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            // backgroundColor: Colors.redAccent.shade200,
+            elevation: 5,
+          ),
+          child: Text('Cancel'),
+        ),
+      ],
+    );
   }
 
   Future<void> _setInitialFilesData() async {
-    // debugPrint('FormImageInputIscalledinitialData --> \n');
-    dynamic listOfImagesFromDatabase =
-        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    if (_isListsInitializedAlready == false) {
+      dynamic listOfImagesFromDatabase =
+          widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
 
-    // debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase} 0\n');
+      List<dynamic> filesList =
+          List<dynamic>.from(listOfImagesFromDatabase ?? []);
 
-    if (listOfImagesFromDatabase != null &&
-        listOfImagesFromDatabase.isNotEmpty) {
-      // todo: check the length of the list if it 3 or more
-      // debugPrint('listOfImagesFromDatabase --> ${listOfImagesFromDatabase}\n');
-      for (String stref in listOfImagesFromDatabase) {
-        _filesList.add(stref);
-        // debugPrint('listOfImagesfromfirebasestorage --> $stref\n');
+      if (filesList.isNotEmpty) {
+        for (String stref in filesList) {
+          _filesList.add(stref);
+        }
+        _fileIndex = filesList.length;
       }
-      // debugPrint('_imagefilelist --> ${_filesList}\n');
-      // for (String path in _filesList) {
-      //   var image = await FirebaseStorage.instance.ref(path).getData();
-      //   if (image != null) {
-      //     debugPrint('Got images from firebase storage\n\n');
-      //     _filesList.add(image);
-      //   }
-      // }
+      _isListsInitializedAlready = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Container(
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
@@ -130,12 +261,14 @@ class _FormFileInputState extends State<FormFileInput>
           } else {
             return FormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              initialValue: _canAdd,
+              initialValue: _filesList,
               validator: (fileList) {
                 if (widget.widgetJson.containsKey('required') &&
                     widget.widgetJson['required'] == true &&
                     _filesList.isEmpty) {
                   return 'Please select a file';
+                } else if (_filesList.length < 3) {
+                  return null;
                 }
                 return null;
               },
@@ -152,126 +285,116 @@ class _FormFileInputState extends State<FormFileInput>
                     const SizedBox(
                       height: 15,
                     ),
-                    if (_filesList.isNotEmpty)
+                    if (_filesList.isNotEmpty && _filesList.length > 0)
                       GridView.builder(
                         shrinkWrap: true,
-                        itemCount: _filesList.length + 1,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: _getCrossAxisCount(),
-                          childAspectRatio: 4.7,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 8,
-                        ),
+                        itemCount: _filesList.length,
                         itemBuilder: (context, index) {
-                          if (index <= 2 && index != _filesList.length) {
-                            return Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Colors.grey.shade400,
-                                ),
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 8,
-                                    child: Text(
-                                      _filesList[index],
-                                      softWrap: false,
-                                      // overflow: TextOverflow.visible,
-                                      style: const TextStyle(
-                                        fontSize: 14,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(width: 5),
+                                Icon(
+                                  Icons.file_copy_sharp,
+                                  color: Colors.redAccent,
+                                ),
+                                SizedBox(width: 5),
+
+                                TextButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          FutureProgressDialog(
+                                        openFile(index),
+                                        message: Text(
+                                          'Processing',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'File ${index + 1}',
+                                    style: TextStyle(
+                                      fontSize: 16,
                                     ),
                                   ),
-                                  const Divider(
-                                    height: 10,
-                                    color: Colors.black,
+                                ),
+                                // SizedBox(width: 0),
+                                IconButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          _showDeleteFileAlertDialog(
+                                        index,
+                                      ),
+                                    ).then((delete) {
+                                      if (delete != null && delete == true) {
+                                        // debugPrint('delete choice = $delete');
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              FutureProgressDialog(
+                                            _deleteFile(index),
+                                            message: Center(
+                                              child: Text(
+                                                'Deleting File ${index + 1}',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel,
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: IconButton(
-                                        padding:
-                                            const EdgeInsets.only(right: 2.5),
-                                        onPressed: () {
-                                          setState(() {
-                                            _filesList.removeAt(index);
-                                            _canAdd = true;
-                                          });
-
-                                          /// adding data in the database
-                                          _updateData();
-                                        },
-                                        icon: const Icon(Icons.cancel)),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-
-                          return const Text('');
+                                  splashRadius: 10.0,
+                                ),
+                              ],
+                            ),
+                          );
                         },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _getCrossAxisCount(),
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 1,
+                          childAspectRatio: 3.5,
+                          // mainAxisSpacing:
+                        ),
                       ),
                     const SizedBox(
                       height: 5,
                     ),
-                    if (_canAdd)
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade400,
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade400,
-                              offset: const Offset(0.0, 0.5), //(x,y)
-                              blurRadius: 1.0,
-                            ),
+                    if (_filesList.length < 3)
+                      ElevatedButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('Add File'),
+                            const SizedBox(width: 10),
+                            const Icon(Icons.file_upload_outlined),
                           ],
                         ),
-                        child: GestureDetector(
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            margin: const EdgeInsets.all(5),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text(
-                                  'Add Files',
-                                  // softWrap: true,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.upload,
-                                  color: Colors.blue,
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () async {
-                            await _addData();
-
-                            if (_filesList.length == 3) {
-                              setState(() {
-                                _canAdd = false;
-                                formState.didChange(_canAdd);
-                              });
-                            }
-                          },
-                        ),
+                        onPressed: () async {
+                          await _addData();
+                        },
                       ),
                     if (formState.hasError)
                       Padding(
@@ -305,7 +428,54 @@ class _FormFileInputState extends State<FormFileInput>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  Future<String> _getFileExtension(int index) async {
+    var ref = await FirebaseStorage.instance
+        .ref()
+        .child(_filesList[index])
+        .getMetadata();
+
+    if (ref.contentType != null) {
+      String extension = ref.contentType!;
+      String lastThree =
+          extension.substring(extension.length - 3, extension.length);
+      if (lastThree == 'pdf') {
+        return '.pdf';
+      } else if (lastThree == 'peg') {
+        return '.jpeg';
+      } else if (lastThree == 'jpg') {
+        return '.jpg';
+      } else if (lastThree == 'png') {
+        return '.png';
+      } else if (lastThree == 'ent') {
+        return '.docx';
+      }
+    }
+    return '.pdf';
+  }
+
+  Future<void> openFile(int index) async {
+    var ref = await FirebaseStorage.instance
+        .ref()
+        .child(_filesList[index])
+        .getDownloadURL();
+
+    http.get(Uri.parse(ref)).then((response) async {
+      Uint8List bodyBytes = response.bodyBytes;
+      final dir = await getExternalStorageDirectory();
+      String fileExtension = await _getFileExtension(index);
+      debugPrint('file extension = $fileExtension');
+      final myImagePath = dir!.path + "/myfile$fileExtension";
+      File imageFile = File(myImagePath);
+      if (!await imageFile.exists()) {
+        imageFile.create(recursive: true);
+      }
+      imageFile.writeAsBytes(bodyBytes);
+      final result = await OpenFile.open(imageFile.path);
+
+      // setState(() {
+      String _openResult = "type=${result.type}  message=${result.message}";
+      // });
+      debugPrint('open rsult = $_openResult');
+    });
+  }
 }

@@ -41,8 +41,12 @@ class FirestoreServices {
   }
 
   static Future<bool> checkIfRequested(String uid) async {
-    final snap = await _firestore.collection('add_requests').get();
-    return snap.docs.where((element) => element.id == uid).toList().isNotEmpty;
+    final snap = await _firestore.collection('add_requests').doc(uid).get();
+    if (snap.data() == null) {
+      return false;
+    }
+
+    return snap.data()!.isNotEmpty;
   }
 
   static Future<Map<String, dynamic>?> getRequestStatus(String uid) async {
@@ -118,9 +122,7 @@ class FirestoreServices {
   }
 
   static Future<void> deleteRequest(String uid) async {
-
     await _firestore.collection('add_request').doc(uid).delete();
-
   }
 
   static Future<void> updateDatabase(

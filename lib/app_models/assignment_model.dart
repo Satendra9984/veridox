@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 class Assignment {
   final String caseId;
   final String type;
-  final String address;
+  // final String address;
   final String status;
   final String assignedDate;
   final String phone;
@@ -14,7 +14,7 @@ class Assignment {
     return {
       'caseId': caseId,
       'document_type': type,
-      'address': address,
+      // 'address': address,
       'status': status,
       'assigned_to': assignedDate,
       'name': name
@@ -27,7 +27,7 @@ class Assignment {
       caseId: caseId,
       phone: jsonData['applicant_phone'],
       name: jsonData['applicant_name'],
-      address: jsonData['applicant_address'],
+      // address: jsonData['applicant_address'],
       assignedDate: jsonData['assigned_at'],
       type: jsonData['document_type'],
       status: jsonData['status'],
@@ -35,7 +35,7 @@ class Assignment {
   }
 
   Assignment({
-    required this.address,
+    // required this.address,
     required this.caseId,
     required this.type,
     required this.status,

@@ -42,134 +42,94 @@ class AssignmentCard extends StatelessWidget {
           elevation: 8,
           child: Padding(
             padding: const EdgeInsets.all(17.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                Container(
+                  margin: const EdgeInsets.only(left: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DetailTextStylesWidget(
-                        icon: Icon(
-                          Icons.numbers,
-                          color: Colors.orange.shade300,
-                          size: 18,
-                        ),
-                        heading: 'Id',
-                        value: Text(
-                          assignment.caseId,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontStyle: FontStyle.normal,
-                            // fontWeight: FontWeight.w500,
+                      Expanded(
+                        flex: 9,
+                        child: DetailTextStylesWidget(
+                          icon: Icon(
+                            Icons.numbers,
+                            color: Colors.orange.shade300,
+                            size: 18,
+                          ),
+                          heading: 'Id',
+                          value: Text(
+                            assignment.caseId,
+                            style: _assignmentCardTextStyle,
                           ),
                         ),
                       ),
-                      DetailTextStylesWidget(
-                        icon: Icon(
-                          Icons.person,
-                          color: Colors.blue.shade300,
-                          // size: 16,
-                        ),
-                        heading: 'Name',
-                        value: Text(
-                          assignment.name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            // color: Colors.
-                          ),
-                        ),
-                      ),
-                      DetailTextStylesWidget(
-                        icon: const Icon(
-                          Icons.phone,
-                          color: Colors.greenAccent,
-                        ),
-                        heading: 'phone',
-                        value: Text(
-                          assignment.phone,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      DetailTextStylesWidget(
-                        icon: Icon(
-                          FontAwesomeIcons.fileLines,
-                          color: Colors.grey.shade500,
-                          size: 18,
-                        ),
-                        heading: 'type',
-                        value: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 3),
-                                  Text(
-                                    assignment.type,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.date_range,
-                                    color: Colors.grey.shade500,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 3),
-                                  Text(
-                                    assignment.assignedDate,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                      Expanded(
+                        flex: 1,
+                        child: CircleAvatar(
+                          backgroundColor: getStatusColour(assignment.status),
+                          radius: 9.0,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
+                DetailTextStylesWidget(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.grey.shade600,
+                    // size: 16,
+                  ),
+                  heading: 'Name',
+                  value: Text(
+                    assignment.name,
+                    style: _assignmentCardTextStyle,
+                  ),
+                ),
+                DetailTextStylesWidget(
+                  icon: const Icon(
+                    Icons.phone,
+                    color: Colors.greenAccent,
+                  ),
+                  heading: 'phone',
+                  value: Text(
+                    assignment.phone,
+                    style: _assignmentCardTextStyle,
+                  ),
+                ),
+                // const SizedBox(height: 5),
+                Container(
+                  margin: const EdgeInsets.only(left: 15),
+                  child: Row(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: getStatusColour(assignment.status),
-                        radius: 9.0,
+                      Expanded(
+                        child: DetailTextStylesWidget(
+                          icon: const Icon(
+                            Icons.document_scanner_rounded,
+                            // color: Colors.greenAccent,
+                          ),
+                          heading: 'type',
+                          value: Text(
+                            assignment.type,
+                            style: _assignmentCardTextStyle,
+                          ),
+                        ),
                       ),
-                      // IconButton(
-                      //   onPressed: () {
-                      //     showModalBottomSheet(
-                      //       context: context,
-                      //       builder: (ctx) => const CustomBottomSheet(),
-                      //       shape: const RoundedRectangleBorder(
-                      //           borderRadius: BorderRadius.only(
-                      //               topLeft: Radius.circular(20),
-                      //               topRight: Radius.circular(20))),
-                      //     );
-                      //   },
-                      //   icon: const Icon(Icons.more_vert),
-                      // ),
+                      Expanded(
+                        child: DetailTextStylesWidget(
+                          icon: Icon(
+                            Icons.date_range_outlined,
+                            color: Colors.blueAccent.shade100,
+                          ),
+                          heading: 'phone',
+                          value: Text(
+                            assignment.assignedDate,
+                            style: _assignmentCardTextStyle,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -181,3 +141,10 @@ class AssignmentCard extends StatelessWidget {
     );
   }
 }
+
+TextStyle _assignmentCardTextStyle = const TextStyle(
+  fontSize: 15,
+  fontStyle: FontStyle.normal,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w500,
+);

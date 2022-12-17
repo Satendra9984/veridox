@@ -23,7 +23,7 @@ class FormProvider extends ChangeNotifier {
       _result['$pageId,$fieldId,$rowId,$columnId'] = value;
     } else {
       _result['$pageId,$fieldId'] = value;
-      debugPrint(_result.toString());
+      debugPrint('$_result\n\n');
     }
   }
 
@@ -47,7 +47,7 @@ class FormProvider extends ChangeNotifier {
       Map<String, dynamic>? data = snap.data();
       if (data != null && data.isNotEmpty) {
         _result = data;
-        // debugPrint
+        debugPrint('initial provider data: $_result\n\n');
       }
     }
   }
@@ -59,7 +59,7 @@ class FormProvider extends ChangeNotifier {
 
   Future<void> saveDraftData() async {
     try {
-      // debugPrint('saving draft data: assignment id --> ${assignmentId}, \n\n');
+      debugPrint('saving draft data: $_result\n\n');
       await FirebaseFirestore.instance
           .collection('assignments')
           .doc(assignmentId)
