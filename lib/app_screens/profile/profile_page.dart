@@ -141,6 +141,10 @@ class _ProfilePageState extends State<ProfilePage>
                 await rootBundle.load('assets/images/doc_image.png');
             _profilePicture = byteData.buffer.asUint8List();
           }
+        }).catchError((error) async {
+          ByteData byteData =
+              await rootBundle.load('assets/images/doc_image.png');
+          _profilePicture = byteData.buffer.asUint8List();
         });
       }
     });
