@@ -2,13 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
+import 'package:veridox/app_utils/http_requests.dart';
 
 class SendRequestProvider extends ChangeNotifier {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  String dropDown = 'Select your agency';
+  final TextEditingController _dropDownController = TextEditingController();
+
+  // String dropDown = 'Select your agency';
   String agencyUid = '';
   final TextEditingController _aadharRef = TextEditingController();
   final TextEditingController _panRef = TextEditingController();
@@ -17,7 +20,7 @@ class SendRequestProvider extends ChangeNotifier {
   get getNameCtrl => _nameController;
   get getPhoneCtrl => _phoneController;
   get getEmailCtrl => _emailController;
-  get getDropDown => dropDown;
+  get getDropDownCtrl => _dropDownController;
   get getAadharRef => _aadharRef;
   get getPanRef => _panRef;
 
@@ -38,13 +41,24 @@ class SendRequestProvider extends ChangeNotifier {
       'email': _emailController.text,
       'aadharRef': _aadharRef.text,
       'panRef': _panRef.text,
-      'agency_name': dropDown,
+      'agency_name': _dropDownController.text,
     };
     // http://veridocs.pythonanywhere.com/api/user/uid
-    await FirestoreServices.sendJoinRequest(
-      data,
-      FirebaseAuth.instance.currentUser!.uid,
-      agencyUid,
-    );
+    debugPrint('sending add request with data -> ${data}');
+
+    await HTTPRequests.sendPostRequest(
+            'user/${FirebaseAuth.instance.currentUser!.uid}')
+        .then((value) async {
+      if (value != null) {
+        debugPrint('dUid -> ${value}\n');
+        String dUid = value['id'];
+        data['id'] = dUid;
+        await FirestoreServices.sendJoinRequest(
+          data,
+          FirebaseAuth.instance.currentUser!.uid,
+          agencyUid,
+        );
+      }
+    });
   }
 }

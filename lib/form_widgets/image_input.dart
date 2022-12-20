@@ -224,14 +224,39 @@ class _FormImageInputState extends State<FormImageInput> {
     super.dispose();
   }
 
-  String _getLabel() {
+  Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
-    if (widget.widgetJson.containsKey('required') &&
-        widget.widgetJson['required'] == true) {
-      label += '*';
-    }
-    return label;
+    return RichText(
+      text: TextSpan(
+        text: '$label',
+        style: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+        children: [
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true)
+            TextSpan(
+              text: ' *',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          // TextSpan(
+          //   text: ' *',
+          //   style: TextStyle(
+          //     color: Colors.red,
+          //     fontSize: 18.0,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -264,14 +289,7 @@ class _FormImageInputState extends State<FormImageInput> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     /// Title
-                    Text(
-                      _getLabel(),
-                      softWrap: true,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    _getLabel(),
                     const SizedBox(
                       height: 15,
                     ),

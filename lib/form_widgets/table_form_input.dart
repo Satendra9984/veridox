@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../app_providers/form_provider.dart';
-import '../app_utils/app_constants.dart';
 
 class FormTableTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -38,28 +37,31 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
     super.initState();
   }
 
-  // TextInputType _getKeyboardType() {
-  //   if (widget.widgetData['multi_line']) {
-  //     return TextInputType.multiline;
-  //   } else if (widget.widgetData['type'] == 'number') {
-  //     return TextInputType.number;
-  //   } else if (widget.widgetData['type'] == 'phone') {
-  //     return TextInputType.phone;
-  //   } else if (widget.widgetData['type'] == 'email') {
-  //     return TextInputType.emailAddress;
-  //   }
-  //
-  //   return TextInputType.text;
-  // }
-
-  String _getLabel() {
+  Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
-    if (widget.widgetJson.containsKey('required') &&
-        widget.widgetJson['required'] == true) {
-      label += '*';
-    }
-    return label;
+    return RichText(
+      text: TextSpan(
+        text: '$label',
+        style: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+        children: [
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true)
+            TextSpan(
+              text: ' *',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -85,10 +87,7 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                _getLabel(),
-                style: kFormWidgetLabelStyle,
-              ),
+              _getLabel(),
               const SizedBox(
                 height: 10,
               ),
@@ -146,33 +145,3 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
     );
   }
 }
-
-// if (widget.widgetData['required'] &&
-//     (value == null || value.isEmpty)) {
-//   return 'Please enter some text';
-// }
-// if (value != null && value.length > widget.widgetData['length']) {
-//   return 'Enter text is exceeding the size';
-// }
-// if (value != null && widget.widgetData['type'] == 'phone') {
-//   bool phone = RegExp(
-//           r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
-//       .hasMatch(value ?? '');
-//   if (!phone) {
-//     return 'Please enter a valid phone number';
-//   }
-// }
-// if (value != null &&
-//     widget.widgetData['type'] == 'number' &&
-//     int.tryParse(value) == null) {
-//   return 'Please enter a valid number';
-// }
-// if (value != null && widget.widgetData['type'] == 'email') {
-//   bool email = RegExp(
-//           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-//       .hasMatch(value ?? '');
-//   if (!email) {
-//     return 'Please enter a valid email';
-//   }
-// }
-// return null;

@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_screens/profile/update_profile_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
@@ -15,7 +14,6 @@ import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_services/database/uploader.dart';
 import '../../app_utils/pick_file/pick_file.dart';
 import '../../app_widgets/profile_options.dart';
-import '../assignments/assignment_detail_page.dart';
 
 /// design links
 // https://dribbble.com/shots/15978555-qr-details-user-profile/attachments/7815354?mode=media
@@ -154,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage>
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 15),
+          SizedBox(height: 25),
           Container(
             alignment: Alignment.topLeft,
             margin:

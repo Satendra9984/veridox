@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/app_utils/app_constants.dart';
+import 'package:veridox/form_widgets/date_time.dart';
+import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/table_form_input.dart';
+import 'package:veridox/form_widgets/toggle_button.dart';
 
 import '../app_providers/form_provider.dart';
 
@@ -42,23 +45,36 @@ class _FormTableInputState extends State<FormTableInput> {
     // debugPrint('columns --> ${_columnLabels.toString()}');
   }
 
-  String _getLabel() {
+  Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
-    if (widget.widgetJson.containsKey('required') &&
-        widget.widgetJson['required'] == true) {
-      label += '*';
-    }
-    return label;
+    return RichText(
+      text: TextSpan(
+        text: '$label',
+        style: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+        children: [
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true)
+            TextSpan(
+              text: ' *',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //   color: Colors.white,
-      //   borderRadius: BorderRadius.circular(10),
-      // ),
       decoration: containerElevationDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,10 +82,7 @@ class _FormTableInputState extends State<FormTableInput> {
           /// For the main heading/title
           Container(
             margin: const EdgeInsets.only(left: 15, top: 25),
-            child: Text(
-              _getLabel(),
-              style: kFormWidgetLabelStyle,
-            ),
+            child: _getLabel(),
           ),
           const SizedBox(
             height: 10,
@@ -108,19 +121,49 @@ class _FormTableInputState extends State<FormTableInput> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: _columnLabels.map(
                         (col) {
-                          return FormTableTextInput(
-                            widgetJson: {
-                              "id": col['id'],
-                              "label": col['label'],
-                              "required": _isRequired,
-                              "widget": "text-input"
-                            },
-                            pageId: widget.pageId,
-                            fieldId: widget.fieldId,
-                            provider: widget.provider,
-                            colId: col['id'].toString(),
-                            rowId: row['id'].toString(),
-                          );
+                          if (col['widget'] == 'toggle-input') {
+                            return ToggleButton(
+                              pageId: '${widget.pageId},${widget.fieldId}',
+                              fieldId: '${row['id']},${col['id']}',
+                              provider: widget.provider,
+                              widgetJson: col,
+                            );
+                          } else if (col['widget'] == 'date-time') {
+                            return DateTimePicker(
+                              pageId: '${widget.pageId},${widget.fieldId}',
+                              fieldId: '${row['id']},${col['id']}',
+                              provider: widget.provider,
+                              widgetJson: col,
+                            );
+                          } else if (col['widget'] == 'text-input') {
+                            return DateTimePicker(
+                              pageId: '${widget.pageId},${widget.fieldId}',
+                              fieldId: '${row['id']},${col['id']}',
+                              provider: widget.provider,
+                              widgetJson: col,
+                            );
+                          } else if (col['widget'] == 'address') {
+                            return GetUserLocation(
+                              pageId: '${widget.pageId},${widget.fieldId}',
+                              fieldId: '${row['id']},${col['id']}',
+                              provider: widget.provider,
+                              widgetJson: col,
+                            );
+                          } else {
+                            return FormTableTextInput(
+                              widgetJson: {
+                                "id": col['id'],
+                                "label": col['label'],
+                                "required": _isRequired,
+                                "widget": col['widget'],
+                              },
+                              pageId: widget.pageId,
+                              fieldId: widget.fieldId,
+                              provider: widget.provider,
+                              colId: col['id'].toString(),
+                              rowId: row['id'].toString(),
+                            );
+                          }
                         },
                       ).toList(),
                     ),

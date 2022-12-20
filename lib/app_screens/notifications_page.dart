@@ -14,12 +14,17 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: 25),
           Row(
             children: [
               Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(
-                    right: 8.0, left: 15, top: 5, bottom: 0),
+                  right: 8.0,
+                  left: 15,
+                  top: 5,
+                  bottom: 0,
+                ),
                 child: Image.asset(
                   'assets/launcher_icons/veridocs_launcher_icon.jpeg',
                   fit: BoxFit.contain,

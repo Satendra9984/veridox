@@ -44,7 +44,7 @@ class _CustomTextInputState extends State<CustomTextInput> {
         initialValue: widget.controller,
         validator: (val) {
           String? value = widget.controller.text;
-          debugPrint('value --> ${val.runtimeType}');
+          // debugPrint('value --> ${val.runtimeType}');
           return widget.validator(value);
         },
         builder: (formState) {

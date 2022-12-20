@@ -29,21 +29,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await FirestoreServices.checkIfRequested(uid).then((value) async {
         if (value) {
           /// requested
-          debugPrint('requested\n');
+          // debugPrint('requested\n');
           navigatePushReplacement(context, StatusScreen(uid: uid));
         } else {
           /// not requested
-          debugPrint('not requested requested\n');
+          // debugPrint('not requested requested\n');
 
           await FirestoreServices.checkIfFvExists(uid).then((value) {
             if (value) {
               /// field verifier exists
-              debugPrint('field verifier existes\n');
+              // debugPrint('field verifier existes\n');
 
               navigatePushReplacement(context, HomePage());
             } else {
               /// nor exists neither requested(fresh case)
-              debugPrint('fresh new case\n');
+              // debugPrint('fresh new case\n');
               navigatePushReplacement(context, SendRequestScreen());
             }
           });

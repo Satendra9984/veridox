@@ -114,10 +114,9 @@ class FirestoreServices {
         .doc(fv)
         .set(data)
         .whenComplete(() async {
-      await _firestore.collection('add_requests').doc(fv).set({
-        'agency': agency,
-        'status': 'requested',
-      });
+      data['agency'] = agency;
+      data['status'] = 'requested';
+      await _firestore.collection('add_requests').doc(fv).set(data);
     });
   }
 

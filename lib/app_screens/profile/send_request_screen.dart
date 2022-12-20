@@ -204,7 +204,7 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                         AsyncSnapshot<List<Map<String, dynamic>>>? list) {
                       List<Map<String, dynamic>>? data = list?.data;
                       if (data == null) {
-                        return const Text('');
+                        return const Text('No registered Agency');
                       }
 
                       return CustomDropDownButton(
@@ -213,12 +213,17 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                               (e) => e['agency_name'].toString(),
                             )
                             .toList(),
+                        cntrl: _provider.getDropDownCtrl,
                         onChanged: (int value) {
                           dropDown = data[value]['agency_name'];
-                          _provider.dropDown = dropDown;
+                          _provider.getDropDownCtrl.text = dropDown;
                           _provider.agencyUid = data[value]['id'];
-                          // debugPrint('${data[value]['id']}\n');
-                          // debugPrint('${data[value]['agency_name']}\n');
+                        },
+                        validator: (agency) {
+                          if (agency == null || agency.isEmpty) {
+                            return 'Please choose a Agency';
+                          }
+                          return null;
                         },
                         hintText: 'Select Agency',
                       );
@@ -230,6 +235,12 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                   ),
 
                   FileUploadButton(
+                    validator: (uploaded) {
+                      if (uploaded == null || uploaded.isEmpty) {
+                        return 'Please Upload Aadhar Card';
+                      }
+                      return null;
+                    },
                     text: 'Aadhar Card',
                     location:
                         'aadhar/${FirebaseAuth.instance.currentUser!.uid}',
@@ -241,6 +252,12 @@ class _SendRequestScreenState extends State<SendRequestScreen> {
                   ),
 
                   FileUploadButton(
+                    validator: (uploaded) {
+                      if (uploaded == null || uploaded.isEmpty) {
+                        return 'Please Upload Pan Card';
+                      }
+                      return null;
+                    },
                     text: 'Pan Card',
                     location:
                         'pan_card/${FirebaseAuth.instance.currentUser!.uid}',

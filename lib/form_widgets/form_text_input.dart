@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
-// response done
 class FormTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
@@ -37,28 +36,31 @@ class _FormTextInputState extends State<FormTextInput> {
     super.initState();
   }
 
-  // TextInputType _getKeyboardType() {
-  //   if (widget.widgetData['multi_line']) {
-  //     return TextInputType.multiline;
-  //   } else if (widget.widgetData['type'] == 'number') {
-  //     return TextInputType.number;
-  //   } else if (widget.widgetData['type'] == 'phone') {
-  //     return TextInputType.phone;
-  //   } else if (widget.widgetData['type'] == 'email') {
-  //     return TextInputType.emailAddress;
-  //   }
-  //
-  //   return TextInputType.text;
-  // }
-
-  String _getLabel() {
+  Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
-    if (widget.widgetJson.containsKey('required') &&
-        widget.widgetJson['required'] == true) {
-      label += '*';
-    }
-    return label;
+    return RichText(
+      text: TextSpan(
+        text: '$label',
+        style: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+        ),
+        children: [
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] == true)
+            TextSpan(
+              text: ' *',
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -86,23 +88,13 @@ class _FormTextInputState extends State<FormTextInput> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                _getLabel(),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              _getLabel(),
               const SizedBox(
                 height: 25,
               ),
               TextField(
-                // focusNode: FocusNode(),
-
                 controller: _textEditingController,
                 onChanged: (val) {
-                  // _textEditingController.text = val;
-                  debugPrint('form text input pageId --> ${widget.pageId}\n\n');
                   widget.provider.updateData(
                       pageId: widget.pageId,
                       fieldId: widget.fieldId,
@@ -112,18 +104,11 @@ class _FormTextInputState extends State<FormTextInput> {
                 minLines: 1,
                 maxLines: widget.widgetJson['multi_line'] ?? false ? 7 : 1,
                 maxLength: widget.widgetJson['length'],
-                // keyboardType: _getKeyboardType(),
                 decoration: InputDecoration(
-                  //   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  //   enabledBorder: InputBorder.none,
-                  //   errorBorder: InputBorder.none,
-                  //   disabledBorder: InputBorder.none,
                   hintText: 'Your Answer',
                   hintStyle: kHintTextStyle,
-
                   isDense: true, // Added this
-                  // contentPadding: EdgeInsets.all(-10),
                 ),
               ),
               if (formState.hasError)

@@ -37,35 +37,35 @@ class _StatusScreenState extends State<StatusScreen>
         .get();
 
     Map<String, dynamic>? req = snap.data();
-
+    debugPrint('request data ${req}');
     if (req != null) {
       s = req['status'];
       s = s.toUpperCase();
-
-      /// now get request details from agency to showcase
-      if (s != 'ACCEPTED') {
-        DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
-            await FirebaseFirestore.instance
-                .collection('agency')
-                .doc(req['agency'])
-                .collection('add_requests')
-                .doc(widget.uid)
-                .get();
-
-        Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
-        debugPrint('fullDetails1 --> $fullRequestDetails');
-
-        return fullRequestDetails;
-      }
-      DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
-          await FirebaseFirestore.instance
-              .collection('field_verifier')
-              .doc(widget.uid)
-              .get();
-
-      Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
-      debugPrint('fullDetails --> $fullRequestDetails');
-      return fullRequestDetails;
+      return req;
+      //   /// now get request details from agency to showcase
+      //   if (s != 'ACCEPTED') {
+      //     DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
+      //         await FirebaseFirestore.instance
+      //             .collection('add_requests')
+      //             .doc(widget.uid)
+      //             .get();
+      //
+      //     Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
+      //     // debugPrint('fullDetails1 --> $fullRequestDetails');
+      //
+      //     return fullRequestDetails;
+      //   }
+      //   DocumentSnapshot<Map<String, dynamic>> rawRequestDetails =
+      //       await FirebaseFirestore.instance
+      //           .collection('field_verifier')
+      //           .doc(widget.uid)
+      //           .get()
+      //           .catchError((error) {
+      //     // debugPrint('error on rawrequest-> ${error}\n\n');
+      //   });
+      //   Map<String, dynamic>? fullRequestDetails = rawRequestDetails.data();
+      //   debugPrint('fullDetails --> $fullRequestDetails');
+      //   return fullRequestDetails;
     }
     return null;
   }
@@ -315,6 +315,14 @@ class _StatusScreenState extends State<StatusScreen>
                         ],
                       ),
                     ),
+                  );
+                } else if (snap.hasError) {
+                  return Center(
+                    child: Text('Some Error Occurred ${snap.error}'),
+                  );
+                } else if (snap.connectionState == ConnectionState.active) {
+                  return Center(
+                    child: Text('Some Error Occurred ${snap.error}'),
                   );
                 } else {
                   return Center(
