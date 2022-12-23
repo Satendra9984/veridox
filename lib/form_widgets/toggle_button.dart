@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../app_providers/form_provider.dart';
@@ -11,12 +10,15 @@ class ToggleButton extends StatefulWidget {
   final FormProvider provider;
   final String pageId;
   final String fieldId;
+  final String? rowId;
+  final String? colId;
   const ToggleButton({
     Key? key,
     required this.pageId,
     required this.fieldId,
     required this.provider,
     required this.widgetJson,
+    this.rowId, this.colId
   }) : super(key: key);
 
   @override
@@ -38,8 +40,12 @@ class _ToggleButtonState extends State<ToggleButton> {
   }
 
   void _setInitialData() {
-    status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
-
+    if (widget.rowId == null) {
+      status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    } else {
+      status = widget.provider.getResult['${widget.pageId},${widget.fieldId},${
+        widget.rowId},${widget.colId}'];
+    }
     if (status == null) {
       _currentIcon = const Icon(
         Icons.check_box_outline_blank,
@@ -100,7 +106,7 @@ class _ToggleButtonState extends State<ToggleButton> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       margin: const EdgeInsets.only(bottom: 15),
-      decoration: containerElevationDecoration,
+      decoration: widget.rowId == null ? containerElevationDecoration : null,
       child: FormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: status,
@@ -114,28 +120,28 @@ class _ToggleButtonState extends State<ToggleButton> {
         },
         builder: (formState) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _getLabel(),
                   const SizedBox(
                     width: 15,
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: IconButton(
-                      icon: _currentIcon,
-                      onPressed: () {
-                        _setCheckIcon();
-
-                        widget.provider.updateData(
-                          pageId: widget.pageId,
-                          fieldId: widget.fieldId,
-                          value: status,
-                        );
-                        formState.didChange(status);
-                      },
-                    ),
+                  IconButton(
+                    icon: _currentIcon,
+                    onPressed: () {
+                      _setCheckIcon();
+                      widget.provider.updateData(
+                        pageId: widget.pageId,
+                        fieldId: widget.fieldId,
+                        rowId: widget.rowId,
+                        columnId: widget.colId,
+                        value: status,
+                      );
+                      formState.didChange(status);
+                    },
                   ),
                 ],
               ),

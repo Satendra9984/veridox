@@ -91,19 +91,20 @@ class _FormTableInputState extends State<FormTableInput> {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             /// For each row_label
-            children: _rowLabels.map(
-              (row) {
+            children: _columnLabels.map(
+              (col) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    row != ''
+                    col != ''
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              SizedBox(height: 20,),
                               Text(
-                                row['label'].toString(),
+                                col['label'].toString(),
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 19,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 softWrap: true,
@@ -119,43 +120,47 @@ class _FormTableInputState extends State<FormTableInput> {
                           ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _columnLabels.map(
-                        (col) {
-                          if (col['widget'] == 'toggle-input') {
+                      children: _rowLabels.map(
+                        (row) {
+                          if (col['widget'] == '') {
+                            col['widget'] = null;
+                          }
+                          String type = col['widget'] ?? (row['widget'] ?? '');
+                          print(type);
+                          if (type == 'toggle-button') {
                             return ToggleButton(
+                              rowId: row['id'].toString(),
+                              colId: col['id'].toString(),
                               pageId: '${widget.pageId},${widget.fieldId}',
                               fieldId: '${row['id']},${col['id']}',
                               provider: widget.provider,
-                              widgetJson: col,
+                              widgetJson: row,
                             );
-                          } else if (col['widget'] == 'date-time') {
+                          } else if (type == 'date-time') {
                             return DateTimePicker(
+                              rowId: row['id'].toString(),
+                              columnId: col['id'].toString(),
                               pageId: '${widget.pageId},${widget.fieldId}',
                               fieldId: '${row['id']},${col['id']}',
                               provider: widget.provider,
-                              widgetJson: col,
+                              widgetJson: row,
                             );
-                          } else if (col['widget'] == 'text-input') {
-                            return DateTimePicker(
-                              pageId: '${widget.pageId},${widget.fieldId}',
-                              fieldId: '${row['id']},${col['id']}',
-                              provider: widget.provider,
-                              widgetJson: col,
-                            );
-                          } else if (col['widget'] == 'address') {
+                          } else if (type == 'address') {
                             return GetUserLocation(
+                              rowId: row['id'].toString(),
+                              colId: col['id'].toString(),
                               pageId: '${widget.pageId},${widget.fieldId}',
                               fieldId: '${row['id']},${col['id']}',
                               provider: widget.provider,
-                              widgetJson: col,
+                              widgetJson: row,
                             );
                           } else {
                             return FormTableTextInput(
                               widgetJson: {
-                                "id": col['id'],
-                                "label": col['label'],
+                                "id": row['id'],
+                                "label": row['label'],
                                 "required": _isRequired,
-                                "widget": col['widget'],
+                                "widget": row['widget'],
                               },
                               pageId: widget.pageId,
                               fieldId: widget.fieldId,
@@ -168,8 +173,13 @@ class _FormTableInputState extends State<FormTableInput> {
                       ).toList(),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
+                    Divider(
+                      indent: 3,
+                      endIndent: 3,
+                      thickness: 1,
+                    )
                   ],
                 );
               },
