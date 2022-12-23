@@ -37,20 +37,6 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
     super.initState();
   }
 
-  // TextInputType _getKeyboardType() {
-  //   if (widget.widgetData['multi_line']) {
-  //     return TextInputType.multiline;
-  //   } else if (widget.widgetData['type'] == 'number') {
-  //     return TextInputType.number;
-  //   } else if (widget.widgetData['type'] == 'phone') {
-  //     return TextInputType.phone;
-  //   } else if (widget.widgetData['type'] == 'email') {
-  //     return TextInputType.emailAddress;
-  //   }
-  //
-  //   return TextInputType.text;
-  // }
-
   Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
@@ -73,14 +59,6 @@ class _FormEmailTextInputState extends State<FormEmailTextInput> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );

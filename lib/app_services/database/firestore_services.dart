@@ -18,10 +18,39 @@ class FirestoreServices {
         .map(
           (snapshot) => snapshot.docs.map(
             (doc) {
-              return Assignment.fromJson(doc.data(), doc.id);
+              Map<String, dynamic> docData = doc.data();
+              docData['caseId'] = doc.id;
+              return Assignment.fromJson(docData, doc.id);
             },
           ).toList(),
         );
+  }
+
+  /// get saved assignments list
+  static Future<List<Map<String, dynamic>?>> getSavedAssignments() async {
+    final _auth = FirebaseAuth.instance;
+    final uid = _auth.currentUser!.uid;
+    List<Map<String, dynamic>> list = [];
+    await _firestore
+        .collection('field_verifier')
+        .doc(uid)
+        .collection('assignments')
+        .get()
+        .then((lists) {
+      if (lists.docs.isNotEmpty) {
+        lists.docs.forEach((elementQuery) {
+          var element = elementQuery.data();
+          if (element['status'] == 'in_progress' ||
+              element['status'] == 'reassigned') {
+            list.add(element);
+          }
+        });
+      }
+    }).catchError((error) {
+      debugPrint('Saved assignment error: $error');
+    });
+
+    return list;
   }
 
   /// Below two functions are used for getting complete assignment from firebase

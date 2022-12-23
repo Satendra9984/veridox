@@ -7,3 +7,8 @@ enum AssignmentFilters {
   PendingVerification,
   All,
 }
+
+enum SavedAssignmentFilters {
+  InProgress,
+  ReAssigned,
+}

@@ -8,7 +8,7 @@ class SavedAssignment {
   final String assignedDate;
   final String applicant_phone;
   final String applicant_name;
-  final Map<String, dynamic>? formData;
+  // final Map<String, dynamic>? formData;
 
   Map<String, dynamic> toJson() {
     return {
@@ -19,12 +19,12 @@ class SavedAssignment {
       'assigned_at': assignedDate,
       'applicant_name': applicant_name,
       'applicant_phone': applicant_phone,
-      'report_data': formData
+      // 'report_data': formData
     };
   }
 
-  factory SavedAssignment.fromJson(Map<String, dynamic> jsonData,
-      Map<String, dynamic>? formData, String caseId) {
+  factory SavedAssignment.fromJson(
+      Map<String, dynamic> jsonData, String caseId) {
     debugPrint('received saved assignment --> ${jsonData}\n\n');
 
     return SavedAssignment(
@@ -35,7 +35,7 @@ class SavedAssignment {
       assignedDate: jsonData['assigned_at'] ?? '',
       type: jsonData['document_type'] ?? '',
       status: jsonData['status'] ?? 'working',
-      formData: formData ?? {},
+      // formData: formData ?? {},
     );
   }
 
@@ -47,6 +47,6 @@ class SavedAssignment {
     required this.assignedDate,
     required this.applicant_phone,
     required this.applicant_name,
-    required this.formData,
+    // required this.formData,
   });
 }

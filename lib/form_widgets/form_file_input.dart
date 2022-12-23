@@ -164,52 +164,6 @@ class _FormFileInputState extends State<FormFileInput> {
       await _updateData();
     }).catchError(
       (e) {
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(15),
-        //     ),
-        //     content: Row(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         Expanded(
-        //           flex: 2,
-        //           child: Icon(
-        //             Icons.error_outline,
-        //             size: 32,
-        //             color: Colors.redAccent,
-        //           ),
-        //         ),
-        //         SizedBox(width: 10),
-        //         Expanded(
-        //           flex: 8,
-        //           child: Text(
-        //             'File ${index + 1} not deleted, try after some time',
-        //             style: TextStyle(
-        //               // color: Colors.redAccent,
-        //               fontWeight: FontWeight.w500,
-        //               fontSize: 18,
-        //             ),
-        //             softWrap: true,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //     actions: [
-        //       ElevatedButton(
-        //         onPressed: () {
-        //           Navigator.of(context).pop();
-        //         },
-        //         style: ElevatedButton.styleFrom(
-        //           // backgroundColor: Colors.redAccent.shade200,
-        //           elevation: 5,
-        //         ),
-        //         child: Text('OK'),
-        //       ),
-        //     ],
-        //   ),
-        // );
         return;
       },
     );

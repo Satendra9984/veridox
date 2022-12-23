@@ -220,16 +220,22 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                         /// adding assignment in savedAssignmentList/local database
 
                         await FirestoreServices.updateAssignmentStatus(
-                            status: 'working', caseId: widget.caseId);
-                        await _savedAssignmentProvider
-                            .addSavedAssignment(widget.caseId)
+                                status: 'in_progress', caseId: widget.caseId)
                             .then((value) {
-                          // debugPrint('Now navigating to Saved Assignment Page');
                           navigatePushReplacement(
                             context,
                             FormHomePage(caseId: widget.caseId),
+                            // );
+                          );
+                        }).catchError((error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Something went wrong')),
                           );
                         });
+                        // await _savedAssignmentProvider
+                        //     .addSavedAssignment(widget.caseId)
+                        //     .then((value) {
+                        // debugPrint('Now navigating to Saved Assignment Page');
                       },
                       child: const Text(
                         'Proceed for Verification',
