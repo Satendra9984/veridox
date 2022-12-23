@@ -1,9 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class FormProvider extends ChangeNotifier {
   Map<String, dynamic> _result = {};
   get getResult => _result;
+
+  Set<GlobalKey<FormState>> _formKeys = {};
+
+  Set<GlobalKey<FormState>> get getFormKeys => _formKeys;
+  void addFormKey(GlobalKey<FormState> key) {
+    _formKeys.add(key);
+  }
 
   /// for the assignment id
   String _assignmentId = '';
@@ -69,5 +77,18 @@ class FormProvider extends ChangeNotifier {
     } catch (e) {
       return;
     }
+  }
+  
+  Future<void> submitForm(context) async {
+    await FirebaseFirestore.instance.collection('assignments')
+        .doc(assignmentId).update({
+      'status': 'submitted'
+    }).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('From Successfully Submitted')));
+    }).catchError((err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('From Successfully Submitted')));
+    });
   }
 }

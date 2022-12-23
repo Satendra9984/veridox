@@ -275,6 +275,7 @@ class _FormPageState extends State<FormPage> {
           content: Text('Submitting data'),
         ),
       );
+      widget.provider.addFormKey(_formKey);
       widget.pageController.jumpToPage(widget.currentPage + 1);
     }
     await widget.provider.saveDraftData();
