@@ -34,7 +34,6 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     _formProvider = Provider.of<FormProvider>(context);
     _formProvider.setAssignmentId = widget.caseId;
     initialize();
@@ -49,8 +48,6 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   void dispose() {
-    // _pageController.dispose();
-    // _formProvider.dispose();
     super.dispose();
   }
 
