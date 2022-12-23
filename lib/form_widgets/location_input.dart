@@ -13,12 +13,15 @@ class GetUserLocation extends StatefulWidget {
   final FormProvider provider;
   final String pageId;
   final String fieldId;
+  final String? rowId;
+  final String? colId;
   const GetUserLocation({
     Key? key,
     required this.pageId,
     required this.fieldId,
     required this.provider,
     required this.widgetJson,
+    this.rowId, this.colId,
   }) : super(key: key);
 
   @override
@@ -70,14 +73,19 @@ class _GetUserLocationState extends State<GetUserLocation> {
       String coordinates =
           '${_currentLocation!.latitude},${_currentLocation!.longitude}';
       widget.provider.updateData(
+        rowId: widget.rowId, columnId: widget.colId,
           pageId: widget.pageId, fieldId: widget.fieldId, value: coordinates);
     }
   }
 
   Future<void> _initializeSignatureFromDatabase() async {
-    String? coordinates =
-        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
-
+    String? coordinates;
+    if (widget.rowId == null) {
+      coordinates = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    } else {
+      coordinates = widget.provider.getResult['${widget.pageId},${widget
+          .fieldId},${widget.rowId},${widget.colId}'];
+    }
     if (coordinates != null) {
       List<String> loca = coordinates.split(',');
       _currentLocation = Position(
@@ -96,7 +104,7 @@ class _GetUserLocationState extends State<GetUserLocation> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: containerElevationDecoration,
+      decoration: widget.rowId == null ? containerElevationDecoration : null,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       margin: const EdgeInsets.only(bottom: 15),
       child: FutureBuilder(

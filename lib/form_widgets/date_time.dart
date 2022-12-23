@@ -9,12 +9,15 @@ class DateTimePicker extends StatefulWidget {
   final FormProvider provider;
   final String pageId;
   final String fieldId;
+  final String? rowId;
+  final String? columnId;
   const DateTimePicker({
     Key? key,
     required this.pageId,
     required this.fieldId,
     required this.provider,
     required this.widgetJson,
+    this.rowId, this.columnId,
   }) : super(key: key);
 
   @override
@@ -33,8 +36,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 
   void _initializeValueFromData() {
-    String? date =
-        widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    String? date;
+    if (widget.rowId == null) {
+      date = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+    } else {
+      date = widget.provider
+          .getResult['${widget.pageId},${widget
+          .fieldId},${widget.rowId},${widget.columnId}'];
+    }
     if (date != null) {
       DateTime initialDateFromDatabase = DateFormat("dd/mm/yyyy").parse(date);
       _date = initialDateFromDatabase;
@@ -70,6 +79,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
         widget.provider.updateData(
             pageId: widget.pageId,
             fieldId: widget.fieldId,
+            rowId: widget.rowId,
+            columnId: widget.columnId,
             value: '${_date!.day}/${_date!.month}/${_date!.year}');
         formFieldState.didChange(_date);
         // String date = '${_date.day}/${_date.month}/${_date.year}';
@@ -120,7 +131,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       // height: 100,
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
-      decoration: containerElevationDecoration,
+      decoration: widget.rowId == null ? containerElevationDecoration : null,
       child: FormField<DateTime>(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         initialValue: _date,
