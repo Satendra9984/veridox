@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/signature.dart';
 import '../app_providers/form_provider.dart';
@@ -110,14 +109,21 @@ class _FormSubmitPageState extends State<FormSubmitPage>
   }
 
   Future<void> _validateSubmitPage() async {
-    if (_formKey.currentState!.validate()) {
+    widget.provider.addFormKey(_formKey);
+    bool isValid = true;
+    widget.provider.getFormKeys.forEach((key) {
+      if (key.currentState!.validate()) {
+        print(key);
+        isValid = isValid && key.currentState!.validate();
+      }
+    });
+
+    if (isValid) {
+      widget.provider.submitForm(context);
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Submitting form'),
-        ),
+        SnackBar(content: Text('Please fill the form correctly'))
       );
-      await widget.provider.saveDraftData();
-      Navigator.pop(context);
     }
   }
 
