@@ -15,17 +15,14 @@ class AssignmentList extends StatefulWidget {
 }
 
 class _AssignmentListState extends State<AssignmentList> {
-  AssignmentFilters _currentFilter = AssignmentFilters.All;
+  AssignmentFilters _currentFilter = AssignmentFilters.NewestToOldest;
   List<Assignment> _filteredList = [];
-
-  Future<void> _refreshAssignments(BuildContext context) async {
-    await Provider.of<AssignmentProvider>(context, listen: false)
-        .fetchAndLoadData();
-  }
 
   void _setFilteredList(List<Assignment> list) {
     // debugPrint('current filter -> $_currentFilter\n');
-    final List<Assignment> _filtList = list;
+    final List<Assignment> _filtList = list.where((element) {
+      return element.status == 'assigned';
+    }).toList();
     if (_currentFilter == AssignmentFilters.NewestToOldest) {
       _filtList.sort((first, second) {
         DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
@@ -46,18 +43,6 @@ class _AssignmentListState extends State<AssignmentList> {
       _filteredList = _filtList.where((element) {
         return element.status == ('assigned');
       }).toList();
-    } else if (_currentFilter == AssignmentFilters.CompletedAssignments) {
-      _filteredList = _filtList.where((element) {
-        return element.status == ('completed');
-      }).toList();
-    } else if (_currentFilter == AssignmentFilters.InProgress) {
-      _filteredList = _filtList.where((element) {
-        return element.status == ('working');
-      }).toList();
-    } else if (_currentFilter == AssignmentFilters.PendingVerification) {
-      _filteredList = _filtList.where((element) {
-        return element.status == ('pending_verification');
-      }).toList();
     } else {
       _filteredList = list;
     }
@@ -75,7 +60,8 @@ class _AssignmentListState extends State<AssignmentList> {
       ),
       child: Consumer<List<Assignment>>(
         builder: (context, list, widget) {
-          _setFilteredList(list);
+          _setFilteredList(
+              list.where((element) => element.status == 'assigned').toList());
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -132,39 +118,31 @@ class _AssignmentListState extends State<AssignmentList> {
                                         ),
                                       ),
                                       value: AssignmentFilters.OldestToNewest),
-                                  PopupMenuItem(
-                                      child: Text(
-                                        'InProgress',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      value: AssignmentFilters.InProgress),
-                                  PopupMenuItem(
-                                      child: Text(
-                                        'Active Only',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      value: AssignmentFilters.NewAssignments),
-                                  PopupMenuItem(
-                                      child: Text(
-                                        'Completed Only',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      value: AssignmentFilters
-                                          .CompletedAssignments),
-                                  PopupMenuItem(
-                                      child: Text(
-                                        'All',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      value: AssignmentFilters.All),
+                                  // PopupMenuItem(
+                                  //     child: Text(
+                                  //       'Active Only',
+                                  //       style: TextStyle(
+                                  //         fontWeight: FontWeight.w500,
+                                  //       ),
+                                  //     ),
+                                  //     value: AssignmentFilters.NewAssignments),
+                                  // PopupMenuItem(
+                                  //     child: Text(
+                                  //       'Completed Only',
+                                  //       style: TextStyle(
+                                  //         fontWeight: FontWeight.w500,
+                                  //       ),
+                                  //     ),
+                                  //     value: AssignmentFilters
+                                  //         .CompletedAssignments),
+                                  // PopupMenuItem(
+                                  //     child: Text(
+                                  //       'All',
+                                  //       style: TextStyle(
+                                  //         fontWeight: FontWeight.w500,
+                                  //       ),
+                                  //     ),
+                                  //     value: AssignmentFilters.All),
                                 ];
                               },
                               icon: Icon(Icons.more_horiz),

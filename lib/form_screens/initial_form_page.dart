@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/form_provider.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/form_screens/form_submit_screen.dart';
 import 'form_page.dart';
 
@@ -22,8 +24,19 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   late FormProvider _formProvider;
 
-  void initialize() async {
+  Future<void> initialize() async {
     await _formProvider.initializeResponse();
+    // set agency Id
+    await FirebaseFirestore.instance
+        .collection('assignment')
+        .doc(widget.caseId)
+        .get()
+        .then((value) {
+      if (value.data() != null) {
+        Map<String, dynamic> data = value.data()!;
+        _formProvider.setAgencyId = data['agency'];
+      }
+    });
   }
 
   @override
@@ -84,7 +97,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _formProvider.initializeResponse(),
+      future: initialize(),
       builder: (context, AsyncSnapshot<void> snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           return Center(

@@ -40,8 +40,35 @@ class FirestoreServices {
       if (lists.docs.isNotEmpty) {
         lists.docs.forEach((elementQuery) {
           var element = elementQuery.data();
+          element['caseId'] = elementQuery.id;
           if (element['status'] == 'in_progress' ||
               element['status'] == 'reassigned') {
+            list.add(element);
+          }
+        });
+      }
+    }).catchError((error) {
+      debugPrint('Saved assignment error: $error');
+    });
+
+    return list;
+  }
+
+  static Future<List<Map<String, dynamic>?>> getSubmittedAssignments() async {
+    final _auth = FirebaseAuth.instance;
+    final uid = _auth.currentUser!.uid;
+    List<Map<String, dynamic>> list = [];
+    await _firestore
+        .collection('field_verifier')
+        .doc(uid)
+        .collection('assignments')
+        .get()
+        .then((lists) {
+      if (lists.docs.isNotEmpty) {
+        lists.docs.forEach((elementQuery) {
+          var element = elementQuery.data();
+          element['caseId'] = elementQuery.id;
+          if (element['status'] == 'submitted') {
             list.add(element);
           }
         });
@@ -94,16 +121,27 @@ class FirestoreServices {
   }
 
   static Future<void> updateAssignmentStatus(
-      {required String caseId, required String status}) async {
+      {required String caseId,
+      required String status,
+      required String agencyId}) async {
     try {
       final _auth = FirebaseAuth.instance;
+      // update in assignments collection
       await _firestore
           .collection('assignments')
           .doc(caseId)
           .update({'status': status});
+      // update in field_verifier's assignments collection
       await _firestore
           .collection('field_verifier')
           .doc(_auth.currentUser!.uid)
+          .collection('assignments')
+          .doc(caseId)
+          .update({'status': status});
+      // update in the agency's assignment collection
+      await _firestore
+          .collection('agency')
+          .doc(agencyId)
           .collection('assignments')
           .doc(caseId)
           .update({'status': status});

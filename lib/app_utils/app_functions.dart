@@ -29,16 +29,15 @@ navigatePop(
 
 Color getStatusColour(String status) {
   // debugPrint('status --> $status\n\n');
-  if (status == 'pending_verification') {
-    return Colors.pinkAccent;
-  } else if (status == 'working') {
-    return Colors.orange;
+  if (status == 'submitted') {
+    return Colors.blueAccent;
+  } else if (status == 'in_progress') {
+    return Colors.orange.shade700;
   } else if (status == 'completed') {
     return CupertinoColors.activeGreen;
   } else if (status == 'assigned') {
-    return Colors.yellow;
-  } else if (status == 'rejected') {
-    // TODO: rejected case
+    return Colors.yellow.shade600;
+  } else if (status == 'reassigned') {
     return Colors.red;
   }
   return Colors.redAccent.shade700;

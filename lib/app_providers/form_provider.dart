@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 
 class FormProvider extends ChangeNotifier {
   Map<String, dynamic> _result = {};
@@ -10,6 +12,12 @@ class FormProvider extends ChangeNotifier {
   String get assignmentId => _assignmentId;
   void set setAssignmentId(String id) {
     this._assignmentId = id;
+  }
+
+  String _agencyId = '';
+  String get agencyId => _agencyId;
+  void set setAgencyId(String id) {
+    this._agencyId = id;
   }
 
   updateData(
@@ -65,7 +73,24 @@ class FormProvider extends ChangeNotifier {
           .doc(assignmentId)
           .collection('form_data')
           .doc('response')
-          .set(_result);
+          .set(_result)
+          .then((value) async {
+        await FirebaseFirestore.instance
+            .collection('assignments')
+            .doc(assignmentId)
+            .update({
+          'status': 'submitted',
+        }).then((value) async {
+          await FirebaseFirestore.instance
+              .collection('field_verifier')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('assignments')
+              .doc(assignmentId)
+              .update({
+            'status': 'submitted',
+          });
+        });
+      });
     } catch (e) {
       return;
     }

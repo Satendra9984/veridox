@@ -179,7 +179,7 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
               children: [
                 AssignmentList(),
                 SavedAssignmentsPage(),
-                CompletedAssignmentsPage(),
+                SubmittedAssignmentsPage(),
               ],
             ),
           ),

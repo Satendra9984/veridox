@@ -20,7 +20,8 @@ class AssignmentDetailPage extends StatefulWidget {
 }
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
-  late SavedAssignmentProvider _savedAssignmentProvider;
+  // late SavedAssignmentProvider _savedAssignmentProvider;
+  bool isInProgress = false;
 
   /// for the application details segregation
   Map<String, dynamic> _applicantDetails = {},
@@ -28,10 +29,10 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       _otherDetails = {};
 
   /// Function for checking if the given assignment with the caseId already exist in the local_database
-  Future<bool> checkSaved() async {
-    String _userId = FirebaseAuth.instance.currentUser!.uid;
-    return await SPServices().checkIfExists('${_userId}${widget.caseId}');
-  }
+  // Future<bool> checkSaved() async {
+  //   String _userId = FirebaseAuth.instance.currentUser!.uid;
+  //   return await SPServices().checkIfExists('${_userId}${widget.caseId}');
+  // }
 
   /// getting data to display in detailsPage
   Future<void> _setAssignmentDetails() async {
@@ -42,6 +43,8 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
 
     // set agency name
     final agency = await FirestoreServices.getAgency(_otherDetails['Agency']);
+    debugPrint('Agency Id in details page -> ${_otherDetails['Agency']}\n\n');
+    _otherDetails['Agency_Id'] = _otherDetails['Agency'];
     _otherDetails['Agency'] = agency['agency_name'];
   }
 
@@ -79,12 +82,13 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
     };
     // debugPrint('modified data --> $modifiedData\n\n');
     _otherDetails = modifiedOtherDetails;
+    if (data['status'] == 'in_progress' || data['status'] == 'reassigned') {
+      isInProgress = true;
+    }
   }
 
   @override
   initState() {
-    _savedAssignmentProvider =
-        Provider.of<SavedAssignmentProvider>(context, listen: false);
     super.initState();
   }
 
@@ -202,70 +206,54 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25.0),
-        child: FutureBuilder(
-          future: checkSaved(),
-          builder: (context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              /// if assignment is not in the local database then adding it in
-              return !snapshot.data!
-                  ? ElevatedButton(
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(10),
-                      ),
-                      onPressed: () async {
-                        /// adding assignment in savedAssignmentList/local database
+        child: !isInProgress
+            ? ElevatedButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(10),
+                ),
+                onPressed: () async {
+                  /// adding assignment in savedAssignmentList/local database
 
-                        await FirestoreServices.updateAssignmentStatus(
-                                status: 'in_progress', caseId: widget.caseId)
-                            .then((value) {
-                          navigatePushReplacement(
-                            context,
-                            FormHomePage(caseId: widget.caseId),
-                            // );
-                          );
-                        }).catchError((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Something went wrong')),
-                          );
-                        });
-                        // await _savedAssignmentProvider
-                        //     .addSavedAssignment(widget.caseId)
-                        //     .then((value) {
-                        // debugPrint('Now navigating to Saved Assignment Page');
-                      },
-                      child: const Text(
-                        'Proceed for Verification',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    )
-                  : ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blueGrey),
-                        elevation: MaterialStateProperty.all(10),
-                      ),
-                      onPressed: () {
-                        navigatePushReplacement(
-                          context,
-                          FormHomePage(caseId: widget.caseId),
-                        );
-                      },
-                      child: const Text(
-                        'Already added',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
+                  await FirestoreServices.updateAssignmentStatus(
+                          status: 'in_progress',
+                          caseId: widget.caseId,
+                          agencyId: _otherDetails['Agency_Id'])
+                      .then((value) {
+                    navigatePushReplacement(
+                      context,
+                      FormHomePage(caseId: widget.caseId),
                     );
-            }
-          },
-        ),
+                  }).catchError((error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Something went wrong')),
+                    );
+                  });
+                },
+                child: const Text(
+                  'Proceed for Verification',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              )
+            : ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+                  elevation: MaterialStateProperty.all(10),
+                ),
+                onPressed: () {
+                  navigatePushReplacement(
+                    context,
+                    FormHomePage(caseId: widget.caseId),
+                  );
+                },
+                child: const Text(
+                  'Already added',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
       ),
     );
   }

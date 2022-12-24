@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
         StreamProvider<User?>(
             create: (context) => FirebaseAuth.instance.authStateChanges(),
             initialData: null),
-        ChangeNotifierProvider<SavedAssignmentProvider>(
-            create: (context) => SavedAssignmentProvider()),
+        // ChangeNotifierProvider<SavedAssignmentProvider>(
+        //     create: (context) => SavedAssignmentProvider()),
         ChangeNotifierProvider<CustomAuthProvider>(
             create: (context) => CustomAuthProvider()),
         ChangeNotifierProvider(create: (context) => FormProvider())

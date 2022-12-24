@@ -1,27 +1,61 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:veridox/app_models/saved_assignment_model.dart';
+import 'package:veridox/app_screens/assignments/saved_assignment_list.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 
-class CompletedAssignmentsPage extends StatefulWidget {
-  const CompletedAssignmentsPage({Key? key}) : super(key: key);
-
+class SubmittedAssignmentsPage extends StatefulWidget {
+  const SubmittedAssignmentsPage({Key? key}) : super(key: key);
   @override
-  State<CompletedAssignmentsPage> createState() =>
-      _CompletedAssignmentsPageState();
+  State<SubmittedAssignmentsPage> createState() =>
+      _SubmittedAssignmentsPageState();
 }
 
-class _CompletedAssignmentsPageState extends State<CompletedAssignmentsPage> {
+class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage> {
+  // late SavedAssignmentProvider _provider;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<List<SavedAssignment>> _setInitialSubmittedAssignmentsList() async {
+    List<SavedAssignment> subList = [];
+    await FirestoreServices.getSubmittedAssignments().then((list) {
+      if (list.isNotEmpty) {
+        subList = list.map((assignment) {
+          return SavedAssignment.fromJson(assignment!, assignment['caseId']);
+        }).toList();
+        // return saveList;
+      }
+      // return [];
+    });
+    return subList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text(
-            'Completed Assignments Page',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ),
+      body: FutureBuilder(
+        future: _setInitialSubmittedAssignmentsList(),
+        builder: (context, AsyncSnapshot<List<SavedAssignment>> form) {
+          if (form.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (form.hasError) {
+            return Center(
+              child: Text('Something Went Wrong'),
+            );
+          } else {
+            return SavedAssignmentList(
+              savedAssList: form.data!,
+            );
+          }
+        },
       ),
     );
   }

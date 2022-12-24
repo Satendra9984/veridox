@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
+import 'package:veridox/app_screens/assignments/saved_assignment_list.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import '../../app_providers/saved_assignment_provider.dart';
-import '../../app_widgets/saved_assignment_card.dart';
-import '../../form_screens/home_page.dart';
 
 class SavedAssignmentsPage extends StatefulWidget {
   const SavedAssignmentsPage({Key? key}) : super(key: key);
@@ -13,11 +10,10 @@ class SavedAssignmentsPage extends StatefulWidget {
 }
 
 class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
-  late SavedAssignmentProvider _provider;
+  // late SavedAssignmentProvider _provider;
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -25,19 +21,20 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
     super.dispose();
   }
 
-
   Future<List<SavedAssignment>> _setInitialSavedAssignmentsList() async {
-
+    List<SavedAssignment> saveList = [];
     await FirestoreServices.getSavedAssignments().then((list) {
-      if(list.isNotEmpty){
-        List<SavedAssignment> saveList = list.map((assignment) {
+      if (list.isNotEmpty) {
+        debugPrint('list -> $list');
+        saveList = list.map((assignment) {
           return SavedAssignment.fromJson(assignment!, assignment['caseId']);
         }).toList();
-        return saveList;
+        debugPrint('saveLsit -> $saveList');
+        // return saveList;
       }
-      return [];
+      // return [];
     });
-   return [];
+    return saveList;
   }
 
   @override
@@ -50,32 +47,17 @@ class _SavedAssignmentsPageState extends State<SavedAssignmentsPage> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if(form.hasError){
-            return Center(child: Text('Something Went Wrong'),);
-          }else {
-            return
+          } else if (form.hasError) {
+            return Center(
+              child: Text('Something Went Wrong ${form.error}'),
+            );
+          } else {
+            return SavedAssignmentList(
+              savedAssList: form.data!,
+            );
           }
         },
       ),
     );
   }
 }
-
-/*
-SavedAssignmentCard(
-                          navigate: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) {
-                                  // debugPrint('Entering from Home page');
-                                  return FormHomePage(
-                                    caseId: saveAssignment.caseId,
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          assignment: saveAssignment,
-                        ),
-* */

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
+import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/signature.dart';
 import '../app_providers/form_provider.dart';
@@ -111,17 +112,73 @@ class _FormSubmitPageState extends State<FormSubmitPage>
 
   Future<void> _validateSubmitPage() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Submitting form'),
-        ),
-      );
-      await widget.provider.saveDraftData();
-      Navigator.pop(context);
+      await showDialog(
+          context: context,
+          builder: (context) {
+            return _showFinalSubmitAlertDialog();
+          }).then((submit) {
+        if (submit != null && submit == true) {
+          FutureProgressDialog(
+            _finalSubmitForm(),
+            message:
+                Text('Submitting Form. Please wait and do not touch anywhere'),
+          );
+          Navigator.pop(context, true);
+        }
+      });
     }
   }
 
+  Future<void> _finalSubmitForm() async {
+    await widget.provider.saveDraftData().then(
+      (value) async {
+        // update status
+        await FirestoreServices.updateAssignmentStatus(
+          caseId: widget.provider.assignmentId,
+          status: 'submitted',
+          agencyId: widget.provider.agencyId,
+        );
+      },
+    );
+  }
+
+  Widget _showFinalSubmitAlertDialog() {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      content: Text(
+        'Are you sure to submit form? Once submitted you can\'t edit form.Please Re-Check the form.',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.pop(context, true);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent.shade200,
+            elevation: 5,
+          ),
+          child: Text('Yes'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            // backgroundColor: Colors.redAccent.shade200,
+            elevation: 5,
+          ),
+          child: Text('Cancel'),
+        ),
+      ],
+    );
+  }
+
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

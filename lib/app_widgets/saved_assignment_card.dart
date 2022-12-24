@@ -155,34 +155,29 @@ class SavedAssignmentCard extends StatelessWidget {
                     radius: 9,
                     backgroundColor: getStatusColour(assignment.status),
                   ),
-                  PopupMenuButton(
-                    itemBuilder: (_) => [
-                      PopupMenuItem(
-                        value: 0,
-                        onTap: () async {
-                          /// DeletingSavedAssignments
-                          // debugPrint(
-                          //     'deleting caseId --> ${assignment.caseId}\n\n');
-                          Provider.of<SavedAssignmentProvider>(context,
-                                  listen: false)
-                              .removeFromSaveAssignments(assignment.caseId);
-                        },
-                        child: const Text(
-                          'Delete Task',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    // padding: const EdgeInsets.all(5),
-                    color: Colors.red.shade100,
-                  ),
+                  // PopupMenuButton(
+                  //   itemBuilder: (_) => [
+                  //     PopupMenuItem(
+                  //       value: 0,
+                  //       onTap: () async {
+                  //         /// DeletingSavedAssignments
+                  //       },
+                  //       child: const Text(
+                  //         'Delete Task',
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //         textAlign: TextAlign.center,
+                  //       ),
+                  //     ),
+                  //   ],
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(15),
+                  //   ),
+                  //   // padding: const EdgeInsets.all(5),
+                  //   color: Colors.red.shade100,
+                  // ),
                 ],
               ),
             ),

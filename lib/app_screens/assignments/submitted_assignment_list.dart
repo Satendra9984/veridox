@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:veridox/app_models/sorting_enums.dart';
-import 'package:veridox/form_screens/home_page.dart';
 import '../../app_models/saved_assignment_model.dart';
 import '../../app_widgets/saved_assignment_card.dart';
 import 'assignment_detail_page.dart';
 
-class SavedAssignmentList extends StatefulWidget {
+class SubmittedAssignmentList extends StatefulWidget {
   final List<SavedAssignment> savedAssList;
-  const SavedAssignmentList({
+  const SubmittedAssignmentList({
     Key? key,
     required this.savedAssList,
   }) : super(key: key);
   @override
-  State<SavedAssignmentList> createState() => _SavedAssignmentListState();
+  State<SubmittedAssignmentList> createState() =>
+      _SubmittedAssignmentListState();
 }
 
-class _SavedAssignmentListState extends State<SavedAssignmentList> {
+class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
   SavedAssignmentFilters _currentFilter = SavedAssignmentFilters.InProgress;
   List<SavedAssignment> _filteredList = [];
 
@@ -24,7 +24,6 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
   void initState() {
     /// initializing list
     _filteredList = widget.savedAssList;
-    // debugPrint('Saved Ass list -> ${_filteredList}');
     super.initState();
   }
 
@@ -92,7 +91,7 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Saved Assignments',
+                          'Completed Assignments',
                           style: TextStyle(
                             color: Colors.blue.shade500,
                             fontSize: 18,
@@ -190,17 +189,14 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                 itemBuilder: (context, index) {
                   return SavedAssignmentCard(
                     navigate: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FormHomePage(caseId: _filteredList[index].caseId),
-                        ),
-                      ).then((submitted) {
-                        if (submitted != null && submitted == true) {
-                          setState(() {});
-                        }
-                      });
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AssignmentDetailPage(
+                      //       caseId: _filteredList[index].caseId,
+                      //     ),
+                      //   ),
+                      // );
                     },
                     assignment: _filteredList[index],
                   );
