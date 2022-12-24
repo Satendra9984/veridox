@@ -91,7 +91,7 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Completed Assignments',
+                          'Submitted Assignments',
                           style: TextStyle(
                             color: Colors.blue.shade500,
                             fontSize: 18,

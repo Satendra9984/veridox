@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/assignments/assignment_list.dart';
-import 'package:veridox/app_screens/assignments/completed_assignments_page.dart';
+import 'package:veridox/app_screens/assignments/submitted_assignments_page.dart';
 import 'package:veridox/app_screens/assignments/my_assignments.dart';
 import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 
@@ -140,25 +140,11 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
                       color: _currentTabNumber != 2
                           ? Colors.grey.shade300
                           : Colors.transparent,
-                      // boxShadow: [
-                      // BoxShadow(
-                      //   blurRadius: blur,
-                      //   offset: -distance,
-                      //   color: Colors.black,
-                      //   // inset: isPressed,
-                      // ),
-                      // BoxShadow(
-                      //   blurRadius: blur,
-                      //   offset: distance,
-                      //   // color: const Color(0xFFA7A9AF),
-                      //   color: Colors.black,
-                      // ),
-                      // ],
                     ),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Completed',
+                        'Submitted',
                         style: TextStyle(
                           color: _currentTabNumber == 2
                               ? Colors.white

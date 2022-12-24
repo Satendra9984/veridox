@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/app_models/saved_assignment_model.dart';
 import 'package:veridox/app_screens/assignments/saved_assignment_list.dart';
+import 'package:veridox/app_screens/assignments/submitted_assignment_list.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 
 class SubmittedAssignmentsPage extends StatefulWidget {
@@ -10,7 +11,8 @@ class SubmittedAssignmentsPage extends StatefulWidget {
       _SubmittedAssignmentsPageState();
 }
 
-class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage> {
+class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage>
+    with AutomaticKeepAliveClientMixin {
   // late SavedAssignmentProvider _provider;
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: FutureBuilder(
         future: _setInitialSubmittedAssignmentsList(),
@@ -51,7 +54,8 @@ class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage> {
               child: Text('Something Went Wrong'),
             );
           } else {
-            return SavedAssignmentList(
+            debugPrint('Submitted ass page is rebuilt');
+            return SubmittedAssignmentList(
               savedAssList: form.data!,
             );
           }
@@ -59,4 +63,8 @@ class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

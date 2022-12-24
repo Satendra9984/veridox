@@ -8,9 +8,11 @@ import 'assignment_detail_page.dart';
 
 class SavedAssignmentList extends StatefulWidget {
   final List<SavedAssignment> savedAssList;
+  final Function() renewListAfter;
   const SavedAssignmentList({
     Key? key,
     required this.savedAssList,
+    required this.renewListAfter,
   }) : super(key: key);
   @override
   State<SavedAssignmentList> createState() => _SavedAssignmentListState();
@@ -198,7 +200,7 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                         ),
                       ).then((submitted) {
                         if (submitted != null && submitted == true) {
-                          setState(() {});
+                          widget.renewListAfter();
                         }
                       });
                     },
