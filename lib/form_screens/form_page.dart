@@ -7,6 +7,7 @@ import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
 import 'package:veridox/form_widgets/toggle_button.dart';
+import '../app_screens/assignments/saved_assignments_page.dart';
 import '../app_services/database/firestore_services.dart';
 import '../app_utils/app_constants.dart';
 import '../form_widgets/date_time.dart';
@@ -300,7 +301,6 @@ class _FormPageState extends State<FormPage> {
                 message: Text(
                     'Submitting Form. Please wait and do not touch anywhere'),
               );
-              Navigator.pop(this.context, true);
             }
           },
         );

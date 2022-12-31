@@ -3,6 +3,7 @@ import 'package:veridox/app_services/database/firestore_services.dart';
 import 'initial_form_page.dart';
 
 class FormHomePage extends StatefulWidget {
+  static String FormHomePageRouteName = '/form_home_page';
   final String caseId;
   const FormHomePage({
     required this.caseId,
