@@ -1,12 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../app_models/assignment_model.dart';
+import '../../app_models/saved_assignment_model.dart';
 
 class FirestoreServices {
   static final _firestore = FirebaseFirestore.instance;
 
-  static Stream<List<Assignment>> getAssignments() {
+  static Future<List<Map<String, dynamic>>> getAllAssignments() async {
+    final _auth = FirebaseAuth.instance;
+    final uid = _auth.currentUser!.uid;
+    List<Map<String, dynamic>> list = [];
+    try {
+      await _firestore
+          .collection('field_verifier')
+          .doc(uid)
+          .collection('assignments')
+          .get()
+          .then((lists) {
+        lists.docs.forEach((elementQuery) {
+          var element = elementQuery.data();
+          element['caseId'] = elementQuery.id;
+          list.add(element);
+        });
+      });
+    } catch (error) {
+      debugPrint('$error in getAllAssignments');
+    }
+    return list;
+  }
+
+  static Stream<List<SavedAssignment>> getAssignedAssignments() {
     final _auth = FirebaseAuth.instance;
     final uid = _auth.currentUser!.uid;
     // debugPrint('uid --> $uid\n\n');
@@ -20,14 +43,15 @@ class FirestoreServices {
             (doc) {
               Map<String, dynamic> docData = doc.data();
               docData['caseId'] = doc.id;
-              return Assignment.fromJson(docData, doc.id);
+              return SavedAssignment.fromJson(docData, doc.id);
             },
           ).toList(),
         );
   }
 
   /// get saved assignments list
-  static Future<List<Map<String, dynamic>?>> getSavedAssignments() async {
+  static Future<List<Map<String, dynamic>?>> getAssignmentsByStatus(
+      {required String filter1, String? filter2}) async {
     final _auth = FirebaseAuth.instance;
     final uid = _auth.currentUser!.uid;
     List<Map<String, dynamic>> list = [];
@@ -35,48 +59,37 @@ class FirestoreServices {
         .collection('field_verifier')
         .doc(uid)
         .collection('assignments')
+        .where('status', isEqualTo: filter1)
         .get()
-        .then((lists) {
+        .then((lists) async {
       if (lists.docs.isNotEmpty) {
         lists.docs.forEach((elementQuery) {
           var element = elementQuery.data();
           element['caseId'] = elementQuery.id;
-          if (element['status'] == 'in_progress' ||
-              element['status'] == 'reassigned') {
-            list.add(element);
-          }
+          list.add(element);
         });
+        if (filter2 != null) {
+          await _firestore
+              .collection('field_verifier')
+              .doc(uid)
+              .collection('assignments')
+              .where('status', isEqualTo: filter2)
+              .get()
+              .then((lists) {
+            if (lists.docs.isNotEmpty) {
+              lists.docs.forEach((elementQuery) {
+                var element = elementQuery.data();
+                element['caseId'] = elementQuery.id;
+                list.add(element);
+              });
+            }
+          });
+        }
       }
     }).catchError((error) {
       debugPrint('Saved assignment error: $error');
     });
-
-    return list;
-  }
-
-  static Future<List<Map<String, dynamic>?>> getSubmittedAssignments() async {
-    final _auth = FirebaseAuth.instance;
-    final uid = _auth.currentUser!.uid;
-    List<Map<String, dynamic>> list = [];
-    await _firestore
-        .collection('field_verifier')
-        .doc(uid)
-        .collection('assignments')
-        .get()
-        .then((lists) {
-      if (lists.docs.isNotEmpty) {
-        lists.docs.forEach((elementQuery) {
-          var element = elementQuery.data();
-          element['caseId'] = elementQuery.id;
-          if (element['status'] == 'submitted') {
-            list.add(element);
-          }
-        });
-      }
-    }).catchError((error) {
-      debugPrint('Saved assignment error: $error');
-    });
-
+    // debugPrint('status-> $filter1, list-> $list');
     return list;
   }
 
@@ -139,6 +152,7 @@ class FirestoreServices {
           .doc(caseId)
           .update({'status': status});
       // update in the agency's assignment collection
+      debugPrint('$agencyId status : $status');
       await _firestore
           .collection('agency')
           .doc(agencyId)
@@ -159,7 +173,7 @@ class FirestoreServices {
 
     return docs.map((e) {
       var data = e.data();
-      debugPrint('agency --> ${e.id}\n');
+      // debugPrint('agency --> ${e.id}\n');
       data['id'] = e.id;
       return data;
     }).toList();

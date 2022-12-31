@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_models/sorting_enums.dart';
-import 'package:veridox/app_widgets/assignment_card.dart';
-import 'package:veridox/app_models/assignment_model.dart';
-import 'package:veridox/app_providers/assignment_provider.dart';
+import '../../app_models/saved_assignment_model.dart';
+import '../../app_widgets/saved_assignment_card.dart';
 import 'assignment_detail_page.dart';
 
 class AssignmentList extends StatefulWidget {
@@ -15,15 +13,14 @@ class AssignmentList extends StatefulWidget {
 }
 
 class _AssignmentListState extends State<AssignmentList> {
-  AssignmentFilters _currentFilter = AssignmentFilters.NewestToOldest;
-  List<Assignment> _filteredList = [];
+  SavedAssignmentFilters _currentFilter = SavedAssignmentFilters.NewestFirst;
+  List<SavedAssignment> _filteredList = [];
 
-  void _setFilteredList(List<Assignment> list) {
-    // debugPrint('current filter -> $_currentFilter\n');
-    final List<Assignment> _filtList = list.where((element) {
+  void _setFilteredList(List<SavedAssignment> list) {
+    final List<SavedAssignment> _filtList = list.where((element) {
       return element.status == 'assigned';
     }).toList();
-    if (_currentFilter == AssignmentFilters.NewestToOldest) {
+    if (_currentFilter == SavedAssignmentFilters.NewestFirst) {
       _filtList.sort((first, second) {
         DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
         DateTime secondDate =
@@ -31,7 +28,7 @@ class _AssignmentListState extends State<AssignmentList> {
         return secondDate.compareTo(firstDate);
       });
       _filteredList = _filtList;
-    } else if (_currentFilter == AssignmentFilters.OldestToNewest) {
+    } else if (_currentFilter == SavedAssignmentFilters.OldestFirst) {
       _filtList.sort((first, second) {
         DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
         DateTime secondDate =
@@ -39,10 +36,6 @@ class _AssignmentListState extends State<AssignmentList> {
         return firstDate.compareTo(secondDate);
       });
       _filteredList = _filtList;
-    } else if (_currentFilter == AssignmentFilters.NewAssignments) {
-      _filteredList = _filtList.where((element) {
-        return element.status == ('assigned');
-      }).toList();
     } else {
       _filteredList = list;
     }
@@ -51,6 +44,7 @@ class _AssignmentListState extends State<AssignmentList> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(right: 10),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
@@ -58,7 +52,7 @@ class _AssignmentListState extends State<AssignmentList> {
           colors: [Color(0XFFf0f5ff), Colors.white],
         ),
       ),
-      child: Consumer<List<Assignment>>(
+      child: Consumer<List<SavedAssignment>>(
         builder: (context, list, widget) {
           _setFilteredList(
               list.where((element) => element.status == 'assigned').toList());
@@ -92,7 +86,7 @@ class _AssignmentListState extends State<AssignmentList> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            PopupMenuButton<AssignmentFilters>(
+                            PopupMenuButton<SavedAssignmentFilters>(
                               initialValue: _currentFilter,
                               onSelected: (filter) {
                                 setState(() {
@@ -101,7 +95,7 @@ class _AssignmentListState extends State<AssignmentList> {
                                 });
                               },
                               itemBuilder: (context) {
-                                return <PopupMenuEntry<AssignmentFilters>>[
+                                return <PopupMenuEntry<SavedAssignmentFilters>>[
                                   PopupMenuItem(
                                       child: Text(
                                         'Newest First',
@@ -109,7 +103,8 @@ class _AssignmentListState extends State<AssignmentList> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      value: AssignmentFilters.NewestToOldest),
+                                      value:
+                                          SavedAssignmentFilters.NewestFirst),
                                   PopupMenuItem(
                                       child: Text(
                                         'Oldest First',
@@ -117,32 +112,8 @@ class _AssignmentListState extends State<AssignmentList> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      value: AssignmentFilters.OldestToNewest),
-                                  // PopupMenuItem(
-                                  //     child: Text(
-                                  //       'Active Only',
-                                  //       style: TextStyle(
-                                  //         fontWeight: FontWeight.w500,
-                                  //       ),
-                                  //     ),
-                                  //     value: AssignmentFilters.NewAssignments),
-                                  // PopupMenuItem(
-                                  //     child: Text(
-                                  //       'Completed Only',
-                                  //       style: TextStyle(
-                                  //         fontWeight: FontWeight.w500,
-                                  //       ),
-                                  //     ),
-                                  //     value: AssignmentFilters
-                                  //         .CompletedAssignments),
-                                  // PopupMenuItem(
-                                  //     child: Text(
-                                  //       'All',
-                                  //       style: TextStyle(
-                                  //         fontWeight: FontWeight.w500,
-                                  //       ),
-                                  //     ),
-                                  //     value: AssignmentFilters.All),
+                                      value:
+                                          SavedAssignmentFilters.OldestFirst),
                                 ];
                               },
                               icon: Icon(Icons.more_horiz),
@@ -178,7 +149,7 @@ class _AssignmentListState extends State<AssignmentList> {
                     shrinkWrap: true,
                     itemCount: _filteredList.length,
                     itemBuilder: (context, index) {
-                      return AssignmentCard(
+                      return SavedAssignmentCard(
                         navigate: () {
                           Navigator.push(
                             context,

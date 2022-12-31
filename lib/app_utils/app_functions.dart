@@ -30,7 +30,7 @@ navigatePop(
 Color getStatusColour(String status) {
   // debugPrint('status --> $status\n\n');
   if (status == 'submitted') {
-    return Colors.blueAccent;
+    return Colors.pinkAccent;
   } else if (status == 'in_progress') {
     return Colors.orange.shade700;
   } else if (status == 'completed') {
@@ -39,35 +39,8 @@ Color getStatusColour(String status) {
     return Colors.yellow.shade600;
   } else if (status == 'reassigned') {
     return Colors.red;
+  } else if (status == 'approved') {
+    return Colors.blueAccent;
   }
   return Colors.redAccent.shade700;
 }
-// Widget _getLabel() {
-//   String label = widget.widgetJson['label'];
-//
-//   return Row(
-//     mainAxisSize: MainAxisSize.min,
-//     children: [
-//       Text(
-//         label,
-//         softWrap: true,
-//         style: const TextStyle(
-//           fontSize: 17,
-//           fontWeight: FontWeight.w500,
-//         ),
-//       ),
-//       SizedBox(width: 5),
-//       if (widget.widgetJson.containsKey('required') &&
-//           widget.widgetJson['required'] == true)
-//         Text(
-//           '*',
-//           softWrap: true,
-//           style: TextStyle(
-//             fontSize: 20,
-//             fontWeight: FontWeight.w500,
-//             color: Colors.redAccent.shade200,
-//           ),
-//         ),
-//     ],
-//   );
-// }

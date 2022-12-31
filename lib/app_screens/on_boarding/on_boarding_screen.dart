@@ -5,7 +5,7 @@ import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
-import '../home_page.dart';
+import '../bottom_nav_bar_screens/home_page.dart';
 import '../login/login_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {

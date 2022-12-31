@@ -9,20 +9,21 @@ class SavedAssignmentCard extends StatelessWidget {
   final Offset distance = const Offset(3.5, 3.5);
   final double blur = 5.0;
 
-  // final Widget popUpMenu;
   final SavedAssignment assignment;
   final Function() navigate;
-  const SavedAssignmentCard({
+  Function()? onDoubleTap;
+  SavedAssignmentCard({
     Key? key,
     required this.navigate,
-    // required this.popUpMenu,
     required this.assignment,
+    this.onDoubleTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: navigate,
+      onDoubleTap: onDoubleTap,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(

@@ -1,12 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Form;
-import 'package:provider/provider.dart';
-import 'package:veridox/app_providers/saved_assignment_provider.dart';
-import 'package:veridox/app_screens/assignments/saved_assignments_page.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/row_detail_text.dart';
 import 'package:veridox/form_screens/home_page.dart';
-import '../../app_services/database/shared_pref_services.dart';
 import '../../app_utils/app_functions.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
@@ -20,27 +15,18 @@ class AssignmentDetailPage extends StatefulWidget {
 }
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
-  // late SavedAssignmentProvider _savedAssignmentProvider;
-  bool isInProgress = false;
-
   /// for the application details segregation
   Map<String, dynamic> _applicantDetails = {},
       _coapplicantDetails = {},
       _otherDetails = {};
 
-  /// Function for checking if the given assignment with the caseId already exist in the local_database
-  // Future<bool> checkSaved() async {
-  //   String _userId = FirebaseAuth.instance.currentUser!.uid;
-  //   return await SPServices().checkIfExists('${_userId}${widget.caseId}');
-  // }
-
   /// getting data to display in detailsPage
   Future<void> _setAssignmentDetails() async {
     final res = await FirestoreServices.getAssignmentById(widget.caseId);
-
     Map<String, dynamic> data = Map<String, dynamic>.from(res!);
-    _setModifiedData(data);
+    // debugPrint('details $data');
 
+    _setModifiedData(data);
     // set agency name
     final agency = await FirestoreServices.getAgency(_otherDetails['Agency']);
     debugPrint('Agency Id in details page -> ${_otherDetails['Agency']}\n\n');
@@ -61,6 +47,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       'State': data['applicant_state'],
     };
     _applicantDetails = modifiedDataApplicant;
+    // debugPrint('modified data --> $modifiedDataApplicant\n\n');
 
     // setting coapplicant data details
     Map<String, dynamic> modifiedDataCoApplicant = {
@@ -72,6 +59,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       'State': data['coapplicant_state'],
     };
     _coapplicantDetails = modifiedDataCoApplicant;
+    // debugPrint('modified data --> $modifiedDataCoApplicant\n\n');
 
     // setting other details
     Map<String, dynamic> modifiedOtherDetails = {
@@ -80,11 +68,8 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
       'Status': data['status'],
       'Agency': data['agency'],
     };
-    // debugPrint('modified data --> $modifiedData\n\n');
     _otherDetails = modifiedOtherDetails;
-    if (data['status'] == 'in_progress' || data['status'] == 'reassigned') {
-      isInProgress = true;
-    }
+    // debugPrint('modified data --> $modifiedOtherDetails\n\n');
   }
 
   @override
@@ -197,63 +182,54 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                           ),
                         )
                         .toList(),
+
+                    const SizedBox(height: 10),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 25.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_otherDetails['Status'] == 'assigned')
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(10),
+                              ),
+                              onPressed: () async {
+                                /// adding assignment in savedAssignmentList/local database
+                                await FirestoreServices.updateAssignmentStatus(
+                                  status: 'in_progress',
+                                  caseId: widget.caseId,
+                                  agencyId: _otherDetails['Agency_Id'],
+                                ).then((value) {
+                                  navigatePushReplacement(
+                                    context,
+                                    FormHomePage(caseId: widget.caseId),
+                                  );
+                                }).catchError((error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Something went wrong')),
+                                  );
+                                });
+                              },
+                              child: const Text(
+                                'Proceed for Verification',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }
             },
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25.0),
-        child: !isInProgress
-            ? ElevatedButton(
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all(10),
-                ),
-                onPressed: () async {
-                  /// adding assignment in savedAssignmentList/local database
-
-                  await FirestoreServices.updateAssignmentStatus(
-                          status: 'in_progress',
-                          caseId: widget.caseId,
-                          agencyId: _otherDetails['Agency_Id'])
-                      .then((value) {
-                    navigatePushReplacement(
-                      context,
-                      FormHomePage(caseId: widget.caseId),
-                    );
-                  }).catchError((error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Something went wrong')),
-                    );
-                  });
-                },
-                child: const Text(
-                  'Proceed for Verification',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              )
-            : ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                  elevation: MaterialStateProperty.all(10),
-                ),
-                onPressed: () {
-                  navigatePushReplacement(
-                    context,
-                    FormHomePage(caseId: widget.caseId),
-                  );
-                },
-                child: const Text(
-                  'Already added',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
       ),
     );
   }

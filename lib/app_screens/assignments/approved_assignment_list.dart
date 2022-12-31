@@ -1,33 +1,84 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:veridox/app_models/sorting_enums.dart';
-import 'package:veridox/app_screens/assignments/assignment_detail_page.dart';
-import 'package:veridox/app_utils/app_functions.dart';
-import 'package:veridox/form_screens/home_page.dart';
 import '../../app_models/saved_assignment_model.dart';
 import '../../app_widgets/saved_assignment_card.dart';
 
-class SavedAssignmentList extends StatefulWidget {
-  final List<SavedAssignment> savedAssList;
-  final Function() renewListAfter;
-  const SavedAssignmentList({
+class ApprovedAssignmentList extends StatefulWidget {
+  final List<DocumentSnapshot> savedAssList;
+  const ApprovedAssignmentList({
     Key? key,
     required this.savedAssList,
-    required this.renewListAfter,
   }) : super(key: key);
   @override
-  State<SavedAssignmentList> createState() => _SavedAssignmentListState();
+  State<ApprovedAssignmentList> createState() => _ApprovedAssignmentListState();
 }
 
-class _SavedAssignmentListState extends State<SavedAssignmentList> {
+class _ApprovedAssignmentListState extends State<ApprovedAssignmentList> {
   SavedAssignmentFilters _currentFilter = SavedAssignmentFilters.InProgress;
+  List<DocumentSnapshot> _filteredListSnap = [];
   List<SavedAssignment> _filteredList = [];
+  final ScrollController _controller = ScrollController();
 
   @override
   void initState() {
     /// initializing list
-    _filteredList = widget.savedAssList;
+    _inititalData();
+    _controller.addListener(_scrollListener);
     super.initState();
+  }
+
+  void _inititalData() {
+    for (var doc in widget.savedAssList) {
+      if (doc.data() != null) {
+        Map<String, dynamic>? docdata = doc.data() as Map<String, dynamic>?;
+        if (docdata != null) {
+          _filteredList.add(SavedAssignment.fromJson(docdata, doc.id));
+          _filteredListSnap.add(doc);
+        }
+      }
+    }
+  }
+
+  Future<void> _scrollListener() async {
+    // debugPrint('controller-> ${_controller.position}');
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      // debugPrint('fetchList-> called');
+      await _fetchNextInList();
+    }
+  }
+
+  Future<void> _fetchNextInList() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('field_verifier')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('assignments')
+          .where('status', isEqualTo: 'approved')
+          .startAfterDocument(_filteredListSnap[_filteredListSnap.length - 1])
+          .limit(5)
+          .get()
+          .then((value) {
+        List<DocumentSnapshot>? snapList = value.docs;
+        if (snapList != null && snapList.isNotEmpty) {
+          for (var doc in snapList) {
+            Map<String, dynamic>? docdata = doc.data() as Map<String, dynamic>?;
+            if (docdata != null) {
+              _filteredList.add(SavedAssignment.fromJson(docdata, doc.id));
+              _filteredListSnap.add(doc);
+              // debugPrint('docId added-> ${doc.id}');
+            }
+          }
+          setState(() {
+            _filteredList;
+          });
+        }
+      });
+    } catch (error) {}
   }
 
   void _setFilteredList() {
@@ -75,6 +126,7 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
     return Container(
       margin: EdgeInsets.only(right: 5),
       child: SingleChildScrollView(
+        controller: _controller,
         child: Column(
           children: [
             Container(
@@ -88,14 +140,14 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Saved Assignments',
+                          'Approved Assignments',
                           style: TextStyle(
                             color: Colors.blue.shade500,
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(width: 45),
+                        SizedBox(width: 25),
                       ],
                     ),
                   ),
@@ -114,23 +166,6 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                           },
                           itemBuilder: (context) {
                             return <PopupMenuEntry<SavedAssignmentFilters>>[
-                              PopupMenuItem(
-                                  child: Text(
-                                    'In-Progress First',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  value: SavedAssignmentFilters.InProgress),
-                              PopupMenuItem(
-                                child: Text(
-                                  'ReAssigned First',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                value: SavedAssignmentFilters.ReAssigned,
-                              ),
                               PopupMenuItem(
                                 child: Text(
                                   'Newest First',
@@ -163,52 +198,31 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                 ],
               ),
             ),
-            // const SizedBox(height: 10),
+            const SizedBox(height: 10),
             if (_filteredList.length == 0)
               Container(
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.all(15),
                 alignment: Alignment.center,
                 child: Text(
-                  'You do not have any assignments yet,'
-                  '\ncontact your agency for more details',
+                  'You do not have any approved assignments yet.'
+                  '  Contact your agency for more details',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             if (_filteredList.length > 0)
               ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
+                // controller: _controller,
                 shrinkWrap: true,
                 itemCount: _filteredList.length,
                 itemBuilder: (context, index) {
                   return SavedAssignmentCard(
-                    onDoubleTap: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AssignmentDetailPage(
-                            caseId: _filteredList[index].caseId,
-                          ),
-                        ),
-                      );
-                    },
-                    navigate: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FormHomePage(
-                            caseId: _filteredList[index].caseId,
-                          ),
-                        ),
-                      ).then((submitted) {
-                        if (submitted != null && submitted == true) {
-                          widget.renewListAfter();
-                        }
-                      });
-                    },
+                    navigate: () {},
                     assignment: _filteredList[index],
                   );
                 },

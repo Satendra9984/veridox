@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:veridox/app_models/sorting_enums.dart';
 import '../../app_models/saved_assignment_model.dart';
 import '../../app_widgets/saved_assignment_card.dart';
-import 'assignment_detail_page.dart';
 
 class SubmittedAssignmentList extends StatefulWidget {
   final List<SavedAssignment> savedAssList;
@@ -51,7 +50,7 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
         DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
         DateTime secondDate =
             DateFormat('dd/MM/yyyy').parse(second.assignedDate);
-        return firstDate.compareTo(secondDate);
+        return secondDate.compareTo(firstDate);
       });
       _filteredList = _filtList;
     } else if (_currentFilter == SavedAssignmentFilters.OldestFirst) {
@@ -59,9 +58,9 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
         DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
         DateTime secondDate =
             DateFormat('dd/MM/yyyy').parse(second.assignedDate);
-        return secondDate.compareTo(firstDate);
+        _filteredList = _filtList;
+        return firstDate.compareTo(secondDate);
       });
-      _filteredList = _filtList;
     } else {
       _filteredList = _filtList;
     }
@@ -70,13 +69,7 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [Color(0XFFf0f5ff), Colors.white],
-        ),
-      ),
+      margin: EdgeInsets.only(right: 5),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -117,23 +110,23 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
                           },
                           itemBuilder: (context) {
                             return <PopupMenuEntry<SavedAssignmentFilters>>[
-                              PopupMenuItem(
-                                  child: Text(
-                                    'In-Progress First',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  value: SavedAssignmentFilters.InProgress),
-                              PopupMenuItem(
-                                child: Text(
-                                  'ReAssigned First',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                value: SavedAssignmentFilters.ReAssigned,
-                              ),
+                              // PopupMenuItem(
+                              //     child: Text(
+                              //       'In-Progress First',
+                              //       style: TextStyle(
+                              //         fontWeight: FontWeight.w500,
+                              //       ),
+                              //     ),
+                              //     value: SavedAssignmentFilters.InProgress),
+                              // PopupMenuItem(
+                              //   child: Text(
+                              //     'ReAssigned First',
+                              //     style: TextStyle(
+                              //       fontWeight: FontWeight.w500,
+                              //     ),
+                              //   ),
+                              //   value: SavedAssignmentFilters.ReAssigned,
+                              // ),
                               PopupMenuItem(
                                 child: Text(
                                   'Newest First',
@@ -166,14 +159,14 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
             if (_filteredList.length == 0)
               Container(
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.all(15),
                 alignment: Alignment.center,
                 child: Text(
-                  'You do not have any assignments yet,'
+                  'You do not have any submitted assignments,'
                   '\ncontact your agency for more details',
                   style: TextStyle(
                     fontSize: 16,
@@ -188,16 +181,7 @@ class _SubmittedAssignmentListState extends State<SubmittedAssignmentList> {
                 itemCount: _filteredList.length,
                 itemBuilder: (context, index) {
                   return SavedAssignmentCard(
-                    navigate: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => AssignmentDetailPage(
-                      //       caseId: _filteredList[index].caseId,
-                      //     ),
-                      //   ),
-                      // );
-                    },
+                    navigate: () {},
                     assignment: _filteredList[index],
                   );
                 },

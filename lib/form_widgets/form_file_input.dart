@@ -45,9 +45,7 @@ class _FormFileInputState extends State<FormFileInput> {
 
   int _getCrossAxisCount() {
     Size size = MediaQuery.of(context).size;
-
     double width = size.width;
-
     int wid = width.toInt();
     int count = (wid) ~/ 150;
     // debugPrint('count --> $count');
@@ -76,14 +74,6 @@ class _FormFileInputState extends State<FormFileInput> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -127,17 +117,6 @@ class _FormFileInputState extends State<FormFileInput> {
           ),
         ),
       );
-
-      // await FileUploader.uploadFile(dbPath: _dbPath, fileData: fileBytes)
-      //     .then((task) async {
-      //   if (task != null) {
-      //     setState(() {
-      //       _filesList.add(_dbPath);
-      //     });
-      //     _fileIndex++;
-      //     await _updateData();
-      //   }
-      // });
     }
   }
 
@@ -438,7 +417,7 @@ class _FormFileInputState extends State<FormFileInput> {
       Uint8List bodyBytes = response.bodyBytes;
       final dir = await getExternalStorageDirectory();
       String fileExtension = await _getFileExtension(index);
-      debugPrint('file extension = $fileExtension');
+      // debugPrint('file extension = $fileExtension');
       final myImagePath = dir!.path + "/myfile$fileExtension";
       File imageFile = File(myImagePath);
       if (!await imageFile.exists()) {
@@ -448,9 +427,9 @@ class _FormFileInputState extends State<FormFileInput> {
       final result = await OpenFile.open(imageFile.path);
 
       // setState(() {
-      String _openResult = "type=${result.type}  message=${result.message}";
+      // String _openResult = "type=${result.type}  message=${result.message}";
       // });
-      debugPrint('open rsult = $_openResult');
+      // debugPrint('open rsult = $_openResult');
     });
   }
 }

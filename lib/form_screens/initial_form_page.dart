@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_providers/form_provider.dart';
-import 'package:veridox/app_services/database/firestore_services.dart';
-import 'package:veridox/form_screens/form_submit_screen.dart';
 import 'form_page.dart';
 
 class InitialFormPageView extends StatefulWidget {
@@ -28,7 +26,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
     await _formProvider.initializeResponse();
     // set agency Id
     await FirebaseFirestore.instance
-        .collection('assignment')
+        .collection('assignments')
         .doc(widget.caseId)
         .get()
         .then((value) {
@@ -78,19 +76,12 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
           provider: _formProvider,
           singlePageData: pageData[i],
           currentPage: i,
-          totalPages: pageData.length + 1,
+          totalPages: pageData.length,
           pageController: _pageController,
+          agencyId: _formProvider.agencyId,
         ),
       );
     }
-    screen.add(
-      FormSubmitPage(
-        provider: _formProvider,
-        currentPage: pageData.length,
-        pageController: _pageController,
-        totalPages: pageData.length + 1,
-      ),
-    );
     return screen;
   }
 

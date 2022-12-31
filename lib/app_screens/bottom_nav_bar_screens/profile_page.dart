@@ -154,20 +154,23 @@ class _ProfilePageState extends State<ProfilePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 60,
+        backgroundColor: Colors.white,
+        shadowColor: Colors.lightBlueAccent.shade100.withOpacity(0.30),
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: Image.asset(
+          'assets/launcher_icons/veridocs_launcher_icon.jpeg',
+          fit: BoxFit.contain,
+          height: 50,
+          width: 150,
+        ),
+      ),
       body: Column(
         children: [
-          SizedBox(height: 25),
-          Container(
-            alignment: Alignment.topLeft,
-            margin:
-                const EdgeInsets.only(right: 8.0, left: 15, top: 5, bottom: 0),
-            child: Image.asset(
-              'assets/launcher_icons/veridocs_launcher_icon.jpeg',
-              fit: BoxFit.contain,
-              height: 50,
-              width: 150,
-            ),
-          ),
           Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),

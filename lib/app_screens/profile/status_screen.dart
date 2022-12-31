@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:veridox/app_screens/home_page.dart';
+import 'package:veridox/app_screens/bottom_nav_bar_screens/home_page.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 
@@ -215,7 +215,7 @@ class _StatusScreenState extends State<StatusScreen>
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Application Details',
+                              'Applicant Details',
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w600,
