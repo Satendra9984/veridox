@@ -6,12 +6,12 @@ import '../app_utils/app_functions.dart';
 import 'detail_text.dart';
 
 class SavedAssignmentCard extends StatelessWidget {
-  final Offset distance = const Offset(3.5, 3.5);
-  final double blur = 5.0;
+  final Offset distance = const Offset(1.5, 1.5);
+  final double blur = 3.0;
 
   final SavedAssignment assignment;
   final Function() navigate;
-  Function()? onDoubleTap;
+  final Function()? onDoubleTap;
   SavedAssignmentCard({
     Key? key,
     required this.navigate,
@@ -28,21 +28,21 @@ class SavedAssignmentCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.grey.shade300,
-            width: 0.7,
+            width: 0.00,
           ),
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
-            BoxShadow(
-              blurRadius: blur,
-              offset: -distance,
-              color: Colors.white10,
-              // inset: isPressed,
-            ),
+            // BoxShadow(
+            //   blurRadius: blur,
+            //   offset: -distance,
+            //   color: Colors.white10,
+            //   // inset: isPressed,
+            // ),
             BoxShadow(
               blurRadius: blur,
               offset: distance,
-              color: const Color(0xFFA7A9AF),
+              color: Colors.grey.shade400,
               // inset: isPressed,
             ),
           ],
@@ -156,29 +156,6 @@ class SavedAssignmentCard extends StatelessWidget {
                     radius: 9,
                     backgroundColor: getStatusColour(assignment.status),
                   ),
-                  // PopupMenuButton(
-                  //   itemBuilder: (_) => [
-                  //     PopupMenuItem(
-                  //       value: 0,
-                  //       onTap: () async {
-                  //         /// DeletingSavedAssignments
-                  //       },
-                  //       child: const Text(
-                  //         'Delete Task',
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.w600,
-                  //         ),
-                  //         textAlign: TextAlign.center,
-                  //       ),
-                  //     ),
-                  //   ],
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(15),
-                  //   ),
-                  //   // padding: const EdgeInsets.all(5),
-                  //   color: Colors.red.shade100,
-                  // ),
                 ],
               ),
             ),

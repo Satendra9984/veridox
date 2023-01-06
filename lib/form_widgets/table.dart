@@ -100,7 +100,9 @@ class _FormTableInputState extends State<FormTableInput> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(height: 20,),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Text(
                                 col['label'].toString(),
                                 style: const TextStyle(
@@ -142,7 +144,6 @@ class _FormTableInputState extends State<FormTableInput> {
                               columnId: col['id'].toString(),
                               pageId: '${widget.pageId},${widget.fieldId}',
                               fieldId: '${row['id']},${col['id']}',
-                              provider: widget.provider,
                               widgetJson: row,
                             );
                           } else if (type == 'address') {

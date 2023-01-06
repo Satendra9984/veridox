@@ -40,6 +40,8 @@ class FormProvider extends ChangeNotifier {
 
   clearResult() {
     _result = {};
+    _agencyId = '';
+    _assignmentId = '';
   }
 
   Future<void> initializeResponse() async {
@@ -72,24 +74,7 @@ class FormProvider extends ChangeNotifier {
           .doc(assignmentId)
           .collection('form_data')
           .doc('response')
-          .set(_result)
-          .then((value) async {
-        await FirebaseFirestore.instance
-            .collection('assignments')
-            .doc(assignmentId)
-            .update({
-          'status': 'submitted',
-        }).then((value) async {
-          await FirebaseFirestore.instance
-              .collection('field_verifier')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('assignments')
-              .doc(assignmentId)
-              .update({
-            'status': 'submitted',
-          });
-        });
-      });
+          .set(_result);
     } catch (e) {
       return;
     }

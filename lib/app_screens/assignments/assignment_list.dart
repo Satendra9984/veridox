@@ -16,6 +16,16 @@ class _AssignmentListState extends State<AssignmentList> {
   SavedAssignmentFilters _currentFilter = SavedAssignmentFilters.NewestFirst;
   List<SavedAssignment> _filteredList = [];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _setFilteredList(List<SavedAssignment> list) {
     final List<SavedAssignment> _filtList = list.where((element) {
       return element.status == 'assigned';

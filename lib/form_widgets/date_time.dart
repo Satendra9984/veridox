@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
-  final FormProvider provider;
   final String pageId;
   final String fieldId;
   final String? rowId;
@@ -15,9 +15,9 @@ class DateTimePicker extends StatefulWidget {
     Key? key,
     required this.pageId,
     required this.fieldId,
-    required this.provider,
     required this.widgetJson,
-    this.rowId, this.columnId,
+    this.rowId,
+    this.columnId,
   }) : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   DateTime? _date;
   DateTime _firstDate = DateTime.now();
   DateTime _lastDate = DateTime(2100);
-
+  late FormProvider _formProvider;
   @override
   void initState() {
     _initializeValueFromData();
@@ -38,11 +38,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
   void _initializeValueFromData() {
     String? date;
     if (widget.rowId == null) {
-      date = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+      date = _formProvider.getResult['${widget.pageId},${widget.fieldId}'];
     } else {
-      date = widget.provider
-          .getResult['${widget.pageId},${widget
-          .fieldId},${widget.rowId},${widget.columnId}'];
+      date = _formProvider.getResult[
+          '${widget.pageId},${widget.fieldId},${widget.rowId},${widget.columnId}'];
     }
     if (date != null) {
       DateTime initialDateFromDatabase = DateFormat("dd/mm/yyyy").parse(date);
@@ -52,6 +51,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   void didChangeDependencies() {
+    _formProvider = Provider.of<FormProvider>(context);
+
     super.didChangeDependencies();
     try {
       setState(() {
@@ -76,7 +77,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         setState(() {
           _date = value;
         });
-        widget.provider.updateData(
+        _formProvider.updateData(
             pageId: widget.pageId,
             fieldId: widget.fieldId,
             rowId: widget.rowId,
@@ -111,14 +112,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -179,7 +172,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                           });
 
                           /// deleting date from _result
-                          widget.provider
+                          _formProvider
                               .deleteData('${widget.pageId},${widget.fieldId}');
                           formState.didChange(_date);
                         },

@@ -50,7 +50,7 @@ class FirestoreServices {
   }
 
   /// get saved assignments list
-  static Future<List<Map<String, dynamic>?>> getAssignmentsByStatus(
+  static Future<List<Map<String, dynamic>>?> getAssignmentsByStatus(
       {required String filter1, String? filter2}) async {
     final _auth = FirebaseAuth.instance;
     final uid = _auth.currentUser!.uid;

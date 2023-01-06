@@ -10,6 +10,7 @@ import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 
 import 'app_screens/assignments/saved_assignments_page.dart';
 import 'form_screens/home_page.dart';
+import 'laboratory.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -42,8 +43,11 @@ class MyApp extends StatelessWidget {
         // ChangeNotifierProvider<SavedAssignmentProvider>(
         //     create: (context) => SavedAssignmentProvider()),
         ChangeNotifierProvider<CustomAuthProvider>(
-            create: (context) => CustomAuthProvider()),
-        ChangeNotifierProvider(create: (context) => FormProvider())
+          create: (context) => CustomAuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FormProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -58,8 +62,7 @@ class MyApp extends StatelessWidget {
         // home: FileViewerWidget(),
         routes: {
           '/': (context) => const OnBoardingScreen(),
-          SavedAssignmentsPage.savedAssignmentPageName: (context) =>
-              const SavedAssignmentsPage(),
+          // '/': (context) => Lab(),
         },
       ),
     );

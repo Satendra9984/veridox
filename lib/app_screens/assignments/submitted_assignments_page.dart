@@ -27,9 +27,9 @@ class _SubmittedAssignmentsPageState extends State<SubmittedAssignmentsPage>
     List<SavedAssignment> subList = [];
     await FirestoreServices.getAssignmentsByStatus(filter1: 'submitted')
         .then((list) {
-      if (list.isNotEmpty) {
+      if (list != null && list.isNotEmpty) {
         subList = list.map((assignment) {
-          return SavedAssignment.fromJson(assignment!, assignment['caseId']);
+          return SavedAssignment.fromJson(assignment, assignment['caseId']);
         }).toList();
       }
     });

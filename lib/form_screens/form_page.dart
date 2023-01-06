@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
-import 'package:path/path.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/form_widgets/location_input.dart';
 import 'package:veridox/form_widgets/table.dart';
 import 'package:veridox/form_widgets/text.dart';
 import 'package:veridox/form_widgets/toggle_button.dart';
-import '../app_screens/assignments/saved_assignments_page.dart';
 import '../app_services/database/firestore_services.dart';
 import '../app_utils/app_constants.dart';
 import '../form_widgets/date_time.dart';
@@ -59,7 +57,8 @@ class _FormPageState extends State<FormPage> {
 
   @override
   void dispose() {
-    // debugPrint('form page has been disposed page ${widget.currentPage}');
+    debugPrint('form page has been disposed page ${widget.currentPage}');
+    // widget.provider.dispose();
     super.dispose();
   }
 
@@ -75,231 +74,227 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     // super.build(context);
-    return Scaffold(
-      // backgroundColor: Colors.blue.shade100,
-      appBar: AppBar(
-        title: const Text('Customer Verification Form'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(15),
-                  padding: const EdgeInsets.all(5.234589786),
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _getLength(),
-                        itemBuilder: (context, index) {
-                          var field = _pageData;
-                          if (field[index] != null &&
-                              field[index]['widget'] == 'text') {
-                            return TextTitle(
-                              widgetData: field[index],
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'text-input') {
-                            return FormTextInput(
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              widgetJson: field[index],
-                              provider: provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'address') {
-                            return GetUserLocation(
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              widgetJson: field[index],
-                              provider: provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'toggle-input') {
-                            return ToggleButton(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'dropdown') {
-                            return DropdownMenu(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'date-time') {
-                            return DateTimePicker(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'file') {
-                            return FormFileInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'image') {
-                            return FormImageInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'table') {
-                            return FormTableInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'email') {
-                            return FormEmailTextInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'phone') {
-                            return FormPhoneNumberInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'pan') {
-                            return FormPanNumberInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'aadhar') {
-                            return FormAadharNumberInput(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else if (field[index] != null &&
-                              field[index]['widget'] == 'signature') {
-                            return FormSignature(
-                              widgetJson: field[index],
-                              pageId: widget.currentPage.toString(),
-                              fieldId: index.toString(),
-                              provider: widget.provider,
-                            );
-                          } else {
-                            return Container(
-                              margin: const EdgeInsets.only(top: 15),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              decoration: containerElevationDecoration.copyWith(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade500,
-                                    offset: const Offset(0.0, 0.5), //(x,y)
-                                    blurRadius: 0.0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.error_outline,
+    return Form(
+      key: _formKey,
+      child: ListView(
+        children: [
+          Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(5.234589786),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _getLength(),
+                      itemBuilder: (context, index) {
+                        var field = _pageData;
+                        if (field[index] != null &&
+                            field[index]['widget'] == 'text') {
+                          return TextTitle(
+                            widgetData: field[index],
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'text-input') {
+                          return FormTextInput(
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            widgetJson: field[index],
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'address') {
+                          return GetUserLocation(
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            widgetJson: field[index],
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'toggle-input') {
+                          return ToggleButton(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'dropdown') {
+                          return DropdownMenu(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'date-time') {
+                          return DateTimePicker(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            // provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'file') {
+                          return FormFileInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'image') {
+                          return FormImageInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'table') {
+                          return FormTableInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'email') {
+                          return FormEmailTextInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'phone') {
+                          return FormPhoneNumberInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'pan') {
+                          return FormPanNumberInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'aadhar') {
+                          return FormAadharNumberInput(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else if (field[index] != null &&
+                            field[index]['widget'] == 'signature') {
+                          return FormSignature(
+                            widgetJson: field[index],
+                            pageId: widget.currentPage.toString(),
+                            fieldId: index.toString(),
+                            provider: widget.provider,
+                          );
+                        } else {
+                          return Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 20),
+                            decoration: containerElevationDecoration.copyWith(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade500,
+                                  offset: const Offset(0.0, 0.5), //(x,y)
+                                  blurRadius: 0.0,
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: CupertinoColors.systemRed,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Invalid Form Field',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                     color: CupertinoColors.systemRed,
                                   ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    'Invalid Form Field',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: CupertinoColors.systemRed,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          if (widget.currentPage > 0)
-                            ElevatedButton(
-                              onPressed: () {
-                                widget.pageController
-                                    .jumpToPage(widget.currentPage - 1);
-                              },
-                              child: const Center(
-                                child: Text('Back'),
-                              ),
-                            ),
-                          const SizedBox(width: 15),
-                          if (widget.currentPage <= widget.totalPages)
-                            ElevatedButton(
-                              onPressed: () async {
-                                await _validateSubmitPage();
-                              },
-                              child: Center(
-                                child: Text(
-                                  widget.currentPage == widget.totalPages - 1
-                                      ? 'Submit'
-                                      : 'Next',
+                                  textAlign: TextAlign.start,
                                 ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (widget.currentPage > 0)
+                          ElevatedButton(
+                            onPressed: () {
+                              widget.pageController
+                                  .jumpToPage(widget.currentPage - 1);
+                            },
+                            child: const Center(
+                              child: Text('Back'),
+                            ),
+                          ),
+                        const SizedBox(width: 15),
+                        if (widget.currentPage <= widget.totalPages)
+                          ElevatedButton(
+                            onPressed: () async {
+                              await _validateSubmitPage();
+                            },
+                            child: Center(
+                              child: Text(
+                                widget.currentPage == widget.totalPages - 1
+                                    ? 'Submit'
+                                    : 'Next',
                               ),
                             ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                    ],
-                  ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   Future<void> _validateSubmitPage() async {
     if (_formKey.currentState!.validate()) {
-      debugPrint(
-          'current page -> ${widget.currentPage} total, ${widget.totalPages}');
       if (widget.currentPage == widget.totalPages - 1) {
         await showDialog(
             context: this.context,
             builder: (context) {
               return _showFinalSubmitAlertDialog();
             }).then(
-          (submit) {
+          (submit) async {
             if (submit != null && submit == true) {
-              FutureProgressDialog(
-                _finalSubmitForm(),
-                message: Text(
-                    'Submitting Form. Please wait and do not touch anywhere'),
+              await showDialog(
+                context: context,
+                builder: (context) => FutureProgressDialog(
+                  _finalSubmitForm(),
+                  message: Text(
+                    'Submitting Form',
+                  ),
+                ),
               );
             }
           },
@@ -314,17 +309,84 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  Future<void> _finalSubmitForm() async {
-    await widget.provider.saveDraftData().then(
-      (value) async {
-        // update status
-        await FirestoreServices.updateAssignmentStatus(
-          caseId: widget.provider.assignmentId,
-          status: 'submitted',
-          agencyId: widget.agencyId,
-        );
-      },
+  Future<void> _showSubmitted() async {
+    await showDialog(
+      context: context,
+      builder: (context) => FutureProgressDialog(
+        Future.delayed(
+          Duration(seconds: 3),
+        ),
+        progress: Container(
+          child: Icon(
+            const IconData(0xf635, fontFamily: 'MaterialIcons'),
+            color: CupertinoColors.systemGreen,
+            size: 50,
+          ),
+        ),
+        message: Container(
+          child: Text(
+            'Submitted Successfully',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
     );
+  }
+
+  Future<void> _showNotSubmitted() async {
+    await showDialog(
+      context: context,
+      builder: (context) => FutureProgressDialog(
+        Future.delayed(
+          Duration(seconds: 3),
+        ),
+        progress: Container(
+          child: Icon(
+            const IconData(0xe6cb, fontFamily: 'MaterialIcons'),
+            color: CupertinoColors.systemRed,
+            size: 50,
+          ),
+        ),
+        message: Container(
+          child: Text(
+            'Something Went Wrong',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _finalSubmitForm() async {
+    try {
+      await widget.provider.saveDraftData().then(
+        (value) async {
+          await FirestoreServices.updateAssignmentStatus(
+            caseId: widget.provider.assignmentId,
+            status: 'submitted',
+            agencyId: widget.agencyId,
+          ).catchError((error) async {
+            await _showNotSubmitted();
+            return;
+          }).then((value) async {
+            await _showSubmitted().then((value) {
+              Navigator.of(context).pop();
+            });
+          });
+          widget.provider.clearResult();
+        },
+      );
+      return;
+    } catch (e) {
+      await _showNotSubmitted();
+      return;
+    }
   }
 
   Widget _showFinalSubmitAlertDialog() {

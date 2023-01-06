@@ -40,6 +40,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
   @override
   void initState() {
     super.initState();
+    debugPrint('initial form page init');
     _pageController = PageController();
   }
 
@@ -53,12 +54,16 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   void deactivate() {
-    _pageController.dispose();
+    debugPrint('initial form page has been deactivated');
+    _formProvider.dispose();
     super.deactivate();
   }
 
   @override
   void dispose() {
+    debugPrint('initial form page has been disposed');
+    _pageController.dispose();
+    _formProvider.dispose();
     super.dispose();
   }
 
@@ -70,7 +75,6 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
       return screen;
     }
     for (int i = 0; i < pageData.length; i++) {
-      // debugPrint('pageNumber --> ${i}\n');
       screen.add(
         FormPage(
           provider: _formProvider,
@@ -87,6 +91,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
 
   @override
   Widget build(BuildContext context) {
+    _formProvider = Provider.of<FormProvider>(context);
     return FutureBuilder(
       future: initialize(),
       builder: (context, AsyncSnapshot<void> snap) {
@@ -100,9 +105,7 @@ class _InitialFormPageViewState extends State<InitialFormPageView> {
             physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: _getFormPages(widget.pagesData),
-            onPageChanged: (currentPage) {
-              // debugPrint('page changed --> $currentPage}');
-            },
+            onPageChanged: (currentPage) {},
           );
         }
       },

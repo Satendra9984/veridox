@@ -12,21 +12,21 @@ class FieldVerifierDashboard extends StatefulWidget {
 }
 
 class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final Offset distance = const Offset(3.5, 3.5);
   final double blur = 5.0;
-  late TabController _tabController;
+  late PageController _pageController;
   int _currentTabNumber = 0;
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _pageController = PageController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -37,7 +37,7 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    // super.build(context);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -55,61 +55,72 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
         ),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 15),
-          TabBar(
-            controller: _tabController,
-            onTap: (currentTab) {
-              setState(() {
-                _currentTabNumber = currentTab;
-              });
-            },
-            unselectedLabelColor: Colors.grey.shade700,
-            indicatorSize: TabBarIndicatorSize.label,
-            labelPadding: EdgeInsets.symmetric(horizontal: 5),
-            indicatorPadding: EdgeInsets.symmetric(vertical: 5),
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
-              gradient: LinearGradient(
-                colors: [Colors.lightBlue, Colors.lightBlueAccent],
-              ),
-            ),
-            padding: EdgeInsets.only(bottom: 5, left: 15, right: 15, top: 5),
-            tabs: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
               TabForDashboard(
                 currentTabNumber: _currentTabNumber,
                 label: 'Assigned',
                 tabNumber: 0,
+                onPressed: () {
+                  setState(() {
+                    _currentTabNumber = 0;
+                  });
+                  _pageController.jumpToPage(0);
+                },
               ),
               TabForDashboard(
                 currentTabNumber: _currentTabNumber,
                 label: 'In-Progress',
                 tabNumber: 1,
+                onPressed: () {
+                  setState(() {
+                    _currentTabNumber = 1;
+                  });
+                  _pageController.jumpToPage(1);
+                },
               ),
               TabForDashboard(
                 currentTabNumber: _currentTabNumber,
                 label: 'Submitted',
                 tabNumber: 2,
+                onPressed: () {
+                  setState(() {
+                    _currentTabNumber = 2;
+                  });
+                  _pageController.jumpToPage(2);
+                },
               ),
               TabForDashboard(
                 currentTabNumber: _currentTabNumber,
                 label: 'Approved',
                 tabNumber: 3,
+                onPressed: () {
+                  setState(() {
+                    _currentTabNumber = 3;
+                  });
+                  _pageController.jumpToPage(3);
+                },
               ),
             ],
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
+            child: PageView(
+              controller: _pageController,
               physics: NeverScrollableScrollPhysics(),
               children: [
-                AssignmentList(),
-                SavedAssignmentsPage(),
+                const AssignmentList(),
+                const SavedAssignmentsPage(),
                 SubmittedAssignmentsPage(),
                 ApprovedAssignmentsPage(),
               ],
+              onPageChanged: (int pageNumber) {
+                setState(() {
+                  _currentTabNumber = pageNumber;
+                });
+              },
             ),
           ),
         ],
@@ -117,32 +128,38 @@ class _FieldVerifierDashboardState extends State<FieldVerifierDashboard>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 }
 
 class TabForDashboard extends StatelessWidget {
   final String label;
   final int currentTabNumber, tabNumber;
+  final Function() onPressed;
   const TabForDashboard({
     Key? key,
     required this.currentTabNumber,
     required this.tabNumber,
     required this.label,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Tab(
+    return GestureDetector(
+      onTap: () {
+        onPressed();
+      },
       child: Container(
+        height: 40,
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: currentTabNumber != tabNumber
               ? Colors.grey.shade300
-              : Colors.transparent,
+              : Colors.blue,
         ),
         child: Align(
           alignment: Alignment.center,
@@ -155,6 +172,7 @@ class TabForDashboard extends StatelessWidget {
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
+            softWrap: true,
           ),
         ),
       ),

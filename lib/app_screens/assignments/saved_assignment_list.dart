@@ -30,6 +30,12 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void _setFilteredList() {
     // debugPrint('current filter -> $_currentFilter\n');
     List<SavedAssignment> _filtList = _filteredList;
@@ -204,9 +210,8 @@ class _SavedAssignmentListState extends State<SavedAssignmentList> {
                           ),
                         ),
                       ).then((submitted) {
-                        if (submitted != null && submitted == true) {
-                          widget.renewListAfter();
-                        }
+                        if (submitted != null && submitted == true) {}
+                        widget.renewListAfter();
                       });
                     },
                     assignment: _filteredList[index],
