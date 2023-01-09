@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
+import '../form_screens/form_constants.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -97,7 +98,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),

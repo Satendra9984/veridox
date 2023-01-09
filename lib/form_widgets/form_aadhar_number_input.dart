@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
+import '../form_screens/form_constants.dart';
 
 class FormAadharNumberInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -58,7 +59,7 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -69,18 +70,10 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -117,7 +110,7 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
               ),
               _getLabel(),
               const SizedBox(
-                height: 25,
+                height: kTextInputHeightFromLabel,
               ),
               TextField(
                 controller: _textEditingController,

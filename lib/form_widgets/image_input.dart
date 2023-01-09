@@ -8,6 +8,7 @@ import '../app_providers/form_provider.dart';
 import '../app_services/database/uploader.dart';
 import '../app_utils/app_constants.dart';
 import 'image_upload.dart';
+import '../form_screens/form_constants.dart';
 
 class FormImageInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -209,6 +210,7 @@ class _FormImageInputState extends State<FormImageInput> {
         _imageIndex = imageList.length;
       }
       _isListsInitializedAlready = true;
+      containerElevationDecoration;
     }
   }
 
@@ -230,10 +232,10 @@ class _FormImageInputState extends State<FormImageInput> {
     return RichText(
       text: TextSpan(
         text: '$label',
-        style: const TextStyle(
-          fontSize: 17,
+        style: TextStyle(
           fontWeight: FontWeight.w500,
           color: Colors.black,
+          fontSize: kLabelFontSize,
         ),
         children: [
           if (widget.widgetJson.containsKey('required') &&
@@ -242,18 +244,10 @@ class _FormImageInputState extends State<FormImageInput> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -262,7 +256,7 @@ class _FormImageInputState extends State<FormImageInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       margin: const EdgeInsets.only(bottom: 15),
       decoration: containerElevationDecoration,
       child: FutureBuilder(
@@ -362,9 +356,8 @@ class _FormImageInputState extends State<FormImageInput> {
 
                     /// For adding new images
                     if (_imageFileList.length < 3)
-                      ElevatedButton(
-                        child: const Icon(Icons.add_a_photo_outlined, size: 24),
-                        onPressed: () async {
+                      GestureDetector(
+                        onTap: () async {
                           await Navigator.of(context)
                               .push(CupertinoPageRoute(builder: (context) {
                             return const ImagePickerImageInput(
@@ -377,6 +370,22 @@ class _FormImageInputState extends State<FormImageInput> {
                             }
                           });
                         },
+                        child: Container(
+                          width: 60,
+                          height: 30,
+                          constraints: BoxConstraints.tightForFinite(),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3.5),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade400,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: const Icon(
+                            Icons.photo_library_sharp,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
 
                     /// validation widget
@@ -394,7 +403,7 @@ class _FormImageInputState extends State<FormImageInput> {
                             Text(
                               formState.errorText!,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: kErrorTextFontSize,
                                 color: CupertinoColors.systemRed,
                               ),
                               textAlign: TextAlign.start,

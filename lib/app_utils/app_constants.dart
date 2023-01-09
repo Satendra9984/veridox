@@ -27,15 +27,15 @@ final theme = ThemeData(
 
 BoxDecoration containerElevationDecoration = BoxDecoration(
   border: Border.all(
-    color: Colors.grey.shade400,
+    color: Colors.grey.shade200,
   ),
   color: Colors.white,
   borderRadius: BorderRadius.circular(10),
   boxShadow: [
     BoxShadow(
       color: Colors.grey.shade400,
-      offset: const Offset(0.0, 2.5), //(x,y)
-      blurRadius: 3.5,
+      offset: const Offset(2.0, 3.0), //(x,y)
+      blurRadius: 4.5,
     ),
   ],
 );

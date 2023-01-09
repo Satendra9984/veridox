@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../app_providers/form_provider.dart';
+import '../form_screens/form_constants.dart';
 
 class FormTableTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -44,7 +45,7 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -55,7 +56,7 @@ class _FormTableTextInputState extends State<FormTableTextInput> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -81,14 +81,6 @@ class _DropdownMenuState extends State<DropdownMenu> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -104,9 +96,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _getLabel(),
-
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           FormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -124,26 +115,22 @@ class _DropdownMenuState extends State<DropdownMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 2.5),
-                    decoration: containerElevationDecoration.copyWith(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade500,
-                          offset: const Offset(0.0, 0.5), //(x,y)
-                          blurRadius: 0.0,
-                        ),
-                      ],
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      // border: Border.all(
+                      //   color: Colors.grey.shade300,
+                      // ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: DropdownButton<dynamic>(
+                      isExpanded: true,
                       hint: Text(
                         'Choose',
                         style: kHintTextStyle,
                       ),
                       value: currentValue,
                       icon: const Icon(
-                        Icons.arrow_drop_down,
+                        Icons.arrow_drop_down_outlined,
                         size: 40,
                         color: CupertinoColors.black,
                       ),
@@ -151,26 +138,19 @@ class _DropdownMenuState extends State<DropdownMenu> {
                         (option) {
                           var optionMap = option;
                           var value = optionMap['value'];
-
-                          // debugPrint(
-                          //     'value data type --> ${value.runtimeType}');
                           if (value.toString().isEmpty) {
                             value = 'choose';
                           }
-
-                          // debugPrint(option.toString());
                           return DropdownMenuItem(
                             value: option,
-                            onTap: () => setState(() {
-                              debugPrint('value selected --> $option');
-                            }),
                             child: Text(
                               value,
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 15,
                                 color: optionMap['id'] == '-1'
                                     ? Colors.grey.shade600
                                     : Colors.black,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           );
@@ -186,7 +166,6 @@ class _DropdownMenuState extends State<DropdownMenu> {
                             value: value);
                         formState.didChange(currentValue);
                       },
-                      isExpanded: true,
                     ),
                   ),
                   if (formState.hasError)
@@ -215,28 +194,6 @@ class _DropdownMenuState extends State<DropdownMenu> {
               );
             },
           ),
-          // TextFormField(
-          //   controller: _controller,
-          //   autovalidateMode: AutovalidateMode.onUserInteraction,
-          //   validator: (currentOption) {
-          //     if (widget.widgetJson.containsKey('required') &&
-          //         currentValue['id'] == '-1') {
-          //       return 'Please choose a option';
-          //     }
-          //     return null;
-          //   },
-          //   scrollPadding: const EdgeInsets.all(-5),
-          //   decoration: const InputDecoration(
-          //     border: InputBorder.none,
-          //     focusedBorder: InputBorder.none,
-          //     enabledBorder: InputBorder.none,
-          //     errorBorder: InputBorder.none,
-          //     disabledBorder: InputBorder.none,
-          //     isCollapsed: true,
-          //     isDense: true,
-          //     contentPadding: EdgeInsets.all(-5),
-          //   ),
-          // )
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
+import '../form_screens/form_constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -12,14 +13,15 @@ class ToggleButton extends StatefulWidget {
   final String fieldId;
   final String? rowId;
   final String? colId;
-  const ToggleButton({
-    Key? key,
-    required this.pageId,
-    required this.fieldId,
-    required this.provider,
-    required this.widgetJson,
-    this.rowId, this.colId
-  }) : super(key: key);
+  const ToggleButton(
+      {Key? key,
+      required this.pageId,
+      required this.fieldId,
+      required this.provider,
+      required this.widgetJson,
+      this.rowId,
+      this.colId})
+      : super(key: key);
 
   @override
   State<ToggleButton> createState() => _ToggleButtonState();
@@ -43,8 +45,8 @@ class _ToggleButtonState extends State<ToggleButton> {
     if (widget.rowId == null) {
       status = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     } else {
-      status = widget.provider.getResult['${widget.pageId},${widget.fieldId},${
-        widget.rowId},${widget.colId}'];
+      status = widget.provider.getResult[
+          '${widget.pageId},${widget.fieldId},${widget.rowId},${widget.colId}'];
     }
     if (status == null) {
       _currentIcon = const Icon(
@@ -73,7 +75,7 @@ class _ToggleButtonState extends State<ToggleButton> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -84,18 +86,10 @@ class _ToggleButtonState extends State<ToggleButton> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -127,7 +121,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                 children: [
                   _getLabel(),
                   const SizedBox(
-                    width: 15,
+                    height: kTextInputHeightFromLabel,
                   ),
                   IconButton(
                     icon: _currentIcon,

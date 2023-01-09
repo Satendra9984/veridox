@@ -7,6 +7,7 @@ import 'package:location/location.dart';
 import 'package:veridox/app_utils/app_constants.dart';
 import 'package:veridox/form_widgets/show_map.dart';
 import '../app_providers/form_provider.dart';
+import '../form_screens/form_constants.dart';
 
 class GetUserLocation extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -21,7 +22,8 @@ class GetUserLocation extends StatefulWidget {
     required this.fieldId,
     required this.provider,
     required this.widgetJson,
-    this.rowId, this.colId,
+    this.rowId,
+    this.colId,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,13 @@ class _GetUserLocationState extends State<GetUserLocation> {
   bool _gettingLocation = false;
   String _address = "";
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    _initializeSignatureFromDatabase();
+    super.initState();
+  }
+
   Widget _getLabel() {
     String label = widget.widgetJson['label'];
 
@@ -40,7 +49,7 @@ class _GetUserLocationState extends State<GetUserLocation> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -51,18 +60,10 @@ class _GetUserLocationState extends State<GetUserLocation> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          // TextSpan(
-          //   text: ' *',
-          //   style: TextStyle(
-          //     color: Colors.red,
-          //     fontSize: 18.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -73,18 +74,23 @@ class _GetUserLocationState extends State<GetUserLocation> {
       String coordinates =
           '${_currentLocation!.latitude},${_currentLocation!.longitude}';
       widget.provider.updateData(
-        rowId: widget.rowId, columnId: widget.colId,
-          pageId: widget.pageId, fieldId: widget.fieldId, value: coordinates);
+          rowId: widget.rowId,
+          columnId: widget.colId,
+          pageId: widget.pageId,
+          fieldId: widget.fieldId,
+          value: coordinates);
     }
   }
 
-  Future<void> _initializeSignatureFromDatabase() async {
+  void _initializeSignatureFromDatabase() {
+    debugPrint('initial location called');
     String? coordinates;
     if (widget.rowId == null) {
-      coordinates = widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
+      coordinates =
+          widget.provider.getResult['${widget.pageId},${widget.fieldId}'];
     } else {
-      coordinates = widget.provider.getResult['${widget.pageId},${widget
-          .fieldId},${widget.rowId},${widget.colId}'];
+      coordinates = widget.provider.getResult[
+          '${widget.pageId},${widget.fieldId},${widget.rowId},${widget.colId}'];
     }
     if (coordinates != null) {
       List<String> loca = coordinates.split(',');
@@ -104,169 +110,191 @@ class _GetUserLocationState extends State<GetUserLocation> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 115,
       decoration: widget.rowId == null ? containerElevationDecoration : null,
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       margin: const EdgeInsets.only(bottom: 15),
-      child: FutureBuilder(
-          future: _initializeSignatureFromDatabase(),
-          builder: (context, AsyncSnapshot<void> form) {
-            if (form.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return FormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                initialValue: _currentLocation,
-                validator: (val) {
-                  if (widget.widgetJson.containsKey('required') &&
-                      widget.widgetJson['required'] &&
-                      _currentLocation == null) {
-                    return 'Please enter address';
-                  }
-                  return null;
-                },
-                builder: (formState) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _getLabel(),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (_gettingLocation)
-                            const Expanded(
-                              flex: 8,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                          if (_currentLocation != null && !_gettingLocation)
-                            Expanded(
-                              flex: 8,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (_currentLocation != null) {
-                                    Navigator.of(context).push(
-                                      CupertinoPageRoute(
-                                        builder: (context) {
-                                          double? lat =
-                                              _currentLocation!.latitude;
-                                          double? long =
-                                              _currentLocation!.longitude;
-                                          return ShowMapScreen(
-                                            lat: lat,
-                                            longi: long,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }
+      child: FormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        initialValue: _currentLocation,
+        validator: (val) {
+          if (widget.widgetJson.containsKey('required') &&
+              widget.widgetJson['required'] &&
+              _currentLocation == null) {
+            return 'Please enter address';
+          }
+          return null;
+        },
+        builder: (formState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _getLabel(),
+              const SizedBox(
+                height: 15,
+              ),
+              if (_gettingLocation)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (_currentLocation != null)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_currentLocation != null) {
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (context) {
+                                  double? lat = _currentLocation!.latitude;
+                                  double? long = _currentLocation!.longitude;
+                                  return ShowMapScreen(
+                                    lat: lat,
+                                    longi: long,
+                                  );
                                 },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Location: ${_currentLocation?.latitude}, ${_currentLocation?.longitude}",
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      "Address: $_address",
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
-                            ),
-                          if (_currentLocation == null)
-                            Expanded(
-                              flex: 2,
-                              child: Center(
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.location_on,
-                                    size: 38,
-                                    color: CupertinoColors.systemGreen,
+                            );
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Lati :   ',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      _gettingLocation = true;
-                                    });
-                                    await _getLocation().then((value) async {
-                                      Position? location = value;
-                                      await _getAddress(location?.latitude,
-                                              location?.longitude)
-                                          .then((value) {
-                                        setState(() {
-                                          _currentLocation = location;
-                                          _address = value;
-                                          _gettingLocation = false;
-                                        });
-                                        _addData();
-                                        formState.didChange(_currentLocation);
-                                      });
-                                    });
-                                  },
-                                  color: Colors.purple,
                                 ),
-                              ),
-                            ),
-                          if (_currentLocation != null)
-                            Expanded(
-                              flex: 2,
-                              child: Center(
-                                child: IconButton(
-                                  icon: const Icon(
-                                    FontAwesomeIcons.xmark,
-                                    size: 38,
-                                    color: CupertinoColors.destructiveRed,
+                                Text(
+                                  '${_currentLocation!.latitude}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _currentLocation = null;
-                                    });
-                                  },
                                 ),
-                              ),
+                              ],
                             ),
-                        ],
-                      ),
-                      if (formState.hasError)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 8),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.error_outline,
-                                color: CupertinoColors.systemRed,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                formState.errorText!,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: CupertinoColors.systemRed,
+                            Row(
+                              children: [
+                                Text(
+                                  'Longi :   ',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
-                          ),
+                                Text(
+                                  '${_currentLocation!.longitude}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: IconButton(
+                          icon: const Icon(
+                            FontAwesomeIcons.xmark,
+                            size: 38,
+                            color: CupertinoColors.destructiveRed,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              // widget.provider.getResult['${widget.pageId},${widget.fieldId}'] = null;
+                              widget.provider.updateData(
+                                pageId: widget.pageId,
+                                fieldId: widget.fieldId,
+                                value: null,
+                              );
+                              _currentLocation = null;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (_currentLocation == null && _gettingLocation == false)
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _gettingLocation = true;
+                    });
+                    await _getLocation().then((value) async {
+                      Position? location = value;
+                      setState(() {
+                        _currentLocation = location;
+                        _gettingLocation = false;
+                      });
+
+                      _addData();
+                      formState.didChange(_currentLocation);
+                      // await _getAddress(location?.latitude,
+                      //         location?.longitude)
+                      //     .then((value) {
+                      //   setState(() {
+                      //     _address = value;
+                      //   });
+
+                      // });
+                    });
+                  },
+                  child: Container(
+                    width: 60,
+                    constraints: BoxConstraints.tightForFinite(),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade400,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: const Icon(
+                      Icons.add_location_outlined,
+                      // size: 30,
+                      color: CupertinoColors.white,
+                    ),
+                  ),
+                ),
+              if (formState.hasError)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: CupertinoColors.systemRed,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        formState.errorText!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: CupertinoColors.systemRed,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
                     ],
-                  );
-                },
-              );
-            }
-          }),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 

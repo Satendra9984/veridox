@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import '../app_providers/form_provider.dart';
 import '../app_services/database/uploader.dart';
 import '../app_utils/app_constants.dart';
+import '../form_screens/form_constants.dart';
 
 class FormFileInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
@@ -59,7 +60,7 @@ class _FormFileInputState extends State<FormFileInput> {
       text: TextSpan(
         text: '$label',
         style: const TextStyle(
-          fontSize: 17,
+          fontSize: kLabelFontSize,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -70,7 +71,7 @@ class _FormFileInputState extends State<FormFileInput> {
               text: ' *',
               style: TextStyle(
                 color: Colors.red.shade400,
-                fontSize: 18.0,
+                fontSize: kLabelFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -337,18 +338,36 @@ class _FormFileInputState extends State<FormFileInput> {
                       height: 5,
                     ),
                     if (_filesList.length < 3)
-                      ElevatedButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('Add File'),
-                            const SizedBox(width: 10),
-                            const Icon(Icons.file_upload_outlined),
-                          ],
-                        ),
-                        onPressed: () async {
+                      GestureDetector(
+                        onTap: () async {
                           await _addData();
                         },
+                        child: Container(
+                          constraints: BoxConstraints.tightForFinite(),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2.5),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade400,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Add File',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Icon(
+                                Icons.file_upload_outlined,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     if (formState.hasError)
                       Padding(

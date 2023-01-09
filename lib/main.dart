@@ -53,10 +53,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Veridox',
         theme: ThemeData(
-          // fontFamily: 'Roboto',
           primaryColor: Colors.lightBlue,
           primarySwatch: Colors.blue,
-          // textTheme: const TextTheme(),
           fontFamily: 'Ubuntu',
         ),
         // home: FileViewerWidget(),
