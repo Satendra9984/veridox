@@ -216,13 +216,11 @@ class _FormImageInputState extends State<FormImageInput> {
 
   @override
   void initState() {
-    // debugPrint('initstate called');
     super.initState();
   }
 
   @override
   void dispose() {
-    // debugPrint('dispose called');
     super.dispose();
   }
 
@@ -303,14 +301,15 @@ class _FormImageInputState extends State<FormImageInput> {
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(width: 5),
                                 Icon(
                                   Icons.image,
                                   color: Colors.redAccent,
+                                  size: 20,
                                 ),
-                                SizedBox(width: 5),
-
+                                SizedBox(width: 3.5),
                                 TextButton(
                                   onPressed: () {
                                     showDialog(
@@ -321,11 +320,11 @@ class _FormImageInputState extends State<FormImageInput> {
                                   child: Text(
                                     'Image ${index + 1}',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                                // SizedBox(width: 0),
                                 IconButton(
                                   onPressed: () async {
                                     showDialog(
@@ -336,8 +335,9 @@ class _FormImageInputState extends State<FormImageInput> {
                                   },
                                   icon: Icon(
                                     Icons.cancel,
+                                    size: 22,
                                   ),
-                                  splashRadius: 10.0,
+                                  // splashRadius: 5.0,
                                 ),
                               ],
                             ),
@@ -347,7 +347,7 @@ class _FormImageInputState extends State<FormImageInput> {
                           crossAxisCount: _getCrossAxisCount(),
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 1,
-                          childAspectRatio: 3.5,
+                          childAspectRatio: 4.5,
                           // mainAxisSpacing:
                         ),
                       ),

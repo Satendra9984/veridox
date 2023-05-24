@@ -4,12 +4,12 @@ import 'package:veridox/app_providers/form_provider.dart';
 import '../app_utils/app_constants.dart';
 import '../form_screens/form_constants.dart';
 
-class FormAadharNumberInput extends StatefulWidget {
+class FormPanNumberInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final FormProvider provider;
   final String pageId;
   final String fieldId;
-  const FormAadharNumberInput({
+  const FormPanNumberInput({
     Key? key,
     required this.pageId,
     required this.fieldId,
@@ -18,10 +18,10 @@ class FormAadharNumberInput extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FormAadharNumberInput> createState() => _FormAadharNumberInputState();
+  State<FormPanNumberInput> createState() => _FormPanNumberInputState();
 }
 
-class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
+class _FormPanNumberInputState extends State<FormPanNumberInput> {
   late TextEditingController _textEditingController;
   bool _isRequired = false;
 
@@ -95,9 +95,8 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
             if (value.isEmpty) return 'This field can\'t be empty';
 
             bool emailValid =
-                RegExp(r"^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$")
-                    .hasMatch(value);
-            if (!emailValid) return 'Please enter a valid aadhar number';
+                RegExp(r"[A-Z]{5}[0-9]{4}[A-Z]{1}").hasMatch(value);
+            if (!emailValid) return 'Please enter a valid pan number';
           }
           return null;
         },
@@ -115,7 +114,6 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
               TextField(
                 controller: _textEditingController,
                 onChanged: (val) {
-                  // _textEditingController.text = val;
                   widget.provider.updateData(
                       pageId: widget.pageId,
                       fieldId: widget.fieldId,
@@ -128,16 +126,10 @@ class _FormAadharNumberInputState extends State<FormAadharNumberInput> {
                 maxLines: 1,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  //   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  //   enabledBorder: InputBorder.none,
-                  //   errorBorder: InputBorder.none,
-                  //   disabledBorder: InputBorder.none,
                   hintText: 'Your Answer',
                   hintStyle: kHintTextStyle,
-
                   isDense: true, // Added this
-                  // contentPadding: EdgeInsets.all(-10),
                 ),
               ),
               if (formState.hasError)

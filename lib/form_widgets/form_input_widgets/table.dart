@@ -145,6 +145,7 @@ class _FormTableInputState extends State<FormTableInput> {
                               pageId: '${widget.pageId},${widget.fieldId}',
                               fieldId: '${row['id']},${col['id']}',
                               widgetJson: row,
+                              provider: widget.provider,
                             );
                           } else if (type == 'address') {
                             return GetUserLocation(

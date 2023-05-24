@@ -9,6 +9,7 @@ import '../form_screens/form_constants.dart';
 class DateTimePicker extends StatefulWidget {
   final Map<String, dynamic> widgetJson;
   final String pageId;
+  final FormProvider provider;
   final String fieldId;
   final String? rowId;
   final String? columnId;
@@ -19,6 +20,7 @@ class DateTimePicker extends StatefulWidget {
     required this.widgetJson,
     this.rowId,
     this.columnId,
+    required this.provider,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   late FormProvider _formProvider;
   @override
   void initState() {
+    _formProvider = widget.provider;
     _initializeValueFromData();
     super.initState();
   }
@@ -52,7 +55,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   void didChangeDependencies() {
-    _formProvider = Provider.of<FormProvider>(context);
+    // _formProvider = Provider.of<FormProvider>(context);
 
     super.didChangeDependencies();
     try {
