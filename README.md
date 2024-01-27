@@ -4,6 +4,17 @@
 
 FieldVerif is a comprehensive solution designed to streamline and enhance the document verification process for organizations, particularly those engaged in third-party verification in industries such as Banking and Insurance. The application aims to revolutionize the verification process by automating document assignments, field visits, and related processes. With features like geo-tagging, analytics, and tracking, FieldVerif ensures efficient and effective management of customer documentation.
 
+## FieldVerifier Mobile App Demo
+
+https://github.com/Satendra9984/veridox/assets/81842437/7b877e6d-e67f-458c-aa40-aa7dd4af9feb
+
+
+## Admin Panel
+
+![VeridocsWebsiteAdmin](https://github.com/Satendra9984/veridox/assets/81842437/85e00788-8efe-409f-9c69-e22b80a22f73)
+
+
+
 ## High-Level Business Process / Requirements 📊
 
 ### Current Manual Process 🔄
