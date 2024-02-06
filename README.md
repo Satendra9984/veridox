@@ -11,7 +11,8 @@ https://github.com/Satendra9984/veridox/assets/81842437/7b877e6d-e67f-458c-aa40-
 
 ## Admin Panel
 
-![VeridocsWebsiteAdmin](https://github.com/Satendra9984/veridox/assets/81842437/85e00788-8efe-409f-9c69-e22b80a22f73)
+![VeridocsWebsiteAdmin]
+(https://github.com/Satendra9984/veridox/assets/81842437/85e00788-8efe-409f-9c69-e22b80a22f73)
 
 
 
