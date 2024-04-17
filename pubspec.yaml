@@ -64,7 +64,7 @@ dependencies:
 
   # Firebase plugins
   firebase_storage: ^10.2.18
-  firebase_core: 1.20.1
+  firebase_core: ^1.24.0
   firebase_auth: ^3.3.19
   cloud_firestore: ^3.1.17
   firebase_database: ^9.1.5
@@ -78,6 +78,8 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
   future_progress_dialog: ^0.2.1
   image_gallery_saver: ^1.7.1
+  dartz: ^0.10.1
+  supabase_flutter: ^2.5.1
 
 
 dev_dependencies:

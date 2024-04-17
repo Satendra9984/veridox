@@ -1,23 +1,24 @@
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DropdownMenu;
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:veridox/app_providers/form_provider.dart';
-import 'package:veridox/form_widgets/location_input.dart';
-import 'package:veridox/form_widgets/table.dart';
-import 'package:veridox/form_widgets/text.dart';
-import 'package:veridox/form_widgets/toggle_button.dart';
+import 'package:veridox/form_widgets/form_input_widgets/location_input.dart';
+import 'package:veridox/form_widgets/form_input_widgets/toggle_button.dart';
 import '../app_services/database/firestore_services.dart';
 import '../app_utils/app_constants.dart';
-import '../form_widgets/date_time.dart';
-import '../form_widgets/dropdown.dart';
-import '../form_widgets/form_aadhar_number_input.dart';
-import '../form_widgets/form_email_input.dart';
-import '../form_widgets/form_file_input.dart';
-import '../form_widgets/form_pan_number_input.dart';
-import '../form_widgets/form_text_input.dart';
-import '../form_widgets/image_input.dart';
-import '../form_widgets/phone_number_input.dart';
-import '../form_widgets/signature.dart';
+import '../form_widgets/form_input_widgets/date_time.dart';
+import '../form_widgets/form_input_widgets/form_aadhar_number_input.dart';
+import '../form_widgets/form_input_widgets/form_dropdown.dart';
+import '../form_widgets/form_input_widgets/form_email_input.dart';
+import '../form_widgets/form_input_widgets/form_file_input.dart';
+import '../form_widgets/form_input_widgets/table.dart';
+import '../form_widgets/form_input_widgets/text.dart';
+import '../form_widgets/form_input_widgets/form_pan_number_input.dart';
+import '../form_widgets/form_input_widgets/form_text_input.dart';
+import '../form_widgets/form_input_widgets/image_input.dart';
+import '../form_widgets/form_input_widgets/phone_number_input.dart';
+import '../form_widgets/form_input_widgets/signature.dart';
 
 class FormPage extends StatefulWidget {
   final Map<String, dynamic> singlePageData;
@@ -134,7 +135,7 @@ class _FormPageState extends State<FormPage> {
                             widgetJson: field[index],
                             pageId: widget.currentPage.toString(),
                             fieldId: index.toString(),
-                            // provider: widget.provider,
+                            provider: widget.provider,
                           );
                         } else if (field[index] != null &&
                             field[index]['widget'] == 'file') {

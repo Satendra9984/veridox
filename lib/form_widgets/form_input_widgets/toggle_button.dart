@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../app_providers/form_provider.dart';
-import '../app_utils/app_constants.dart';
-import '../form_screens/form_constants.dart';
+import '../../app_providers/form_provider.dart';
+import '../../app_utils/app_constants.dart';
+import '../../form_screens/form_constants.dart';
 
 class ToggleButton extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

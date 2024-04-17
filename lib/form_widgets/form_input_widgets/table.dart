@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:veridox/app_utils/app_constants.dart';
-import 'package:veridox/form_widgets/date_time.dart';
-import 'package:veridox/form_widgets/location_input.dart';
-import 'package:veridox/form_widgets/table_form_input.dart';
-import 'package:veridox/form_widgets/toggle_button.dart';
+import 'package:veridox/form_widgets/form_input_widgets/date_time.dart';
+import 'package:veridox/form_widgets/form_input_widgets/toggle_button.dart';
+import 'package:veridox/form_widgets/form_input_widgets/location_input.dart';
+import 'package:veridox/form_widgets/form_input_widgets/table_form_input.dart';
 
-import '../app_providers/form_provider.dart';
+import '../../app_providers/form_provider.dart';
 
 class FormTableInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

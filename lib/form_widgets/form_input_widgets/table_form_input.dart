@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../app_providers/form_provider.dart';
-import '../form_screens/form_constants.dart';
+import '../../app_providers/form_provider.dart';
+import '../../form_screens/form_constants.dart';
 
 class FormTableTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

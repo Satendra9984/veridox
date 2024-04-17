@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import '../app_providers/form_provider.dart';
-import '../app_services/database/uploader.dart';
-import '../app_utils/app_constants.dart';
-import '../app_utils/pick_file/pick_file.dart';
+import '../../app_providers/form_provider.dart';
+import '../../app_services/database/uploader.dart';
+import '../../app_utils/app_constants.dart';
+import '../../app_utils/pick_file/pick_file.dart';
 import 'get_signature.dart';
 
 class FormSignature extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Form;
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_widgets/row_detail_text.dart';
-import 'package:veridox/form_screens/home_page.dart';
+import 'package:veridox/form_screens/form_home_page.dart';
 import '../../app_utils/app_functions.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
