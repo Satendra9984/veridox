@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
-import '../form_screens/form_constants.dart';
+import 'package:veridox/form_screens/form_constants.dart';
 
 class FormTextResultDisplay extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

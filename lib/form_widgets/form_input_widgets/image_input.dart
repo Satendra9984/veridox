@@ -4,11 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
-import '../app_providers/form_provider.dart';
-import '../app_services/database/uploader.dart';
-import '../app_utils/app_constants.dart';
+import '../../app_providers/form_provider.dart';
+import '../../app_services/database/uploader.dart';
+import '../../app_utils/app_constants.dart';
 import 'image_upload.dart';
-import '../form_screens/form_constants.dart';
+import '../../form_screens/form_constants.dart';
 
 class FormImageInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

@@ -5,9 +5,9 @@ import 'package:geocode/geocode.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:veridox/app_utils/app_constants.dart';
-import 'package:veridox/form_widgets/show_map.dart';
-import '../app_providers/form_provider.dart';
-import '../form_screens/form_constants.dart';
+import 'package:veridox/form_widgets/form_input_widgets/show_map.dart';
+import '../../app_providers/form_provider.dart';
+import '../../form_screens/form_constants.dart';
 
 class GetUserLocation extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

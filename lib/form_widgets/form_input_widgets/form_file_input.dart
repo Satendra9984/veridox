@@ -8,10 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import '../app_providers/form_provider.dart';
-import '../app_services/database/uploader.dart';
-import '../app_utils/app_constants.dart';
-import '../form_screens/form_constants.dart';
+import '../../app_providers/form_provider.dart';
+import '../../app_services/database/uploader.dart';
+import '../../app_utils/app_constants.dart';
+import '../../form_screens/form_constants.dart';
 
 class FormFileInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

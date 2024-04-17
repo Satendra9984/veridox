@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_providers/form_provider.dart';
-import '../app_utils/app_constants.dart';
-import '../form_screens/form_constants.dart';
+import '../../app_utils/app_constants.dart';
+import '../../form_screens/form_constants.dart';
 
 class FormEmailTextInput extends StatefulWidget {
   final Map<String, dynamic> widgetJson;

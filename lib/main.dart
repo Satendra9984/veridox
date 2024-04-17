@@ -7,9 +7,9 @@ import 'package:camera/camera.dart';
 import 'package:veridox/app_providers/form_provider.dart';
 import 'package:veridox/app_providers/saved_assignment_provider.dart';
 import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
+import 'package:veridox/core/themes/color_theme.dart';
 
 import 'app_screens/assignments/saved_assignments_page.dart';
-import 'form_screens/home_page.dart';
 import 'laboratory.dart';
 
 List<CameraDescription> cameras = [];
@@ -52,12 +52,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Veridox',
-        theme: ThemeData(
-          primaryColor: Colors.lightBlue,
-          primarySwatch: Colors.blue,
-          fontFamily: 'Ubuntu',
-        ),
-        // home: FileViewerWidget(),
+        theme: AppColorTheme.darkThemeData,
+        darkTheme: AppColorTheme.darkThemeData,
         routes: {
           '/': (context) => const OnBoardingScreen(),
           // '/': (context) => Lab(),
