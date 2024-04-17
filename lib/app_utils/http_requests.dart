@@ -17,8 +17,8 @@ class HTTPRequests {
     }
   }
 
-  static Future<Map<String, dynamic>?> sendPostRequest(
-      String api, Map<String, dynamic> body) async {
+  static Future<Map<String, dynamic>?> sendPostRequest(String api,
+      {Map<String, dynamic>? body}) async {
     final uri = Uri.parse(_BASE_URL + api);
     final response = await http.post(uri,
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},

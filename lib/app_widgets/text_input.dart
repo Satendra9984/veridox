@@ -29,9 +29,6 @@ class _CustomTextInputState extends State<CustomTextInput> {
       padding: const EdgeInsets.only(top: 15, bottom: 15, right: 15, left: 15),
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0.5),
       decoration: BoxDecoration(
-        // border: Border.all(
-        //   color: Colors.grey.shade400,
-        // ),
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
@@ -47,7 +44,7 @@ class _CustomTextInputState extends State<CustomTextInput> {
         initialValue: widget.controller,
         validator: (val) {
           String? value = widget.controller.text;
-          debugPrint('value --> ${val.runtimeType}');
+          // debugPrint('value --> ${val.runtimeType}');
           return widget.validator(value);
         },
         builder: (formState) {
@@ -68,15 +65,12 @@ class _CustomTextInputState extends State<CustomTextInput> {
                     color: Colors.black45,
                     fontWeight: FontWeight.w600,
                   ),
-                  //   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
-                  //   errorBorder: InputBorder.none,
-                  //   disabledBorder: InputBorder.none,
 
                   isDense: true, // Added this
-                  // contentPadding: EdgeInsets.all(-10),
                 ),
+                keyboardType: widget.keyboardType,
               ),
               if (formState.hasError)
                 Padding(

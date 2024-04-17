@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 class CustomDefaultText extends StatefulWidget {
   final bool password;
   final String text;
-  final TextEditingController controller;
 
   const CustomDefaultText({
     Key? key,
     required this.text,
     required this.password,
-    required this.controller,
   }) : super(key: key);
 
   @override
@@ -19,7 +17,6 @@ class CustomDefaultText extends StatefulWidget {
 
 class _CustomDefaultTextState extends State<CustomDefaultText> {
   String _getDefaultText() {
-    widget.controller.text = widget.text;
     return widget.text;
   }
 
@@ -28,26 +25,27 @@ class _CustomDefaultTextState extends State<CustomDefaultText> {
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, right: 15, left: 15),
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0.5),
-      height: 60,
+      // height: 40,
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
-        // border: Border.all(
-        //   color: Colors.grey.shade400,
-        // ),
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            offset: const Offset(0.0, 15), //(x,y)
-            blurRadius: 10,
-          ),
+          // BoxShadow(
+          //   color: Colors.grey.shade400,
+          //   offset: const Offset(0.0, 0.0), //(x,y)
+          //   blurRadius: 2.5,
+          // ),
         ],
       ),
       child: Text(
         _getDefaultText(),
         style: TextStyle(
-          fontSize: 16,
+          fontSize: 17.5,
+          color: Colors.grey.shade700,
         ),
       ),
     );

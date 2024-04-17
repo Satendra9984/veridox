@@ -17,14 +17,12 @@ class DetailTextStylesWidget extends StatelessWidget {
       padding: const EdgeInsets.all(3.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        // crossAxisAlignment: CrossAxisAlignment.baseline,
-        // textBaseline: TextBaseline.ideographic,
         children: [
-          Expanded(
-            flex: 1,
-            child: icon ?? Container(),
-          ),
+          if (icon != null)
+            Expanded(
+              flex: 1,
+              child: icon!,
+            ),
           Expanded(
             flex: 5,
             child: value,

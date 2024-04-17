@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:veridox/app_widgets/assignment_card.dart';
-import 'package:veridox/app_models/assignment_model.dart';
-import 'package:veridox/app_providers/assignment_provider.dart';
-import '../../app_widgets/custom_app_bar.dart';
+import 'package:veridox/app_models/sorting_enums.dart';
+import '../../app_models/saved_assignment_model.dart';
+import '../../app_widgets/saved_assignment_card.dart';
 import 'assignment_detail_page.dart';
 
 class AssignmentList extends StatefulWidget {
@@ -14,85 +13,171 @@ class AssignmentList extends StatefulWidget {
 }
 
 class _AssignmentListState extends State<AssignmentList> {
-  bool oldestFilter = false;
+  SavedAssignmentFilters _currentFilter = SavedAssignmentFilters.NewestFirst;
+  List<SavedAssignment> _filteredList = [];
 
-  Future<void> _refreshAssignments(BuildContext context) async {
-    await Provider.of<AssignmentProvider>(context, listen: false)
-        .fetchAndLoadData();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _setFilteredList(List<SavedAssignment> list) {
+    final List<SavedAssignment> _filtList = list.where((element) {
+      return element.status == 'assigned';
+    }).toList();
+    if (_currentFilter == SavedAssignmentFilters.NewestFirst) {
+      _filtList.sort((first, second) {
+        DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
+        DateTime secondDate =
+            DateFormat('dd/MM/yyyy').parse(second.assignedDate);
+        return secondDate.compareTo(firstDate);
+      });
+      _filteredList = _filtList;
+    } else if (_currentFilter == SavedAssignmentFilters.OldestFirst) {
+      _filtList.sort((first, second) {
+        DateTime firstDate = DateFormat('dd/MM/yyyy').parse(first.assignedDate);
+        DateTime secondDate =
+            DateFormat('dd/MM/yyyy').parse(second.assignedDate);
+        return firstDate.compareTo(secondDate);
+      });
+      _filteredList = _filtList;
+    } else {
+      _filteredList = list;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(
-        label: 'Assignments',
+    return Container(
+      margin: EdgeInsets.only(right: 10),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [Color(0XFFf0f5ff), Colors.white],
+        ),
       ),
-      // for the refreshing the assignments list
-      body: RefreshIndicator(
-        onRefresh: () => _refreshAssignments(context),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Color(0XFFf0f5ff), Colors.white],
-            ),
-          ),
-          child: Consumer<List<Assignment>>(
-            builder: (context, list, widget) {
-              if (list.length == 0) {
-                return Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(15),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'You do not have any assignments yet,'
-                    '\ncontact your agency for more details',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
+      child: Consumer<List<SavedAssignment>>(
+        builder: (context, list, widget) {
+          _setFilteredList(
+              list.where((element) => element.status == 'assigned').toList());
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(right: 15, left: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Assignments',
+                              style: TextStyle(
+                                color: Colors.blue.shade500,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: 45),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            PopupMenuButton<SavedAssignmentFilters>(
+                              initialValue: _currentFilter,
+                              onSelected: (filter) {
+                                setState(() {
+                                  _currentFilter = filter;
+                                  _setFilteredList(list);
+                                });
+                              },
+                              itemBuilder: (context) {
+                                return <PopupMenuEntry<SavedAssignmentFilters>>[
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Newest First',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value:
+                                          SavedAssignmentFilters.NewestFirst),
+                                  PopupMenuItem(
+                                      child: Text(
+                                        'Oldest First',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      value:
+                                          SavedAssignmentFilters.OldestFirst),
+                                ];
+                              },
+                              icon: Icon(Icons.more_horiz),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                if (_filteredList.length == 0)
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(15),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'You do not have any assignments yet,'
+                      '\ncontact your agency for more details',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                );
-              }
-
-              return ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (ctxt, index) {
-                  // print(list[index]);
-                  return AssignmentCard(
-                    navigate: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AssignmentDetailPage(caseId: list[index].caseId),
-                        ),
+                if (_filteredList.length > 0)
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _filteredList.length,
+                    itemBuilder: (context, index) {
+                      return SavedAssignmentCard(
+                        navigate: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AssignmentDetailPage(
+                                caseId: _filteredList[index].caseId,
+                              ),
+                            ),
+                          );
+                        },
+                        assignment: _filteredList[index],
                       );
                     },
-                    assignment: list[index],
-                    popUpMenu: PopupMenuButton(
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          value: 0,
-                          onTap: () async {
-                            // TODO: SAVING ASSIGNMENTS
-                            // await Provider.of<SavedAssignmentProvider>(context,
-                            //         listen: false)
-                            //     .addSavedAssignment(
-                            //   list[index].caseId,
-                            // );
-                          },
-                          child: const Text('Reject Task'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

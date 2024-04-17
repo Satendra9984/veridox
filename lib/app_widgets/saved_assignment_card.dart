@@ -6,54 +6,53 @@ import '../app_utils/app_functions.dart';
 import 'detail_text.dart';
 
 class SavedAssignmentCard extends StatelessWidget {
-  final Offset distance = const Offset(3.5, 3.5);
-  final double blur = 5.0;
+  final Offset distance = const Offset(1.5, 1.5);
+  final double blur = 3.0;
 
-  // final Widget popUpMenu;
   final SavedAssignment assignment;
   final Function() navigate;
-  const SavedAssignmentCard({
+  final Function()? onDoubleTap;
+  SavedAssignmentCard({
     Key? key,
     required this.navigate,
-    // required this.popUpMenu,
     required this.assignment,
+    this.onDoubleTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: navigate,
+      onDoubleTap: onDoubleTap,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.grey.shade300,
-            width: 0.7,
+            width: 0.00,
           ),
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
-            BoxShadow(
-              blurRadius: blur,
-              offset: -distance,
-              color: Colors.white10,
-              // inset: isPressed,
-            ),
+            // BoxShadow(
+            //   blurRadius: blur,
+            //   offset: -distance,
+            //   color: Colors.white10,
+            //   // inset: isPressed,
+            // ),
             BoxShadow(
               blurRadius: blur,
               offset: distance,
-              color: const Color(0xFFA7A9AF),
+              color: Colors.grey.shade400,
               // inset: isPressed,
             ),
           ],
         ),
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 6),
+        padding: const EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              width: 10,
-            ),
             Expanded(
               flex: 5,
               child: Column(
@@ -61,41 +60,45 @@ class SavedAssignmentCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.info,
-                        color: Colors.orange,
-                        size: 18,
+                    icon: Icon(
+                      Icons.numbers,
+                      color: Colors.orange.shade300,
+                      size: 18,
+                    ),
+                    heading: 'Id',
+                    value: Text(
+                      assignment.caseId,
+                      style: const TextStyle(
+                        fontSize: 16,
                       ),
-                      heading: 'Id',
-                      value: Text(
-                        assignment.caseId,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.person,
-                        color: Colors.black,
+                    icon: Icon(
+                      Icons.person,
+                      color: Colors.blue.shade300,
+                    ),
+                    heading: 'Name',
+                    value: Text(
+                      assignment.applicant_name,
+                      style: const TextStyle(
+                        fontSize: 15,
                       ),
-                      heading: 'Name',
-                      value: Text(
-                        assignment.applicant_name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
-                      icon: const Icon(
-                        Icons.phone,
-                        color: Colors.greenAccent,
+                    icon: Icon(
+                      Icons.phone,
+                      color: Colors.green.shade300,
+                    ),
+                    heading: 'phone',
+                    value: Text(
+                      assignment.applicant_phone,
+                      style: const TextStyle(
+                        fontSize: 14,
                       ),
-                      heading: 'phone',
-                      value: Text(
-                        assignment.applicant_phone,
-                        style: const TextStyle(fontSize: 17),
-                      )),
+                    ),
+                  ),
                   DetailTextStylesWidget(
                       icon: Icon(
                         Icons.list_alt,
@@ -142,53 +145,15 @@ class SavedAssignmentCard extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  // DetailTextStylesWidget(
-                  //   heading: 'Address',
-                  //   value: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       const Icon(
-                  //         Icons.location_on,
-                  //         color: Colors.lightBlue,
-                  //         size: 18,
-                  //       ),
-                  //       const SizedBox(width: 3),
-                  //       Text(
-                  //         assignment.applicant_address,
-                  //         style: const TextStyle(
-                  //           fontSize: 15,
-                  //           color: Colors.lightBlue,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  PopupMenuButton(
-                    itemBuilder: (_) => [
-                      PopupMenuItem(
-                        value: 0,
-                        onTap: () {
-                          // TODO: DeletingSavedAssignments
-                          debugPrint(
-                              'deleting caseId --> ${assignment.caseId}\n\n');
-                          Provider.of<SavedAssignmentProvider>(context,
-                                  listen: false)
-                              .removeFromSaveAssignments(assignment.caseId);
-                        },
-                        child: const Text('Delete Task'),
-                      ),
-                    ],
-                  ),
                   CircleAvatar(
-                    radius: 8,
+                    radius: 9,
                     backgroundColor: getStatusColour(assignment.status),
                   ),
                 ],

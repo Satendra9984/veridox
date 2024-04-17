@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,5 +85,24 @@ class SPServices {
   Future<void> setSavedAssignmentList(List<String> list) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('savedAssignments', list);
+  }
+
+  /// save data in local storage
+  static Future<void> setData(String path, Uint8List bytesData) async {
+    final prefs = await SharedPreferences.getInstance();
+    String base64Image = base64Encode(bytesData);
+    await prefs.setString(path, base64Image);
+  }
+
+  /// get data from local storage
+  static Future<Uint8List?> getData(String path) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? imageString = await prefs.getString(path);
+
+    if (imageString != null) {
+      Uint8List byteData = base64Decode(imageString);
+      return byteData;
+    }
+    return null;
   }
 }

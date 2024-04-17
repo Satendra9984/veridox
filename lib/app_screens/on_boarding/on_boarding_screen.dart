@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_services/database/shared_pref_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
-import '../../form_screens/home_page.dart';
-import '../assignments_home_page.dart';
+import '../bottom_nav_bar_screens/home_page.dart';
 import '../login/login_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -26,21 +25,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     final String? token = await _spServices.getToken();
 
     if (uid != null && token != null) {
-      await FirestoreServices.checkIfFvExists(uid).then((value) async {
+      /// checking if field verifier already exists
+      await FirestoreServices.checkIfRequested(uid).then((value) async {
         if (value) {
-          debugPrint('checking values in checkIffvexists');
-          navigatePushReplacement(context, const AssignmentsHomePage());
+          /// requested
+          // debugPrint('requested\n');
+          navigatePushReplacement(context, StatusScreen(uid: uid));
         } else {
-          bool reqStatus = await FirestoreServices.checkIfRequested(uid);
-          debugPrint('checking values in checkIfrequestedexists');
-          if (reqStatus) {
-            navigatePushReplacement(context, const AssignmentsHomePage());
-          } else {
-            navigatePushReplacement(
-              context,
-              const SendRequestScreen(),
-            );
-          }
+          /// not requested
+          // debugPrint('not requested requested\n');
+
+          await FirestoreServices.checkIfFvExists(uid).then((value) {
+            if (value) {
+              /// field verifier exists
+              // debugPrint('field verifier existes\n');
+
+              navigatePushReplacement(context, HomePage());
+            } else {
+              /// nor exists neither requested(fresh case)
+              // debugPrint('fresh new case\n');
+              navigatePushReplacement(context, SendRequestScreen());
+            }
+          });
         }
       });
     } else {
@@ -62,7 +68,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         children: const [
           Center(
             child: Text(
-              'Veridox',
+              'Veridocs',
               style: TextStyle(fontSize: 60.0),
             ),
           ),

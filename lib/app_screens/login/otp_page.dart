@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:veridox/app_screens/login/login_page.dart';
-import 'package:veridox/app_screens/permissions_page.dart';
+import 'package:veridox/app_screens/on_boarding/on_boarding_screen.dart';
 import 'package:veridox/app_screens/profile/send_request_screen.dart';
+import 'package:veridox/app_screens/profile/status_screen.dart';
 import 'package:veridox/app_services/database/firestore_services.dart';
 import 'package:veridox/app_utils/app_functions.dart';
 import '../../app_providers/auth_provider.dart';
 import '../../app_widgets/submit_button.dart';
-import '../assignments_home_page.dart';
+import '../bottom_nav_bar_screens/home_page.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({Key? key}) : super(key: key);
@@ -92,7 +93,7 @@ class _OTPPageState extends State<OTPPage> {
                   ),
                 )
               : SubmitButton(
-                  text: "Enter OTP",
+                  text: "Verify OTP",
                   onPress: () async {
                     _provider.setOTP(_pinputController.text);
                     await _provider
@@ -103,27 +104,7 @@ class _OTPPageState extends State<OTPPage> {
                       if (uid == null) {
                         navigatePushRemoveUntil(context, LogInPage());
                       } else {
-                        await FirestoreServices.checkIfFvExists(uid)
-                            .then((value) async {
-                          if (value) {
-                            navigatePushRemoveUntil(
-                                context, AssignmentsHomePage());
-                          } else {
-                            // check if requested
-                            bool reqStatus =
-                                await FirestoreServices.checkIfRequested(uid);
-
-                            if (reqStatus) {
-                              navigatePushRemoveUntil(
-                                  context, const AssignmentsHomePage());
-                            } else {
-                              navigatePushRemoveUntil(
-                                context,
-                                const SendRequestScreen(),
-                              );
-                            }
-                          }
-                        });
+                        navigatePushRemoveUntil(context, OnBoardingScreen());
                       }
                     }).catchError((error) {
                       SnackBar snackBar = const SnackBar(
@@ -200,6 +181,7 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       ),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 30, width: 742),
                   TextButton(
