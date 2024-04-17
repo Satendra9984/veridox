@@ -1,50 +1,94 @@
 {
   "project_info": {
-    "project_number": "217484249170",
-    "project_id": "veridox-68b89",
-    "storage_bucket": "veridox-68b89.appspot.com"
+    "project_number": "120256341252",
+    "firebase_url": "https://veridocs-rs-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "veridocs-rs",
+    "storage_bucket": "veridocs-rs.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217484249170:android:1e355f2bef6d78c036778b",
+        "mobilesdk_app_id": "1:120256341252:android:91cd63affa5a848b4edc51",
         "android_client_info": {
           "package_name": "com.android.veridox"
         }
       },
       "oauth_client": [
         {
-          "client_id": "217484249170-iof43jdtf8tvtgcqvnj31bdl6frb44ll.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.android.veridox",
-            "certificate_hash": "8d6ff3a393f7ae7b9b5d5374e9ded3d063210a5f"
-          }
-        },
-        {
-          "client_id": "217484249170-ka65o2rtqtfu6isp9kmp3uaf142ubt8e.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.android.veridox",
-            "certificate_hash": "ae03f06b40bf30b28fb59a393e7eaccb3a77e415"
-          }
-        },
-        {
-          "client_id": "217484249170-9sq4rmtn2mv16uffe6fhmmsd3vgtag0a.apps.googleusercontent.com",
+          "client_id": "120256341252-trj1hgbinckh5rmj2fq7k9t9gri9sevl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDdar6H02mIx1BygGdpz1VumO7gQER9HaU"
+          "current_key": "AIzaSyCJLtC-F1HAPHvy3j2d3rzQJu4i6nd7aO0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "217484249170-9sq4rmtn2mv16uffe6fhmmsd3vgtag0a.apps.googleusercontent.com",
+              "client_id": "120256341252-trj1hgbinckh5rmj2fq7k9t9gri9sevl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "120256341252-gtc75n4t5546um0tgi3cti6aptlqru59.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reignsys.veridocs"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120256341252:android:67101b5f80ed618a4edc51",
+        "android_client_info": {
+          "package_name": "com.reignsys.veridocs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120256341252-ar3t4orpihi12v5mvsur386kn9r65dv8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reignsys.veridocs",
+            "certificate_hash": "eb65b004761ce8f4d1685f88834ba21b00cb4286"
+          }
+        },
+        {
+          "client_id": "120256341252-itd1am7rqos731dube961r7u5l72luic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reignsys.veridocs",
+            "certificate_hash": "8d6ff3a393f7ae7b9b5d5374e9ded3d063210a5f"
+          }
+        },
+        {
+          "client_id": "120256341252-trj1hgbinckh5rmj2fq7k9t9gri9sevl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJLtC-F1HAPHvy3j2d3rzQJu4i6nd7aO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120256341252-trj1hgbinckh5rmj2fq7k9t9gri9sevl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120256341252-gtc75n4t5546um0tgi3cti6aptlqru59.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reignsys.veridocs"
+              }
             }
           ]
         }
